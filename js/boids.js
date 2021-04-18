@@ -7,17 +7,18 @@ let alignSlider, cohesionSlider, separationSlider
 function setup() {
     createCanvas(windowWidth, windowHeight);
     alignSlider = createSlider(0, 5, 1.2, 0.1)
-    cohesionSlider = createSlider(0, 5, 0.5, 0.1)
-    separationSlider = createSlider(0, 5, 0.2, 0.1)
+    cohesionSlider = createSlider(0, 5, 0.3, 0.1)
+    separationSlider = createSlider(0, 5, 0.3, 0.1)
     for (let i = 0; i < birdsNb; i++) {
         birds.push(new Bird())
     }
 }
 
 function draw() {
-    background(255)
+    background(100)
+    var prevBirds = Array.from(birds)
     for (let i = 0; i < birds.length; i++) {
-        birds[i].update()
+        birds[i].update(prevBirds)
     }
 }
 
@@ -31,14 +32,14 @@ class Bird {
         this.maxForce = 1
     }
 
-    align() {
+    align(prevBirds) {
         var steeringAlign = createVector();
         var totalAlign = 0;
         var steeringCohesion = createVector();
         var totalCohesion = 0;
         var steeringSeparation = createVector();
         var totalSeparation = 0;
-        for (let bird of birds) {
+        for (let bird of prevBirds) {
             var distanceAlign = dist(this.position.x, this.position.y, bird.position.x, bird.position.y)
             if (distanceAlign <= perceptionRange && distanceAlign > 2 * perceptionRange / 3 && bird != this) {
                 steeringAlign.add(bird.velocity)
@@ -83,8 +84,8 @@ class Bird {
         steeringSeparation.mult(separationSlider.value())
         this.acceleration.add(steeringSeparation)
     }
-    update() {
-        this.align()
+    update(prevBirds) {
+        this.align(prevBirds)
         this.position.add(this.velocity)
         this.velocity.add(this.acceleration)
         this.edges()
@@ -94,7 +95,7 @@ class Bird {
 
     show() {
         strokeWeight(16)
-        stroke(100)
+        stroke(230)
         point(this.position.x, this.position.y)
     }
 
