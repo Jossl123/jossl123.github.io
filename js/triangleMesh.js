@@ -67,6 +67,7 @@ class Point {
     }
     render() {
         fill(200)
+        noStroke()
         circle(this.x, this.y, this.r)
     }
 }
