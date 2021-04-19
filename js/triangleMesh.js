@@ -1,5 +1,5 @@
 var points = []
-var verticiesNb = 20
+var verticiesNb = 19
 var triangles = []
 var verticiesLength = 100
 
@@ -51,21 +51,19 @@ class Triangle {
 
 class Point {
     constructor(x, y) {
-        this.x = x - 100;
-        this.y = y - 100;
+        this.x = x + random(-20, 20) - 120;
+        this.y = y + random(-20, 20) - 120;
         this.velocity = p5.Vector.random2D()
         this.acceleration = createVector(0, 0)
         this.rotateAngle = 0.04
         this.r = 5
     }
     update() {
-        this.velocity.x = Math.cos(this.rotateAngle) * this.velocity.x - Math.sin(this.rotateAngle) * this.velocity.y
-        this.velocity.y = Math.sin(this.rotateAngle) * this.velocity.x + Math.cos(this.rotateAngle) * this.velocity.y
         this.render()
-        this.acceleration = this.velocity
+        this.acceleration.add(this.velocity).setMag(1.1)
         this.x += this.acceleration.x
         this.y += this.acceleration.y
-        this.rotateAngle += random(0, 0.1)
+        this.velocity = p5.Vector.random2D()
     }
     render() {
         fill(200)
