@@ -61,8 +61,8 @@ class Sand {
         this.render()
     }
     render() {
-        fill(100, 100, 10)
-        stroke(100, 100, 10)
+        fill(200, 200, 0)
+        stroke(200, 200, 0)
         rect(this.x * tileSize, this.y * tileSize, tileSize, tileSize)
     }
 }
