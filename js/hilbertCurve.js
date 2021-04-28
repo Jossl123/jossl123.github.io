@@ -26,8 +26,6 @@ function setup() {
     }
 }
 
-function draw() {}
-
 class Point {
     constructor(x, y, index) {
         this.x = x;
