@@ -14,7 +14,7 @@ function setup() {
             next[x][y] = 0
         }
     }
-    for (let x = 0; x < 5000; x++) {
+    for (let x = 0; x < 50000; x++) {
         particules.push(new Particule(width / 2, height / 2))
 
     }
