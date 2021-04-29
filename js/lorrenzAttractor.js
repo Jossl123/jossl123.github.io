@@ -1,5 +1,5 @@
 var curves = []
-var dt = 0.01
+var dt = 0.013
 var mat4x4Projection = [
     [],
     [],
@@ -10,7 +10,7 @@ var mat4x4Projection = [
 function setup() {
     createCanvas(windowWidth, windowHeight)
     background(255)
-    curves.push(new Curve(10, 28, 8 / 3))
+    curves.push(new Curve(9, 20, 8 / 2))
     fov = 90
     fovRad = 1 / (Math.tan(this.fov * 0.5 * Math.PI / 180))
     zNear = 0.1;
