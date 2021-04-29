@@ -1,9 +1,10 @@
 var grid = []
 var next = []
 var particules = []
-var lostDepth = 0.002
+var lostDepth = 0.01
 
 function setup() {
+    //createCanvas(320, 180, P2D)
     createCanvas(windowWidth, windowHeight, P2D)
     for (let x = 0; x < width; x++) {
         grid[x] = []
@@ -13,7 +14,7 @@ function setup() {
             next[x][y] = 0
         }
     }
-    for (let x = 0; x < 2000; x++) {
+    for (let x = 0; x < 5000; x++) {
         particules.push(new Particule(width / 2, height / 2))
 
     }
@@ -45,109 +46,116 @@ function draw() {
     next = temp
 }
 
+var itter = 0
+
 class Particule {
     constructor(x, y) {
         this.pos = createVector(x, y)
         this.dir = p5.Vector.random2D();
+        this.canTurn = true
     }
     update() {
         if (Math.floor(this.pos.x) <= 1) {
             this.pos.x++;
             this.dir.x = -this.dir.x
-        } else if (Math.floor(this.pos.x) >= width - 2) {
+            this.canTurn = true
+        } else if (Math.floor(this.pos.x) >= width - 1) {
             this.pos.x--;
             this.dir.x = -this.dir.x
+            this.canTurn = true
         }
         if (Math.floor(this.pos.y) <= 1) {
             this.pos.y++;
             this.dir.y = -this.dir.y
-        } else if (Math.floor(this.pos.y) >= height - 2) {
+            this.canTurn = true
+        } else if (Math.floor(this.pos.y) >= height - 1) {
             this.pos.y--;
             this.dir.y = -this.dir.y
+            this.canTurn = true
         }
         grid[Math.floor(this.pos.x)][Math.floor(this.pos.y)] = 1
-        this.dir.rotate(random(-0.2, 0.2))
-        this.dir.rotate(this.dir.angleBetween(getHigherNeigthboors(Math.floor(this.pos.x), Math.floor(this.pos.y), this.dir)) / 100)
-        this.pos.add(this.dir)
+        if (this.canTurn) {
+            var angle = this.dir.angleBetween(createVector(0, -1)) + Math.PI * 4 / 5
+            var senseForward
+            var senseLeft
+            var senseWrite
+            if (angle < Math.PI * 2 / 4) {
+                senseLeft = sense(createVector(this.pos.x, this.pos.y + 1))
+                senseForward = sense(createVector(this.pos.x - 1, this.pos.y + 1))
+                senseWrite = sense(createVector(this.pos.x - 1, this.pos.y))
+            } else if (angle < Math.PI * 3 / 4) {
+                senseLeft = sense(createVector(this.pos.x - 1, this.pos.y + 1))
+                senseForward = sense(createVector(this.pos.x - 1, this.pos.y))
+                senseWrite = sense(createVector(this.pos.x - 1, this.pos.y - 1))
+            } else if (angle < Math.PI * 4 / 4) {
+                senseLeft = sense(createVector(this.pos.x - 1, this.pos.y))
+                senseForward = sense(createVector(this.pos.x - 1, this.pos.y - 1))
+                senseWrite = sense(createVector(this.pos.x, this.pos.y - 1))
+            } else if (angle < Math.PI * 5 / 4) {
+                senseLeft = sense(createVector(this.pos.x - 1, this.pos.y - 1))
+                senseForward = sense(createVector(this.pos.x, this.pos.y - 1))
+                senseWrite = sense(createVector(this.pos.x + 1, this.pos.y - 1))
+            } else if (angle < Math.PI * 6 / 4) {
+                senseLeft = sense(createVector(this.pos.x, this.pos.y - 1))
+                senseForward = sense(createVector(this.pos.x + 1, this.pos.y - 1))
+                senseWrite = sense(createVector(this.pos.x + 1, this.pos.y))
+            } else if (angle < Math.PI * 7 / 4) {
+                senseLeft = sense(createVector(this.pos.x + 1, this.pos.y - 1))
+                senseForward = sense(createVector(this.pos.x + 1, this.pos.y))
+                senseWrite = sense(createVector(this.pos.x + 1, this.pos.y + 1))
+            } else if (angle < Math.PI * 8 / 4) {
+                senseLeft = sense(createVector(this.pos.x + 1, this.pos.y))
+                senseForward = sense(createVector(this.pos.x + 1, this.pos.y + 1))
+                senseWrite = sense(createVector(this.pos.x, this.pos.y + 1))
+            } else {
+                senseLeft = sense(createVector(this.pos.x + 1, this.pos.y + 1))
+                senseForward = sense(createVector(this.pos.x, this.pos.y + 1))
+                senseWrite = sense(createVector(this.pos.x - 1, this.pos.y + 1))
+            }
+
+            if (itter < 10) {
+                console.log(senseLeft, senseForward, senseWrite)
+                itter++
+            }
+            if (senseForward > senseLeft && senseForward > senseWrite) {} else if (senseForward < senseLeft && senseForward < senseWrite) {
+                this.dir.rotate(random(-1, 1))
+            }
+            // Turn right
+            else if (senseWrite > senseLeft) {
+                this.dir.rotate(4)
+                this.dir.rotate(random(-1, 1))
+            }
+            // Turn left
+            else if (senseLeft > senseWrite) {
+                this.dir.rotate(-4)
+                this.dir.rotate(random(-1, 1))
+            }
+        }
+
+        this.pos.add(this.dir.setMag(1))
     }
 }
 
 function getNeigthboorAverage(x, y) {
-    if (x <= 0) { x = 1 }
-    if (x >= width - 1) { x = width - 2 }
-    if (y <= 0) { y = 1 }
-    if (y >= height - 1) { y = height - 2 }
     var sum = 0
-    sum += grid[x][y]
-    sum += grid[x - 1][y]
-    sum += grid[x + 1][y]
-    sum += grid[x][y - 1]
-    sum += grid[x][y + 1]
-    sum += grid[x - 1][y - 1]
-    sum += grid[x + 1][y - 1]
-    sum += grid[x - 1][y + 1]
-    sum += grid[x + 1][y + 1]
+    for (let xoff = -1; xoff <= 1; xoff++) {
+        for (let yoff = -1; yoff <= 1; yoff++) {
+            if (xoff + x >= 0 && xoff + x < width && yoff + y >= 0 && yoff + y < height) {
+                sum += grid[xoff + x][yoff + y]
+            }
+        }
+    }
     return sum / 9
 }
 
-function getHigherNeigthboors(x, y, dir) {
-    if (x <= 0) { x = 1 }
-    if (x >= width - 1) { x = width - 2 }
-    if (y <= 0) { y = 1 }
-    if (y >= height - 1) { y = height - 2 }
-    var neightboor = []
-    var angle = dir.angleBetween(createVector(0, 1)) + Math.PI / 4 * 5
-    if (angle <= Math.PI * 2 / 4) {
-        neightboor.push({ value: grid[x - 1][y], x: -1, y: 0 })
-        neightboor.push({ value: grid[x][y + 1], x: 0, y: y })
-        neightboor.push({ value: grid[x - 1][y + 1], x: -1, y: 1 })
-    } else if (angle < Math.PI * 3 / 4) {
-        neightboor.push({ value: grid[x - 1][y], x: -1, y: 0 })
-        neightboor.push({ value: grid[x - 1][y - 1], x: -1, y: -1 })
-        neightboor.push({ value: grid[x - 1][y + 1], x: -1, y: 1 })
-    } else if (angle < Math.PI * 4 / 4) {
-        neightboor.push({ value: grid[x - 1][y - 1], x: -1, y: -1 })
-        neightboor.push({ value: grid[x][y - 1], x: 0, y: y })
-        neightboor.push({ value: grid[x - 1][y], x: -1, y: 0 })
-    } else if (angle < Math.PI * 5 / 4) {
-        neightboor.push({ value: grid[x][y - 1], x: 0, y: -1 })
-        neightboor.push({ value: grid[x - 1][y - 1], x: -1, y: -1 })
-        neightboor.push({ value: grid[x + 1][y - 1], x: 1, y: -1 })
-    } else if (angle < Math.PI * 6 / 4) {
-        neightboor.push({ value: grid[x][y - 1], x: 0, y: -1 })
-        neightboor.push({ value: grid[x + 1][y], dx: 1, dy: 0 })
-        neightboor.push({ value: grid[x + 1][y - 1], dx: 1, dy: -1 })
-    } else if (angle < Math.PI * 7 / 4) {
-        neightboor.push({ value: grid[x + 1][y], dx: 1, dy: 0 })
-        neightboor.push({ value: grid[x + 1][y - 1], dx: 1, dy: -1 })
-        neightboor.push({ value: grid[x + 1][y + 1], dx: 1, dy: 1 })
-    } else if (angle < Math.PI * 8 / 4) {
-        neightboor.push({ value: grid[x + 1][y], dx: 1, dy: 0 })
-        neightboor.push({ value: grid[x][y + 1], dx: 0, dy: 1 })
-        neightboor.push({ value: grid[x + 1][y + 1], dx: 1, dy: 1 })
-    } else {
-        neightboor.push({ value: grid[x][y + 1], dx: 0, dy: 1 })
-        neightboor.push({ value: grid[x - 1][y + 1], dx: -1, dy: 1 })
-        neightboor.push({ value: grid[x + 1][y + 1], dx: 1, dy: 1 })
-    }
-    var maxValue = 0
-    var maxElements = []
-    for (let i = 0; i < neightboor.length; i++) {
-        if (neightboor[i].value == maxValue) {
-            maxElements.push(createVector(neightboor[i].dx, neightboor[i].dy))
-        } else if (neightboor[i].value > maxValue) {
-            maxValue = neightboor[i].value
-            maxElements = [createVector(neightboor[i].dx, neightboor[i].dy)]
+function sense(pos) {
+    var sum = 0
+    for (let x = -1; x <= 1; x++) {
+        for (let y = -1; y <= 1; y++) {
+            if (Math.floor(pos.x) + x >= 0 && Math.floor(pos.x) + x < width && Math.floor(pos.y) + y >= 0 && Math.floor(pos.y) + y < height) {
+                sum += grid[Math.floor(pos.x) + x][Math.floor(pos.y) + y]
+            }
         }
     }
-    var finalVector
-    for (let i = 0; i < maxElements.length; i++) {
-        if (!finalVector) {
-            finalVector = createVector(maxElements[i].x, maxElements[i].y)
-        } else {
-            finalVector.add(maxElements[i])
-        }
-    }
-    finalVector.div(maxElements.length).sub(dir).setMag(1)
-    return finalVector
+    return sum
 }
