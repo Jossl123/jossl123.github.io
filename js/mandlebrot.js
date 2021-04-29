@@ -5,12 +5,12 @@ var magnificationFactor = 200;
 var panX = 200;
 var panY = 200;
 var zoomOffset = 200
-
-
 var moved = false
+var screenW = Math.max(window.innerWidth, document.documentElement.clientWidth) * 2;
+var screenH = Math.max(window.innerHeight, document.documentElement.clientHeight) * 4;
 
 function setup() {
-    createCanvas(windowWidth, windowHeight)
+    createCanvas(screenW, screenH);
     loadPixels();
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
