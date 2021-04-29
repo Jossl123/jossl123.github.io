@@ -1,6 +1,11 @@
 var curves = []
 var dt = 0.01
-var mat4x4Projection = []
+var mat4x4Projection = [
+    [],
+    [],
+    [],
+    []
+]
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
