@@ -10,33 +10,34 @@ function setup() {
     createCanvas(w, h)
     cam = new Camera()
     scene = [
-        new Sphere(10)
+        new Sphere(-30, 5, 20, 10),
+        new Sphere(10, 1, 10, 5),
+        new Sphere(2, 2, 2, 2)
     ]
     light = new Light()
     lighting.push(light)
 }
 
 function draw() {
-    loadPixels();
-    for (let x = 0; x < w; x += rez) {
-        for (let y = 0; y < h; y += rez) {
-            var ax = parseInt(-cam.fov / 2) + (cam.fov * x / w);
-            var ay = parseInt(-(h * cam.fov / w) / 2) + ((h * cam.fov / w) * y / h)
-            var color = castRay(cam.pos, rotateVectorX(rotateVectorY(cam.dir, ax), ay))
-            for (let i = 0; i < rez; i++) {
-                for (let j = 0; j < rez; j++) {
-                    var index = ((x + i) + (y + j) * w) * 4
-                    pixels[index] = color[0]
-                    pixels[index + 1] = color[1]
-                    pixels[index + 2] = color[2]
-                    pixels[index + 3] = 255;
+    if (rez > 0) {
+        loadPixels();
+        for (let x = 0; x < w; x += rez) {
+            for (let y = 0; y < h; y += rez) {
+                var ax = parseInt(-cam.fov / 2) + (cam.fov * x / w);
+                var ay = parseInt(-(h * cam.fov / w) / 2) + ((h * cam.fov / w) * y / h)
+                var color = castRay(cam.pos, rotateVectorX(rotateVectorY(cam.dir, ax), ay))
+                for (let i = 0; i < rez; i++) {
+                    for (let j = 0; j < rez; j++) {
+                        var index = ((x + i) + (y + j) * w) * 4
+                        pixels[index] = color[0]
+                        pixels[index + 1] = color[1]
+                        pixels[index + 2] = color[2]
+                        pixels[index + 3] = 255;
+                    }
                 }
             }
         }
-    }
-    updatePixels();
-    //light.pos.add(0, 0, -1)
-    if (rez > 1) {
+        updatePixels();
         rez -= 1
     }
 }
@@ -59,8 +60,8 @@ class Light {
 }
 
 class Sphere {
-    constructor(r) {
-        this.pos = createVector(0, 2, 10);
+    constructor(x, y, z, r) {
+        this.pos = createVector(x, y, z);
         this.r = r
         this.color = [100, 200, 0]
     }
@@ -88,7 +89,7 @@ document.addEventListener("keydown", (e) => {
         rez = 20
     }
     if (e.keyCode == 65) {
-        cam.dir.add(0.1, 0, 0)
+        cam.dir.add(-0.1, 0, 0)
         rez = 20
     }
 })
@@ -110,15 +111,6 @@ function castRay(origin, dir) {
                 objTouch = obj
             }
         }
-        for (let lit of lighting) {
-            var dist = distancePoints(lit.pos, currentPoint) - lit.r
-            if (dist < minDist) {
-                minDist = dist
-            }
-            if (minDist <= 1) {
-                objTouch = lit
-            }
-        }
         currentPoint.add(dir.setMag(minDist))
         totalDist += minDist
     }
@@ -136,27 +128,13 @@ function castRay(origin, dir) {
 }
 
 function shadow(p, objTouch) {
-    var distLight = distancePoints(p, light.pos)
-    var minDist = distLight
-    var totalDist = 0
-    var dir = light.pos.copy().sub(p).copy().setMag(1)
-    var firstDist = distancePoints(objTouch.pos, p) - objTouch.r
-    while (totalDist < distLight && minDist > 0.1) {
-        minDist = distLight
-        for (let obj of scene) {
-            var dist = distancePoints(obj.pos, p) - obj.r
-            if (dist < minDist) {
-                minDist = dist
-            }
+    for (let obj of scene) {
+        var dist = hitSphere(obj.pos, obj.r, p, light.pos.copy().sub(p))
+        if (dist != -1) {
+            return [obj.r * 2 / dist * 250, obj.r * 2 / dist * 250, obj.r * 2 / dist * 250]
         }
-        p.add(dir.setMag(minDist))
-        totalDist += minDist
     }
-    if (minDist <= 0.1 && minDist < firstDist) {
-        return [0, 0, 0]
-    } else {
-        return objTouch.color
-    }
+    return objTouch.color
 }
 
 function distancePoints(p1, p2) {
@@ -175,4 +153,23 @@ function rotateVectorX(v, a) {
     var y = v.y * Math.cos(a) - v.z * Math.sin(a)
     var z = v.y * Math.sin(a) + v.z * Math.cos(a)
     return createVector(v.x, y, z)
+}
+
+function hitSphere(center, radius, origin, dir) {
+    var oc = origin.copy().sub(center);
+    var a = dir.dot(dir);
+    var b = 2 * oc.dot(dir);
+    var c = oc.dot(oc) - radius * radius;
+    var discriminant = b * b - 4 * a * c;
+    if (discriminant < 0) {
+        return -1;
+    } else {
+        var numerator1 = -b - Math.sqrt(discriminant);
+        var numerator2 = -b + Math.sqrt(discriminant);
+        if (numerator1 > 0 && numerator2 > 0) {
+            return Math.abs(((numerator1 / (2 * a)) - (numerator2 / (2 * a))));
+        } else {
+            return -1;
+        }
+    }
 }
