@@ -100,7 +100,7 @@ function castRay(origin, dir) {
 
 function shadow(p, objTouch) {
     for (let obj of scene) {
-        var dist = hitSphere(p, light.pos, objTouch.r, objTouch.pos)
+        var dist = hitSphere(p, light.pos, obj.r, obj.pos)
         if (dist != -1) {
             return [objTouch.color[0] * dist, objTouch.color[1] * dist, objTouch.color[2] * dist]
         }
@@ -140,11 +140,16 @@ function hitSphere(p1, p2, radius, c) { // c = sphere center
     var u = ((c.x - p1.x) * (p2.x - p1.x) + (c.y - p1.y) * (p2.y - p1.y) + (c.z - p1.z) * (p2.z - p1.z)) /
         ((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y) + (p2.z - p1.z) * (p2.z - p1.z))
 
-    if (u >= 0 && u <= 1) {
+    if (D >= 0) {
         var t1 = (-B - Math.sqrt(D)) / (2.0 * A);
         var t2 = (-B + Math.sqrt(D)) / (2.0 * A);
-        if (t1 > 0 && t1 < 1)
-            t = t1; // we choose the nearest t from the first point
+        if (t1 <= 1 && t1 >= 0 && t2 < 1) {
+            if (t1 > t2) {
+                t = t1
+            } else {
+                t = t2
+            }
+        } // we choose the nearest t from the first point
     }
     return t
 }
