@@ -129,8 +129,7 @@ function shadow(p, objTouch) {
     for (let obj of scene) {
         var dist = hitSphere(obj.pos, obj.r, p, light.pos.copy().sub(p))
         if (dist != -1) {
-            //return [obj.r * 2 / dist * 250, obj.r * 2 / dist * 250, obj.r * 2 / dist * 250]
-            return [0, 0, 0]
+            return [objTouch.color[0] * (1-dist), objTouch.color[1] * (1-dist), objTouch.color[2] * (1-dist)]
         }
     }
     return objTouch.color
@@ -166,7 +165,7 @@ function hitSphere(center, radius, origin, dir) {
         var numerator1 = -b - Math.sqrt(discriminant);
         var numerator2 = -b + Math.sqrt(discriminant);
         if (numerator1 > 0 && numerator2 > 0) {
-            return Math.abs(((numerator1 / (2 * a)) - (numerator2 / (2 * a))));
+            return Math.abs(((numerator1 / (2 * a)) - (numerator2 / (2 * a)))) *  radius;
         } else {
             return -1;
         }
