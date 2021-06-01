@@ -102,7 +102,7 @@ function shadow(p, objTouch) {
     for (let obj of scene) {
         var dist = hitSphere(p, light.pos, objTouch.r, objTouch.pos)
         if (dist != -1) {
-            return [objTouch.color[0] * (1 - dist), objTouch.color[1] * (1 - dist), objTouch.color[2] * (1 - dist)]
+            return [objTouch.color[0] * dist, objTouch.color[1] * dist, objTouch.color[2] * dist]
         }
     }
     return objTouch.color
@@ -128,21 +128,23 @@ function rotateVectorX(v, a) {
 
 
 function hitSphere(p1, p2, radius, c) { // c = sphere center
-    var v = p1.copy().sub(p2).copy()
-    var A = (v.x * v.x + v.y * v.y + v.z * v.z);
-    var B = 2.0 * (p1.x * v.x + p1.y * v.y + p1.z * v.z - v.x * c.x - v.y * c.y - v.z * c.z);
-    var C = p1.x * p1.x - 2 * p1.x * c.x + c.x * c.x + p1.y * p1.y - 2 * p1.y * c.y + c.y * c.y +
-        p1.z * p1.z - 2 * p1.z * c.z + c.z * c.z - radius * radius;
+    var A = (p2.x * p1.x + p2.y * p1.y + p2.z * p1.z);
+
+    var B = 2 * ((p2.x - p1.x) * (p1.x - c.x) + (p2.y - p1.y) * (p1.y - c.y) + (p2.z - p1.z) * (p1.z - c.z))
+
+    var C = c.x * c.x + c.y * c.y + c.z * c.z + p1.x * p1.x + p1.y * p1.y + p1.z * p1.z - 2 * (c.x * p1.x + c.y * p1.y + c.z * p1.z) - radius * radius
+
     var D = B * B - 4 * A * C;
     var t = -1.0;
-    if (D >= 0) {
+
+    var u = ((c.x - p1.x) * (p2.x - p1.x) + (c.y - p1.y) * (p2.y - p1.y) + (c.z - p1.z) * (p2.z - p1.z)) /
+        ((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y) + (p2.z - p1.z) * (p2.z - p1.z))
+
+    if (u >= 0 && u <= 1) {
         var t1 = (-B - Math.sqrt(D)) / (2.0 * A);
         var t2 = (-B + Math.sqrt(D)) / (2.0 * A);
-        t = t1 - t2
-            // if (t1 > t2)
-            //     t = t1;
-            // else
-            //     t = t2; // we choose the nearest t from the first point
+        if (t1 > 0 && t1 < 1)
+            t = t1; // we choose the nearest t from the first point
     }
     return t
 }
