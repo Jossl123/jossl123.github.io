@@ -10,16 +10,17 @@ function setup() {
     createCanvas(w, h)
     cam = new Camera()
     scene = [
-        new Sphere(-30, 5, 20, 10),
-        new Sphere(10, 1, 10, 5),
-        new Sphere(2, 2, 2, 2)
+        new Sphere(-30, 5, 20, 10,[parseInt(random()*250), parseInt(random(250)), 100]),
+        new Sphere(10, 1, 10, 5, [parseInt(random(250)), parseInt(random(250)), 100]),
+        new Sphere(2, 2, 2, 2, [parseInt(random(250)), parseInt(random(250)), 100]),
+        new Sphere(0, -1000, 0, 1000, [parseInt(random(250)), parseInt(random(250)), 100])
     ]
     light = new Light()
     lighting.push(light)
 }
 
 function draw() {
-    if (rez > 0) {
+    if (rez > 1) {
         loadPixels();
         for (let x = 0; x < w; x += rez) {
             for (let y = 0; y < h; y += rez) {
@@ -42,7 +43,6 @@ function draw() {
     }
 }
 
-
 class Camera {
     constructor() {
         this.pos = createVector(0, 2, -10);
@@ -60,10 +60,10 @@ class Light {
 }
 
 class Sphere {
-    constructor(x, y, z, r) {
+    constructor(x, y, z, r, color) {
         this.pos = createVector(x, y, z);
         this.r = r
-        this.color = [100, 200, 0]
+        this.color = color
     }
 }
 
@@ -84,12 +84,12 @@ document.addEventListener("keydown", (e) => {
         cam.pos.add(0, 0, 1)
         rez = 20
     }
-    if (e.keyCode == 90) { //z
-        cam.dir.add(0.1, 0, 0)
+    if (e.keyCode == 90) { //z key
+        cam.dir = rotateVectorY(cam.dir, 2)
         rez = 20
     }
-    if (e.keyCode == 65) {
-        cam.dir.add(-0.1, 0, 0)
+    if (e.keyCode == 65) { //a key
+        cam.dir = rotateVectorY(cam.dir, -2)
         rez = 20
     }
 })
@@ -106,21 +106,19 @@ function castRay(origin, dir) {
             var dist = distancePoints(obj.pos, currentPoint) - obj.r
             if (dist < minDist) {
                 minDist = dist
-            }
-            if (minDist <= 1) {
                 objTouch = obj
             }
         }
         currentPoint.add(dir.setMag(minDist))
         totalDist += minDist
     }
-    if (objTouch) {
+    if (minDist <= 1) {
         //if we touch obj
         return shadow(currentPoint, objTouch)
     } else {
         //bg color
-        if (dir.y > 0) {
-            return [12, 12, 54]
+        if (dir.y * dir.z > 0) {
+            return [69, 179,224]
         } else {
             return [0, 120, 54]
         }
@@ -131,7 +129,8 @@ function shadow(p, objTouch) {
     for (let obj of scene) {
         var dist = hitSphere(obj.pos, obj.r, p, light.pos.copy().sub(p))
         if (dist != -1) {
-            return [obj.r * 2 / dist * 250, obj.r * 2 / dist * 250, obj.r * 2 / dist * 250]
+            //return [obj.r * 2 / dist * 250, obj.r * 2 / dist * 250, obj.r * 2 / dist * 250]
+            return [0, 0, 0]
         }
     }
     return objTouch.color
