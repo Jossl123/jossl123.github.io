@@ -10,10 +10,10 @@ function setup() {
     createCanvas(w, h)
     cam = new Camera()
     scene = [
-        new Sphere(-30, 5, 20, 10,[parseInt(random()*250), parseInt(random(250)), 100]),
+        new Sphere(-30, 5, 20, 10, [parseInt(random() * 250), parseInt(random(250)), 100]),
         new Sphere(10, 1, 10, 5, [parseInt(random(250)), parseInt(random(250)), 100]),
         new Sphere(2, 2, 2, 2, [parseInt(random(250)), parseInt(random(250)), 100]),
-        new Sphere(0, -1000, 0, 1000, [parseInt(random(250)), parseInt(random(250)), 100])
+        new Sphere(0, -1000, 100, 1000, [parseInt(random(250)), parseInt(random(250)), 100])
     ]
     light = new Light()
     lighting.push(light)
@@ -67,6 +67,105 @@ class Sphere {
     }
 }
 
+function castRay(origin, dir) {
+    var distmax = 1000;
+    var minDist = distmax
+    var totalDist = 0
+    var objTouch
+    var currentPoint = origin.copy()
+    while (totalDist < distmax && minDist > 1) {
+        minDist = distmax
+        for (let obj of scene) {
+            var dist = distancePoints(obj.pos, currentPoint) - obj.r
+            if (dist < minDist) {
+                minDist = dist
+                objTouch = obj
+            }
+        }
+        currentPoint.add(dir.setMag(minDist))
+        totalDist += minDist
+    }
+    if (minDist <= 1) {
+        //if we touch obj
+        return shadow(currentPoint, objTouch)
+    } else {
+        //bg color
+        if (dir.y * dir.z > 0) {
+            return [69, 179, 224]
+        } else {
+            return [0, 120, 54]
+        }
+    }
+}
+
+function shadow(p, objTouch) {
+    for (let obj of scene) {
+        var dist = hitSphere(p, light.pos, objTouch.r, objTouch.pos)
+        if (dist != -1) {
+            return [objTouch.color[0] * (1 - dist), objTouch.color[1] * (1 - dist), objTouch.color[2] * (1 - dist)]
+        }
+    }
+    return objTouch.color
+}
+
+function distancePoints(p1, p2) {
+    return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) + (p1.z - p2.z) * (p1.z - p2.z))
+}
+
+function rotateVectorY(v, a) {
+    a = a * Math.PI / 180
+    var x = v.x * Math.cos(a) + v.z * Math.sin(a)
+    var z = -v.x * Math.sin(a) + v.z * Math.cos(a)
+    return createVector(x, v.y, z)
+}
+
+function rotateVectorX(v, a) {
+    a = a * Math.PI / 180
+    var y = v.y * Math.cos(a) - v.z * Math.sin(a)
+    var z = v.y * Math.sin(a) + v.z * Math.cos(a)
+    return createVector(v.x, y, z)
+}
+
+
+function hitSphere(p1, p2, radius, c) { // c = sphere center
+    var v = p1.copy().sub(p2).copy()
+    var A = (v.x * v.x + v.y * v.y + v.z * v.z);
+    var B = 2.0 * (p1.x * v.x + p1.y * v.y + p1.z * v.z - v.x * c.x - v.y * c.y - v.z * c.z);
+    var C = p1.x * p1.x - 2 * p1.x * c.x + c.x * c.x + p1.y * p1.y - 2 * p1.y * c.y + c.y * c.y +
+        p1.z * p1.z - 2 * p1.z * c.z + c.z * c.z - radius * radius;
+    var D = B * B - 4 * A * C;
+    var t = -1.0;
+    if (D >= 0) {
+        var t1 = (-B - Math.sqrt(D)) / (2.0 * A);
+        var t2 = (-B + Math.sqrt(D)) / (2.0 * A);
+        t = t1 - t2
+            // if (t1 > t2)
+            //     t = t1;
+            // else
+            //     t = t2; // we choose the nearest t from the first point
+    }
+    return t
+}
+
+// function hitSphere(center, radius, origin, dir) {
+//     // var oc = origin.copy().sub(center);
+//     // var a = dir.dot(dir);
+//     // var b = 2 * oc.dot(dir);
+//     // var c = oc.dot(oc) - radius * radius;
+//     // var discriminant = b * b - 4 * a * c;
+//     // if (discriminant < 0) {
+//     //     return -1;
+//     // } else {
+//     //     var numerator1 = -b - Math.sqrt(discriminant);
+//     //     var numerator2 = -b + Math.sqrt(discriminant);
+//     //     if (numerator1 > 0 && numerator2 > 0) {
+//     //         return Math.abs(((numerator1 / (2 * a)) - (numerator2 / (2 * a)))) * radius;
+//     //     } else {
+//     //         return -1;
+//     //     }
+//     // }
+// }
+
 document.addEventListener("keydown", (e) => {
     if (e.keyCode == 37) {
         cam.pos.add(-1, 0, 0)
@@ -93,81 +192,3 @@ document.addEventListener("keydown", (e) => {
         rez = 20
     }
 })
-
-function castRay(origin, dir) {
-    var distmax = 1000;
-    var minDist = distmax
-    var totalDist = 0
-    var objTouch
-    var currentPoint = origin.copy()
-    while (totalDist < distmax && minDist > 1) {
-        minDist = distmax
-        for (let obj of scene) {
-            var dist = distancePoints(obj.pos, currentPoint) - obj.r
-            if (dist < minDist) {
-                minDist = dist
-                objTouch = obj
-            }
-        }
-        currentPoint.add(dir.setMag(minDist))
-        totalDist += minDist
-    }
-    if (minDist <= 1) {
-        //if we touch obj
-        return shadow(currentPoint, objTouch)
-    } else {
-        //bg color
-        if (dir.y * dir.z > 0) {
-            return [69, 179,224]
-        } else {
-            return [0, 120, 54]
-        }
-    }
-}
-
-function shadow(p, objTouch) {
-    for (let obj of scene) {
-        var dist = hitSphere(obj.pos, obj.r, p, light.pos.copy().sub(p))
-        if (dist != -1) {
-            return [objTouch.color[0] * (1-dist), objTouch.color[1] * (1-dist), objTouch.color[2] * (1-dist)]
-        }
-    }
-    return objTouch.color
-}
-
-function distancePoints(p1, p2) {
-    return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) + (p1.z - p2.z) * (p1.z - p2.z))
-}
-
-function rotateVectorY(v, a) {
-    a = a * Math.PI / 180
-    var x = v.x * Math.cos(a) + v.z * Math.sin(a)
-    var z = -v.x * Math.sin(a) + v.z * Math.cos(a)
-    return createVector(x, v.y, z)
-}
-
-function rotateVectorX(v, a) {
-    a = a * Math.PI / 180
-    var y = v.y * Math.cos(a) - v.z * Math.sin(a)
-    var z = v.y * Math.sin(a) + v.z * Math.cos(a)
-    return createVector(v.x, y, z)
-}
-
-function hitSphere(center, radius, origin, dir) {
-    var oc = origin.copy().sub(center);
-    var a = dir.dot(dir);
-    var b = 2 * oc.dot(dir);
-    var c = oc.dot(oc) - radius * radius;
-    var discriminant = b * b - 4 * a * c;
-    if (discriminant < 0) {
-        return -1;
-    } else {
-        var numerator1 = -b - Math.sqrt(discriminant);
-        var numerator2 = -b + Math.sqrt(discriminant);
-        if (numerator1 > 0 && numerator2 > 0) {
-            return Math.abs(((numerator1 / (2 * a)) - (numerator2 / (2 * a)))) *  radius;
-        } else {
-            return -1;
-        }
-    }
-}
