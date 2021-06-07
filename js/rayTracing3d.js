@@ -206,3 +206,29 @@ class Sphere {
         this.color = color
     }
 }
+
+class Triangle {
+    constructor(x1, y1, z1, x2, y2, z2, x3, y3, z3, color){
+        this.a = createVector(x1, y1, z1)
+        this.b = createVector(x1, y1, z1)
+        this.c = createVector(x1, y1, z1)
+        this.ba = b.copy().sub(a);
+        this.cb = c.copy().sub(b);
+        this.ac = a.copy().sub(c);
+        this.nor = this.ba.cross(this.ac)
+        this.color = color
+    }
+    getDist(point){
+        var pa = point.copy().sub(this.a)
+        var pb = point.copy().sub(this.b)
+        var pc = point.copy().sub(this.c)
+        if (Math.sign(this.ba.cross(this.nor).dot(pa)) +
+            Math.sign(this.cb.cross(this.nor).dot(pb)) +
+            Math.sign(this.ac.cross(this.nor).dot(pc)) < 2){
+                //test
+        }else{
+            //finish
+        }
+        return point.dot(this.pos) + 0
+    }
+}
