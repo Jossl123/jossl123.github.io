@@ -5,10 +5,10 @@ var rez = minRez
 var cam
 var scene
 var light
-var lighting = []
 var distMax = 1000
 var maxStep = 40
 var touchDist = 0.1
+var planeDist = 0
 var alreadyCalculted = false
 
 function setup() {
@@ -16,12 +16,39 @@ function setup() {
     cam = new Camera()
     scene = [
         new Sphere(-30, 5, 20, 10, [parseInt(random() * 250), parseInt(random(250)), 100]),
-        new Sphere(10, 1, 10, 5, [parseInt(random(250)), parseInt(random(250)), 100]),
+        new Cube(-10, -8, 50, 5, 5, 5, [parseInt(random(250)), parseInt(random(250)), 100]),
         new Sphere(2, 2, 2, 2, [parseInt(random(250)), parseInt(random(250)), 100]),
-        new Sphere(0, -100, 0, 100, [parseInt(random(250)), parseInt(random(250)), 100])
+        //heart
+        // new Sphere(0, 0, 100, 15, [255, 10, 10]),
+        // new Sphere(-5, 5, 100, 15, [255, 10, 10]),
+        // new Sphere(5, 5, 100, 15, [255, 10, 10]),
+        // new Sphere(-10, 10, 100, 15, [255, 10, 10]),
+        // new Sphere(10, 10, 100, 15, [255, 10, 10]),
+        // new Sphere(-15, 15, 100, 15, [255, 10, 10]),
+        // new Sphere(15, 15, 100, 15, [255, 10, 10]),
+        // new Sphere(-20, 20, 100, 15, [255, 10, 10]),
+        // new Sphere(20, 20, 100, 15, [255, 10, 10]),
+        // new Sphere(-15, 30, 100, 15, [255, 10, 10]),
+        // new Sphere(15, 30, 100, 15, [255, 10, 10]),
+        // new Sphere(-10, 25, 100, 15, [255, 10, 10]),
+        // new Sphere(10, 25, 100, 15, [255, 10, 10]),
+        // new Sphere(0, 15, 100, 15, [255, 10, 10]),
+        //coca...
+        // new Sphere(0, 20, 120, 10, [255, 30, 50]),
+        // new Sphere(0, 15, 125, 10, [255, 30, 50]),
+        // new Sphere(0, 10, 130, 10, [255, 30, 50]),
+        // new Sphere(0, 5, 135, 10, [255, 30, 50]),
+        // new Sphere(0, 0, 140, 10, [255, 30, 50]),
+        // new Sphere(0, -5, 145, 10, [255, 30, 50]),
+        // new Sphere(15, -10, 150, 10, [255, 30, 50]),
+        // new Sphere(-15, -10, 150, 10, [255, 30, 50]),
+        // //bubble
+        // new Sphere(0, 32, 115, 3, [255, 255, 255]),
+        // new Sphere(0, 35, 113, 3, [255, 255, 255]),
+        //floor
+        new Sphere(0, -100, 140, 70, [parseInt(random(250)), parseInt(random(250)), 100])
     ]
     light = new Light()
-    lighting.push(light)
 }
 
 function draw() {
@@ -59,6 +86,8 @@ function draw() {
         updatePixels();
         rez -= 1
     }
+    // light.pos.x = sin(frameCount / 10) * 100
+    // light.pos.z = cos(frameCount / 10) * 100 + 50
 }
 
 //cast the ray (call for every pixels)
@@ -68,7 +97,7 @@ function castRay(origin, dir) {
     if (rayResult.objTouch) {
         return getLight(rayResult)
     } else {
-        return [rayResult.totalDist, rayResult.totalDist, rayResult.totalDist]
+        return [200, 200, 200]
     }
 }
 
@@ -93,7 +122,7 @@ function getDistToAllObj(point) {
     var minDist = distMax
     var objTouch
     for (let obj of scene) {
-        var dist = distancePoints(obj.pos, point) - obj.r
+        var dist = obj.getDist(point)
         if (dist < minDist) {
             minDist = dist
             if (dist <= touchDist) {
@@ -133,6 +162,10 @@ function mixColor(c1, c2) {
 
 function distancePoints(p1, p2) {
     return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) + (p1.z - p2.z) * (p1.z - p2.z))
+}
+
+function length(v) {
+    return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
 }
 
 function rotateVectorY(v, a) {
@@ -180,7 +213,7 @@ document.addEventListener("keydown", (e) => {
 
 class Camera {
     constructor() {
-        this.pos = createVector(0, 2, -10);
+        this.pos = createVector(0, 5, -10);
         this.fov = 90;
         this.dir = createVector(0, 0, 1000);
         this.ax = 0;
@@ -193,9 +226,9 @@ class Camera {
 
 class Light {
     constructor() {
-        this.pos = createVector(10, 10, -10);
+        this.pos = createVector(10, 40, 70);
         this.r = 2;
-        this.color = [250, 240, 240]
+        this.color = [250, 30, 30]
     }
 }
 
@@ -205,4 +238,44 @@ class Sphere {
         this.r = r
         this.color = color
     }
+    getDist(point) {
+        return distancePoints(this.pos, point) - this.r
+    }
+}
+
+class Cube {
+    constructor(x, y, z, w, h, depth, color) {
+        this.pos = createVector(x, y, z);
+        this.size = createVector(w, h, depth)
+        this.color = color
+    }
+    getDist(point) {
+        var q = absVector(point.copy().sub(this.pos)).sub(this.size)
+        return length(maxVector(q, createVector(0, 0, 0))) + Math.min(Math.max(q.x, Math.max(q.y, q.z)), 0);
+    }
+}
+
+class RoundedCube {
+    constructor(x, y, z, w, h, depth, r, color) {
+        this.pos = createVector(x, y, z);
+        this.size = createVector(w, h, depth)
+        this.r = r
+        this.color = color
+    }
+    getDist(point) {
+        var q = absVector(point.copy().sub(this.pos)).sub(this.size)
+        return length(maxVector(q, createVector(0, 0, 0))) + Math.min(Math.max(q.x, Math.max(q.y, q.z)), 0) - this.r;
+    }
+}
+
+function absVector(v) {
+    return createVector(Math.abs(v.x), Math.abs(v.y), Math.abs(v.z))
+}
+
+function maxVector(v1, v2) {
+    return createVector(Math.max(v1.x, v2.x), Math.max(v1.y, v2.y), Math.max(v1.z, v2.z))
+}
+
+function minVector(v1, v2) {
+    return createVector(Math.min(v1.x, v2.x), Math.min(v1.y, v2.y), Math.min(v1.z, v2.z))
 }
