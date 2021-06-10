@@ -234,12 +234,10 @@ class Light {
 
 class Sphere {
     constructor(x, y, z, r, color) {
-            this.pos = createVector(x, y, z);
-            this.r = r
-            this.color = color
-        } <<
-        <<
-        << < HEAD
+        this.pos = createVector(x, y, z);
+        this.r = r
+        this.color = color
+    }
     getDist(point) {
         return distancePoints(this.pos, point) - this.r
     }
