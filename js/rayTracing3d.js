@@ -6,10 +6,12 @@ var cam
 var scene
 var light
 var distMax = 1000
-var maxStep = 40
-var touchDist = 0.1
+var maxStep = 60
+var touchDist = 0.01
 var planeDist = 0
 var alreadyCalculted = false
+var skyLight = [200, 200, 200]
+var bounceLimit = 3
 
 function setup() {
     createCanvas(w, h)
@@ -68,7 +70,7 @@ function draw() {
                     var newDir = createVector(x - w / 2, h / 2 - y, 0);
                     newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
                     newDir = cam.dir.copy().add(newDir)
-                    var color = castRay(cam.pos, newDir)
+                    var color = castRay(cam.pos, newDir, 0)
                     for (let i = 0; i < rez; i++) {
                         for (let j = 0; j < rez; j++) {
                             if (x + i < w && y + j < h) {
@@ -91,13 +93,13 @@ function draw() {
 }
 
 //cast the ray (call for every pixels)
-function castRay(origin, dir) {
+function castRay(origin, dir, bounceNb) {
     var rayResult = rayMarch(origin, dir)
         //return a color
     if (rayResult.objTouch) {
-        return getLight(rayResult)
+        return getLight(rayResult, dir, bounceNb)
     } else {
-        return [200, 200, 200]
+        return skyLight
     }
 }
 
@@ -145,15 +147,31 @@ function getNormal(point) {
 }
 
 //return the color affected by the light environement
-function getLight(rayResult) {
-    var normal = getNormal(rayResult.point)
+function getLight(rayResult, dir, bounceNb) {
+    var normal = getNormal(rayResult.point).normalize()
     var lightDir = light.pos.copy().sub(rayResult.point).normalize()
     var diff = normal.dot(lightDir)
-    var rayToLight = rayMarch(rayResult.point.add(lightDir), lightDir)
-    if (rayToLight.dist < distancePoints(rayResult.point, light.pos) && rayToLight.objTouch != rayResult.objTouch) {
-        return mixColor(rayResult.objTouch.color, [0, 0, 0])
+    var reflect = reflectedVector(normal, dir)
+    bounceNb++
+    var colorBounce
+    if (bounceNb <= bounceLimit) {
+        colorBounce = castRay(rayResult.point.add(reflect), reflect, bounceNb)
     }
-    return mixColor(rayResult.objTouch.color, [diff * 255, diff * 255, diff * 255])
+    //var objReflected = rayMarch(rayResult.point.add(reflect), reflect).objTouch
+    var rayToLight = rayMarch(rayResult.point.add(lightDir), lightDir)
+    var finalColor = rayResult.objTouch.color
+    if (colorBounce) {
+        finalColor = mixColor(finalColor, colorBounce)
+    }
+    //si un objet est placé entre l'objet et la lumiere => true (ombre porté)
+    if (rayToLight.dist < distancePoints(rayResult.point, light.pos) && rayToLight.objTouch != rayResult.objTouch) {
+        finalColor = mixColor(finalColor, [0, 0, 0])
+    }
+    return mixColor(finalColor, [diff * 255, diff * 255, diff * 255])
+}
+
+function reflectedVector(normal, dir) {
+    return dir.copy().sub(normal.copy().mult(dir.dot(normal)).mult(2)).normalize()
 }
 
 function mixColor(c1, c2) {
