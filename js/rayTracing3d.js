@@ -12,9 +12,15 @@ var planeDist = 0
 var alreadyCalculted = false
 var skyLight = [200, 200, 200]
 var bounceLimit = 3
+var canvas = document.getElementById("canvas")
+canvas.width = w;
+canvas.height = h
+var ctx = canvas.getContext('2d');
+
+var imgData = ctx.createImageData(canvas.width, canvas.height)
 
 function setup() {
-    createCanvas(w, h)
+    createCanvas(0, 0)
     cam = new Camera()
     scene = [
         new Sphere(-30, 5, 20, 10, [parseInt(random() * 250), parseInt(random(250)), 100]),
@@ -55,9 +61,9 @@ function setup() {
 
 function draw() {
     if (rez > 1) {
-        loadPixels();
         for (let x = 0; x < w; x += rez) {
             for (let y = 0; y < h; y += rez) {
+                //calculate if the pixel have already been colored
                 for (let i = 0; i < minRez - rez; i++) {
                     if ((x + y * w) * 4 / (minRez - i) == minRez - i) {
                         alreadyCalculted = true;
@@ -75,18 +81,22 @@ function draw() {
                         for (let j = 0; j < rez; j++) {
                             if (x + i < w && y + j < h) {
                                 var index = ((x + i) + (y + j) * w) * 4
-                                pixels[index] = color[0]
-                                pixels[index + 1] = color[1]
-                                pixels[index + 2] = color[2]
-                                pixels[index + 3] = 255;
+                                    // pixels[index] = color[0]
+                                    // pixels[index + 1] = color[1]
+                                    // pixels[index + 2] = color[2]
+                                    // pixels[index + 3] = 255;
+                                imgData.data[index] = color[0]
+                                imgData.data[index + 1] = color[1]
+                                imgData.data[index + 2] = color[2]
+                                imgData.data[index + 3] = 255;
                             }
                         }
                     }
                 }
             }
         }
-        updatePixels();
         rez -= 1
+        ctx.putImageData(imgData, 0, 0);
     }
     // light.pos.x = sin(frameCount / 10) * 100
     // light.pos.z = cos(frameCount / 10) * 100 + 50
