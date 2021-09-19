@@ -28,7 +28,61 @@ class Sphere {
     }
     getDist(point) {
         return distancePoints(this.pos, point) - this.r
+            //return distancePoints(this.pos, point) - this.r + Math.sin(point.x) * 2 - Math.cos(point.y)
             //return distancePoints(this.pos, createVector(point.x % 10, point.y % 10, point.z % 10)) - this.r
+    }
+}
+
+class SmoothTwoSpheres {
+    constructor(x1, y1, z1, x2, y2, z2, r1, r2, color1, color2, k, bounce = false) {
+        this.pos1 = createVector(x1, y1, z1);
+        this.r1 = r1
+        this.pos2 = createVector(x2, y2, z2);
+        this.r2 = r2
+        this.color = color1
+        this.color2 = color2
+        this.k = k
+        this.bounce = bounce
+    }
+    getDist(point) {
+        var dist1 = distancePoints(this.pos1, point) - this.r1
+        var dist2 = distancePoints(this.pos2, point) - this.r2
+        var h = Math.max(this.k - Math.abs(dist1 - dist2), 0) / this.k;
+        return Math.min(dist1, dist2) - h * h * h * this.k * 1 / 6;
+    }
+}
+
+class MandleBulb {
+    constructor() {
+        this.bailout = 2;
+        this.power = 10
+        this.color = [255, 0, 0]
+        this.bounce = false
+    }
+    getDist(point) {
+        var z = point.copy().sub(createVector(0, 0, 200));
+        var dr = 1
+        var r = 0;
+        for (var i = 0; i < 15; i++) {
+            r = z.mag();
+            if (r > this.bailout) break;
+
+            // convert to polar coordinates
+            var theta = Math.acos(z.z / r);
+            var phi = Math.atan(z.y, z.x);
+            dr = Math.pow(r, this.power - 1) * this.power * dr + 1;
+
+            // scale and rotate the point
+            var zr = Math.pow(r, this.power);
+            theta = theta * this.power;
+            phi = phi * this.power;
+
+            // convert back to cartesian coordinates
+            z = zr * createVector(Math.sin(theta) * Math.cos(phi), Math.sin(phi) * Math.sin(theta), Math.cos(theta));
+            z += pos.copy();
+        }
+        return 0.5 * Math.log(r) * r / dr;
+
     }
 }
 
@@ -95,4 +149,16 @@ class Triangle {
         }
         return point.dot(this.pos) + 0
     }
+}
+
+function absVector(v) {
+    return createVector(Math.abs(v.x), Math.abs(v.y), Math.abs(v.z))
+}
+
+function maxVector(v1, v2) {
+    return createVector(Math.max(v1.x, v2.x), Math.max(v1.y, v2.y), Math.max(v1.z, v2.z))
+}
+
+function minVector(v1, v2) {
+    return createVector(Math.min(v1.x, v2.x), Math.min(v1.y, v2.y), Math.min(v1.z, v2.z))
 }
