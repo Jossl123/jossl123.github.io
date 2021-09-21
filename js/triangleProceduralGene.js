@@ -3,28 +3,28 @@ var triMinSize = 50;
 function setup() {
     createCanvas(windowWidth, windowHeight);
     colorMode(HSB, 100);
-    // for (let y = 0; y < Math.floor(windowHeight / triMinSize + triMinSize); y++) {
-    //     for (let x = 0; x < Math.floor(windowWidth / triMinSize + triMinSize); x++) {
-    //         if (y % 2 == 0) {
-    //             circle(x * triMinSize + triMinSize / 2, y * triMinSize, 5);
-    //         } else {
-    //             circle(x * triMinSize, y * triMinSize, 5);
-    //         }
-    //     }
-    // }
+    for (let y = 0; y < Math.floor(windowHeight / triMinSize + triMinSize); y++) {
+        for (let x = 0; x < Math.floor(windowWidth / triMinSize + triMinSize); x++) {
+            if (x % 2 == 0) {
+                circle(x * triMinSize, y * triMinSize + triMinSize / 2, 5);
+            } else {
+                circle(x * triMinSize, y * triMinSize, 5);
+            }
+        }
+    }
     randomTriangle()
 }
 
 function draw() {
-    randomTriangle()
+    //randomTriangle()
 }
 
 function randomTriangle() {
     drawTriangle(
-        random(-triMinSize, width + triMinSize),
-        random(-triMinSize, height + triMinSize),
-        Math.floor(Math.random() * 4),
-        Math.floor(Math.random() * 5),
+        random(triMinSize, width),
+        random(triMinSize, height),
+        Math.floor(1),
+        Math.floor(1),
         randomColor())
 }
 
@@ -35,6 +35,12 @@ function randomTriangle() {
 //  1-------3
 //
 
+// 
+//     2   3
+//   1   0   4
+//     6   5
+//  
+
 function drawTriangle(x, y, corner, size, color) {
     //normalize the coord
     var firstCorner = [0, 0]
@@ -43,14 +49,17 @@ function drawTriangle(x, y, corner, size, color) {
     switch (corner) {
         case 1:
             firstCorner = closestEdgeCoord(x, y)
-            secondCorner = [firstCorner[0] + triMinSize / 2 * size, firstCorner[1] - triMinSize * size]
-            thirdCorner = [firstCorner[0] + triMinSize * size, firstCorner[1]]
+            secondCorner = [firstCorner[0] - triMinSize * size, firstCorner[1] + triMinSize / 2 * size]
+            thirdCorner = [firstCorner[0] - triMinSize * size, firstCorner[1] - triMinSize / 2 * size]
             break;
 
         case 2:
-            secondCorner = closestEdgeCoord(x, y)
-            thirdCorner = [secondCorner[0] + triMinSize / 2 * size, secondCorner[1] + triMinSize * size]
-            firstCorner = [secondCorner[0] - triMinSize / 2 * size, secondCorner[1] + triMinSize * size]
+            firstCorner = closestEdgeCoord(x, y)
+            secondCorner = [firstCorner[0] - triMinSize * size, firstCorner[1] - triMinSize / 2 * size]
+            thirdCorner = [firstCorner[0], firstCorner[1] - triMinSize * size]
+                // secondCorner = closestEdgeCoord(x, y)
+                // thirdCorner = [secondCorner[0] + triMinSize / 2 * size, secondCorner[1] + triMinSize * size]
+                // firstCorner = [secondCorner[0] - triMinSize / 2 * size, secondCorner[1] + triMinSize * size]
             break;
 
         case 3:
@@ -80,6 +89,6 @@ function randomColor() {
 function closestEdgeCoord(x, y) {
     var newx = Math.floor(x / triMinSize) * triMinSize
     var newy = Math.floor(y / triMinSize) * triMinSize
-    if (Math.floor(y / triMinSize) % 2 == 0) newx += triMinSize / 2
+    if (Math.floor(x / triMinSize) % 2 == 0) newy += triMinSize / 2
     return [newx, newy]
 }
