@@ -3,31 +3,41 @@ var triMinSize = 50;
 function setup() {
     createCanvas(windowWidth, windowHeight);
     colorMode(HSB, 100);
-    for (let y = 0; y < Math.floor(windowHeight / triMinSize + triMinSize); y++) {
-        for (let x = 0; x < Math.floor(windowWidth / triMinSize + triMinSize); x++) {
-            if (x % 2 == 0) {
-                circle(x * triMinSize, y * triMinSize + triMinSize / 2, 5);
-            } else {
-                circle(x * triMinSize, y * triMinSize, 5);
-            }
-        }
-    }
-    randomTriangle()
+    // for (let y = 0; y < Math.floor(windowHeight / triMinSize + triMinSize); y++) {
+    //     for (let x = 0; x < Math.floor(windowWidth / triMinSize + triMinSize); x++) {
+    //         if (x % 2 == 0) {
+    //             circle(x * triMinSize, y * triMinSize + triMinSize / 2, 5);
+    //         } else {
+    //             circle(x * triMinSize, y * triMinSize, 5);
+    //         }
+    //     }
+    // }
+    randomCube()
+        //randomTriangle()
 }
 
 function draw() {
-    //randomTriangle()
+    randomCube()
+        //randomTriangle()
 }
 
 function randomTriangle() {
     drawTriangle(
         random(triMinSize, width),
         random(triMinSize, height),
-        Math.floor(1),
-        Math.floor(1),
+        6,
+        1,
         randomColor())
 }
 
+
+function randomCube() {
+    drawCube(
+        random(triMinSize, width),
+        random(triMinSize, height),
+        Math.floor(random() * 4),
+        randomColor())
+}
 //      2
 //     / \
 //    /   \
@@ -57,24 +67,48 @@ function drawTriangle(x, y, corner, size, color) {
             firstCorner = closestEdgeCoord(x, y)
             secondCorner = [firstCorner[0] - triMinSize * size, firstCorner[1] - triMinSize / 2 * size]
             thirdCorner = [firstCorner[0], firstCorner[1] - triMinSize * size]
-                // secondCorner = closestEdgeCoord(x, y)
-                // thirdCorner = [secondCorner[0] + triMinSize / 2 * size, secondCorner[1] + triMinSize * size]
-                // firstCorner = [secondCorner[0] - triMinSize / 2 * size, secondCorner[1] + triMinSize * size]
             break;
 
         case 3:
-            thirdCorner = closestEdgeCoord(x, y)
-            firstCorner = [thirdCorner[0] - triMinSize * size, thirdCorner[1]]
-            secondCorner = [thirdCorner[0] - triMinSize / 2 * size, thirdCorner[1] - triMinSize * size]
+            firstCorner = closestEdgeCoord(x, y)
+            secondCorner = [firstCorner[0], firstCorner[1] - triMinSize * size]
+            thirdCorner = [firstCorner[0] + triMinSize * size, firstCorner[1] - triMinSize / 2 * size]
+            break;
+
+
+        case 4:
+            firstCorner = closestEdgeCoord(x, y)
+            secondCorner = [firstCorner[0] + triMinSize * size, firstCorner[1] - triMinSize / 2 * size]
+            thirdCorner = [firstCorner[0] + triMinSize * size, firstCorner[1] + triMinSize / 2 * size]
+            break;
+
+        case 5:
+            firstCorner = closestEdgeCoord(x, y)
+            secondCorner = [firstCorner[0] + triMinSize * size, firstCorner[1] + triMinSize / 2 * size]
+            thirdCorner = [firstCorner[0], firstCorner[1] + triMinSize * size]
+            break;
+
+        case 6:
+            firstCorner = closestEdgeCoord(x, y)
+            secondCorner = [firstCorner[0], firstCorner[1] + triMinSize * size]
+            thirdCorner = [firstCorner[0] - triMinSize * size, firstCorner[1] + triMinSize / 2 * size]
             break;
 
         default:
-            return "noCorner"
-            break;
+            return "noCorner";
     }
     fill(color);
     noStroke();
     triangle(firstCorner[0], firstCorner[1], secondCorner[0], secondCorner[1], thirdCorner[0], thirdCorner[1])
+}
+
+function drawCube(x, y, size, color) {
+    drawTriangle(x, y, 1, size, color)
+    drawTriangle(x, y, 2, size, color)
+    drawTriangle(x, y, 3, size, color)
+    drawTriangle(x, y, 4, size, color)
+    drawTriangle(x, y, 5, size, color)
+    drawTriangle(x, y, 6, size, color)
 }
 
 function randomColor() {
