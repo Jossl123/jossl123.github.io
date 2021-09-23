@@ -1,8 +1,8 @@
-var triMinSize = 20;
+var triMinSize = 50;
 
 window.onload = function() {
     window.addEventListener('mousedown', (event) => {
-        drawPlatform(event.pageX, event.pageY, 20, 2, 20)
+        //drawPlatform(event.pageX, event.pageY, 20, 2, 20)
     })
 }
 
@@ -17,8 +17,8 @@ function setup() {
     //         }
     //     }
     // }
-    //randomCube()
-    //randomTriangle()
+    randomCube()
+        //randomTriangle()
 }
 
 function draw() {
