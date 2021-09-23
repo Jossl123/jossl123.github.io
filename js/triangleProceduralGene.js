@@ -1,8 +1,13 @@
-var triMinSize = 50;
+var triMinSize = 20;
+
+window.onload = function() {
+    window.addEventListener('mousedown', (event) => {
+        drawPlatform(event.pageX, event.pageY, 20, 2, 20)
+    })
+}
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    colorMode(HSB, 100);
     // for (let y = 0; y < Math.floor(windowHeight / triMinSize + triMinSize); y++) {
     //     for (let x = 0; x < Math.floor(windowWidth / triMinSize + triMinSize); x++) {
     //         if (x % 2 == 0) {
@@ -12,8 +17,8 @@ function setup() {
     //         }
     //     }
     // }
-    randomCube()
-        //randomTriangle()
+    //randomCube()
+    //randomTriangle()
 }
 
 function draw() {
@@ -30,6 +35,18 @@ function randomTriangle() {
         randomColor())
 }
 
+function drawPlatform(x, y, sx, sy, sz, color = randomColor()) {
+    var p = closestEdgeCoord(x, y)
+    for (let Y = 0; Y < sy; Y++) {
+        for (let Z = 0; Z < sz; Z++) {
+            for (let X = 0; X < sx; X++) {
+                var newx = p[0] + triMinSize * X - triMinSize * Z;
+                var newy = p[1] - triMinSize * Y + X * triMinSize / 2 + Z * triMinSize / 2;
+                drawCube(newx, newy, 1, color)
+            }
+        }
+    }
+}
 
 function randomCube() {
     drawCube(
@@ -98,17 +115,18 @@ function drawTriangle(x, y, corner, size, color) {
             return "noCorner";
     }
     fill(color);
-    noStroke();
+    stroke(color);
+    //noStroke()
     triangle(firstCorner[0], firstCorner[1], secondCorner[0], secondCorner[1], thirdCorner[0], thirdCorner[1])
 }
 
 function drawCube(x, y, size, color) {
-    drawTriangle(x, y, 1, size, color)
+    drawTriangle(x, y, 1, size, shadowColor(color, 2))
     drawTriangle(x, y, 2, size, color)
     drawTriangle(x, y, 3, size, color)
-    drawTriangle(x, y, 4, size, color)
-    drawTriangle(x, y, 5, size, color)
-    drawTriangle(x, y, 6, size, color)
+    drawTriangle(x, y, 4, size, shadowColor(color, 3))
+    drawTriangle(x, y, 5, size, shadowColor(color, 3))
+    drawTriangle(x, y, 6, size, shadowColor(color, 2))
 }
 
 function randomColor() {
@@ -116,8 +134,12 @@ function randomColor() {
     //return color(215 - rand * 3, 185 - rand * 5, 185 - rand * 10)
     //return color(Math.floor(Math.random() * 360), 100, 80)
     //return color('#' + Math.floor(Math.random() * 16777215).toString(16))
-    return color('#' + ((1 << 24) * (Math.random() + 1) | 0xc0c0c0).toString(16).substr(1))
-        //return color(Math.floor((Math.random() * 127) + 127), Math.floor((Math.random() * 127) + 127), Math.floor((Math.random() * 127) + 127))
+    //return color('#' + ((1 << 24) * (Math.random() + 1) | 0xc0c0c0).toString(16).substr(1))
+    return color(Math.floor((Math.random() * 127) + 127), Math.floor((Math.random() * 127) + 127), Math.floor((Math.random() * 127) + 127))
+}
+
+function shadowColor(col, amp) {
+    return color(col.levels[0] / amp, col.levels[1] / amp, col.levels[2] / amp)
 }
 
 function closestEdgeCoord(x, y) {
