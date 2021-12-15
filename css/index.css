@@ -1,0 +1,17 @@
+#quadTree {
+    background-image: url("../img/pp/quadTree.PNG");
+}
+
+#boids {
+    background-image: url("../img/pp/boids.PNG");
+}
+
+#Renderer3d {
+    background-image: url("../img/pp/3dRenderer.PNG");
+}
+
+.project {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

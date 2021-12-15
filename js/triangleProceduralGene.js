@@ -2,7 +2,8 @@ var triMinSize = 50;
 
 window.onload = function() {
     window.addEventListener('mousedown', (event) => {
-        drawPlatform(event.pageX, event.pageY, 20, 2, 20)
+        //drawPlatform(event.pageX, event.pageY, 20, 2, 20)
+        drawCube(event.pageX, event.pageY, 1, randomColor())
     })
 }
 
@@ -17,13 +18,13 @@ function setup() {
     //         }
     //     }
     // }
-    randomCube()
-        //randomTriangle()
+    //randomCube()
+    //randomTriangle()
 }
 
 function draw() {
-    randomCube()
-        //randomTriangle()
+    //randomCube()
+    //randomTriangle()
 }
 
 function randomTriangle() {
@@ -52,7 +53,7 @@ function randomCube() {
     drawCube(
         random(triMinSize, width),
         random(triMinSize, height),
-        Math.floor(random() * 4),
+        Math.floor(random() * 4) + 1,
         randomColor())
 }
 //      2
@@ -131,6 +132,7 @@ function drawCube(x, y, size, color) {
 
 function randomColor() {
     var rand = Math.floor(Math.random() * 10);
+    //return color(random() * 255, random() * 255, random() * 255)
     //return color(215 - rand * 3, 185 - rand * 5, 185 - rand * 10)
     //return color(Math.floor(Math.random() * 360), 100, 80)
     //return color('#' + Math.floor(Math.random() * 16777215).toString(16))
