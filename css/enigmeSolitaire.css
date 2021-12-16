@@ -1,0 +1,4 @@
+#grid {
+    grid-template-columns: repeat(30, 3rem);
+    grid-auto-rows: 3rem;
+}
