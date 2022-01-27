@@ -2,6 +2,7 @@ var pastValue = ""
 var mode = 0 // 0 = normal;  1 = timer;  2 = hardcore
 var pastTime, time = Date.now()
 var timer
+document.getElementById(`mode_0`).style.backgroundColor = "lightgray"
 const input = document.getElementById('input');
 input.addEventListener('input', function() {
     var time = Date.now();
@@ -30,5 +31,9 @@ input.addEventListener('input', function() {
 });
 
 function changeMode(i) {
+    document.getElementById(`mode_${i}`).style.backgroundColor = "lightgray"
+    for (let k = 0; k < 3; k++) {
+        if (k != i) document.getElementById(`mode_${k}`).style.backgroundColor = "white"
+    }
     mode = i
 }
