@@ -1,5 +1,5 @@
 var pastValue = ""
-var mode = 1 // 0 = normal;  1 = timer;  2 = hardcore
+var mode = 0 // 0 = normal;  1 = timer;  2 = hardcore
 var pastTime, time = Date.now()
 var timer
 const input = document.getElementById('input');
@@ -12,6 +12,7 @@ input.addEventListener('input', function() {
     if (this.value.length == 1) pastTime = Date.now()
     if (this.value.length == 0) {
         document.getElementById("input").style.borderColor = "lightgray";
+        document.getElementById("timer").style.visibility = "hidden"
         clearInterval(timer)
     } else if (this.value[this.value.length - 1] == PI[this.value.length - 1]) document.getElementById("input").style.borderColor = "green"
     else { //raté
@@ -19,6 +20,7 @@ input.addEventListener('input', function() {
         document.getElementById("input").style.borderColor = "rgb(185 28 28)"
     }
     if (mode == 1 && this.value.length == 1) {
+        document.getElementById("timer").style.visibility = "visible"
         timer = setInterval(function() {
             time = Date.now()
             document.getElementById("timer").innerHTML = (time - pastTime) / 1000
@@ -26,3 +28,7 @@ input.addEventListener('input', function() {
     }
     pastValue = this.value
 });
+
+function changeMode(i) {
+    mode = i
+}

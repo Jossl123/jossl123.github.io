@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full m-0">
+<html lang="en" class="h-full m-0 font-mono">
 
 <head>
     <meta charset="UTF-8">
@@ -12,8 +12,13 @@
 <body class="flex flex-col h-full">
     <nav class="h-20 w-full bg-red-800"></nav>
     <div class="flex flex-col items-center justify-center h-full">
-        <p id="timer"></p>
+        <div class="flex flex-row flex-wrap">
+            <button class="m-6 font-extrabold" onclick="changeMode(0)">Normal</button>
+            <button class="m-6 font-extrabold" onclick="changeMode(1)">Timer</button>
+            <button class="m-6 font-extrabold" onclick="changeMode(2)">Hardcore</button>
+        </div>
         <input class="border-red border-8 rounded h-20 w-80" id="input" type="text">
+        <p id="timer">time</p>
     </div>
     <script src="./js/learnPI.js"></script>
     <script src="./js/PI.js"></script>
