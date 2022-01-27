@@ -1,12 +1,28 @@
-PI_0_99 = "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679"
-PI_100_199 = "8214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196"
-    //console.log(PI_100_199.slice(101, 202))
-
+var pastValue = ""
+var mode = 1 // 0 = normal;  1 = timer;  2 = hardcore
+var pastTime, time = Date.now()
+var timer
 const input = document.getElementById('input');
 input.addEventListener('input', function() {
-    if (this.value[this.value.length - 1] == PI[this.value.length - 1]) {
-        document.getElementById("input").style.borderColor = "green"
-    } else {
-        document.getElementById("input").style.borderColor = "red"
+    var time = Date.now();
+    if (this.value.length - pastValue.length > 1) { // if player put 2 or more number at one time
+        input.value = ""
+        alert("Tried to cheat ?")
     }
+    if (this.value.length == 1) pastTime = Date.now()
+    if (this.value.length == 0) {
+        document.getElementById("input").style.borderColor = "lightgray";
+        clearInterval(timer)
+    } else if (this.value[this.value.length - 1] == PI[this.value.length - 1]) document.getElementById("input").style.borderColor = "green"
+    else { //raté
+        if (mode == 2) input.value = ""
+        document.getElementById("input").style.borderColor = "rgb(185 28 28)"
+    }
+    if (mode == 1 && this.value.length == 1) {
+        timer = setInterval(function() {
+            time = Date.now()
+            document.getElementById("timer").innerHTML = (time - pastTime) / 1000
+        }, 10)
+    }
+    pastValue = this.value
 });

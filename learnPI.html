@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full m-0">
 
 <head>
     <meta charset="UTF-8">
@@ -9,8 +9,12 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="flex place-content-center ">
-    <input class="border-red border-8 rounded" id="input" type="text">
+<body class="flex flex-col h-full">
+    <nav class="h-20 w-full bg-red-800"></nav>
+    <div class="flex items-center justify-center h-full">
+        <p id="timer"></p>
+        <input class="border-red border-8 rounded h-20 w-80" id="input" type="text">
+    </div>
     <script src="./js/learnPI.js"></script>
     <script src="./js/PI.js"></script>
 </body>
