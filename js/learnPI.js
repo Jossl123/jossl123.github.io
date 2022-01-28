@@ -2,6 +2,7 @@ var pastValue = ""
 var mode = 0 // 0 = normal;  1 = timer;  2 = hardcore
 var pastTime, time = Date.now()
 var timer
+var n = 0
 document.getElementById(`mode_0`).style.backgroundColor = "lightgray"
 const input = document.getElementById('input');
 input.addEventListener('input', function() {
@@ -9,6 +10,7 @@ input.addEventListener('input', function() {
     if (this.value.length - pastValue.length > 1) { // if player put 2 or more number at one time
         input.value = ""
         alert("Tried to cheat ?")
+        return
     }
     if (this.value.length == 1) pastTime = Date.now()
     if (this.value.length == 0) {
@@ -27,6 +29,8 @@ input.addEventListener('input', function() {
             document.getElementById("timer").innerHTML = (time - pastTime) / 1000
         }, 10)
     }
+    n = this.value.length
+    document.getElementById("tot").innerHTML = n
     pastValue = this.value
 });
 
