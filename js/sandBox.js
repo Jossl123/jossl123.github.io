@@ -1,20 +1,20 @@
-var h = 100;
-var w = 100;
-var tileSize
+var h = 1000;
+var w = 1000;
+var tileSize = 10
 var world = []
 var blocks = []
 var itt = true
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
-    if (windowWidth > windowHeight) {
-        tileSize = windowHeight / h
-    } else {
-        tileSize = windowWidth / w
-    }
-    for (let y = 0; y < h; y++) {
+        // if (windowWidth > windowHeight) {
+        //     tileSize = windowHeight / h
+        // } else {
+        //     tileSize = windowWidth / w
+        // }
+    for (let y = 0; y < Math.floor(h / tileSize); y++) {
         world[y] = []
-        for (let x = 0; x < w; x++) {
+        for (let x = 0; x < Math.floor(w / tileSize); x++) {
             world[y][x] = 0
         }
     }
@@ -22,11 +22,11 @@ function setup() {
 
 function draw() {
     background(255)
-    if (world[50][5] == 0 && itt) {
-        blocks.push(new Sand(50, 5))
+    if (world[world.length / 2][world[0].length / 2] == 0 && itt) {
+        blocks.push(new Sand(world.length / 2 - 1, world[0].length / 2))
     }
-    if (world[50][5] == 0 && itt) {
-        blocks.push(new Water(51, 5))
+    if (world[world.length / 2][world[0].length / 2] == 0 && itt) {
+        blocks.push(new Water(world.length / 2, world[0].length / 2))
     }
     for (let block of blocks) {
         block.update()
