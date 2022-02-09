@@ -25,7 +25,8 @@ function draw() {
         //     //i = perimetre / t
         // t++
     for (let k = 0; k < 5; k++) {
-        circle(center.x + Math.cos(pos) * diameter / 2, center.y + Math.sin(pos) * diameter / 2, i * 2)
+        circle(center.x + Math.cos(pos) * diameter / 2, center.y + Math.sin(pos) * diameter / 2, diameter)
         pos += perimetre / i
     }
+    pos = 0
 }
