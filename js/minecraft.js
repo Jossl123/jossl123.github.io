@@ -7,9 +7,10 @@ var w = 100
 var s = 20;
 var vh, vw
 var inputDelay = 1
+    //r, g, b, diggable?
 var blockColor = [
-    [100, 100, 250],
-    [10, 100, 0]
+    [100, 100, 250, 0],
+    [10, 100, 0, 1]
 ]
 
 function loadNewWorld() {
@@ -45,6 +46,14 @@ function keyDown() {
     else if (keyIsDown(DOWN_ARROW)) player.pos.add([0, 1])
 }
 
+function fromMouseToWorldCoordinate(x, y) {
+    console.log(Math.floor(x / s), Math.floor(y / s))
+}
+
+function mouseClicked(e) {
+    fromMouseToWorldCoordinate(e.x, e.y)
+}
+
 function drawWorld(X, Y) {
     for (let y = 0; y < vh; y++) {
         for (let x = 0; x < vw; x++) {
@@ -58,7 +67,7 @@ function drawWorld(X, Y) {
                     fill(blockColor[k - 32][0], blockColor[k - 32][1], blockColor[k - 32][2])
                 } else fill(0, parseInt(worldmap[i].charCodeAt(0)), 0)
             }
-            rect(x * s + 0, y * s + 0, s, s); //+ Math.floor(windowWidth / s / 2) * s
+            rect(x * s + 0, y * s + 0, s, s);
         }
     }
 }
