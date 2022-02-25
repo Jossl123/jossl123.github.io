@@ -1,7 +1,7 @@
 var r1 = 200;
 var r2 = 200;
 
-var a1 = Math.PI / 2;
+var a1 = Math.PI / Math.random() * 2 + 1;
 var a2 = Math.PI / 2;
 var a1_v = 0;
 var a2_v = 0;

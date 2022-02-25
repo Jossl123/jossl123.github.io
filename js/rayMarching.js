@@ -85,7 +85,6 @@ class Point {
             if (minDist >= 0.01) {
                 this.ray.setMag(minDist)
                 var newPos = createVector(this.position.x + this.ray.x, this.position.y + this.ray.y)
-                console.log(newPos)
                 new Point(newPos.x, newPos.y, this.ray)
             } else {
                 stroke(200, 0, 0)
