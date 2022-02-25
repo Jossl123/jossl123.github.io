@@ -1,4 +1,5 @@
 var obstacles = []
+    //var points = []
 var obstaclesNb = 20
 var player;
 
@@ -15,6 +16,11 @@ function draw() {
     for (let i = 0; i < obstacles.length; i++) {
         obstacles[i].render()
     }
+    // for (let i = 0; i < points.length; i++) {
+    //     stroke(200, 0, 0)
+    //     strokeWeight(1)
+    //     point(points[i][0], points[i][1])
+    // }
     player.update()
 }
 
@@ -85,6 +91,7 @@ class Point {
                 stroke(200, 0, 0)
                 strokeWeight(10)
                 point(this.position.x, this.position.y)
+                    //points.push([this.position.x, this.position.y])
             }
         }
     }
