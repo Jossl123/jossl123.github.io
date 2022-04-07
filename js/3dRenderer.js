@@ -1,60 +1,48 @@
 var cam
 var points = []
 var cubes = []
-var triangles = []
-var mat4x4Projection = []
+var verticies = []
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     cam = new Camera()
-    cubes.push(new Cube(0, 0, 300, 100, 100, 100))
-    for (let y = 0; y < 4; y++) {
-        mat4x4Projection[y] = [0, 0, 0, 0]
+    cubes.push(new Cube(0, 0, 10, 5, 5, 5))
+    cubes.push(new Cube(5, 0, 10, 5, 5, 5))
+    cubes.push(new Cube(0, 5, 10, 5, 5, 5))
+    cubes.push(new Cube(5, 0, 15, 5, 5, 5))
+}
+
+function toScreen(p) {
+    var relativePoint = createVector(p.pos.x, p.pos.y, p.pos.z).sub(cam.pos)
+    if (relativePoint.z >= 1) {
+        var x = relativePoint.x / relativePoint.z * cam.focal_length
+        var y = relativePoint.y / relativePoint.z * cam.focal_length
+        x *= windowWidth / 2
+        x += windowWidth / 2
+        y *= windowWidth / 2
+        y += windowHeight / 2
+        return [x, y]
     }
-    mat4x4Projection[0][0] = cam.aRatioWH * cam.fovRad
-    mat4x4Projection[1][1] = cam.fovRad
-    mat4x4Projection[2][2] = cam.zFar / (cam.zFar - cam.zNear)
-    mat4x4Projection[2][3] = 1
-    mat4x4Projection[3][2] = (-cam.zFar * cam.zNear) / (cam.zFar - cam.zNear)
+    return false
 }
 
 function draw() {
     background(255)
     keyDown()
-    var projectedPoints = []
-    for (let point of points) {
-        // point.pos = createVector(point.pos.x * Math.cos(0.01) - point.pos.y * Math.sin(0.01), point.pos.y * Math.cos(0.01) + point.pos.x * Math.sin(0.01), point.pos.z)
-        // point.pos = createVector(point.pos.x, point.pos.y * Math.cos(0.02) - point.pos.z * Math.sin(0.02), point.pos.z * Math.cos(0.02) + point.pos.y * Math.sin(0.02))
-        // point.pos.add(point.pos.x * Math.cos(0.02) - point.pos.z * Math.sin(0.02), point.pos.y, point.pos.z * Math.cos(0.02) + point.pos.x * Math.sin(0.02))
-        var projected = multiplyProjectedMatrix(createVector(point.pos.x, point.pos.y, point.pos.z).sub(cam.pos))
-        projected.add(1, 1, 1);
-        projected.x *= 0.5 * windowWidth
-        projected.y *= 0.5 * windowHeight
-        projectedPoints.push(projected)
-            // var dist = Math.sqrt((cam.pos.x - point.pos.x) * (cam.pos.x - point.pos.x) + (cam.pos.y - point.pos.y) * (cam.pos.y - point.pos.y) + (cam.pos.z - point.pos.z) * (cam.pos.z - point.pos.z))
-            // var relativePoint = createVector(point.pos.x, point.pos.y, point.pos.z).sub(cam.pos)
-            // if (dist > 0) {
-            //     circle(relativePoint.x / relativePoint.z * cam.focal_length, relativePoint.y / relativePoint.z * cam.focal_length, 10)
-            // }
+    noFill()
+    for (let tri of verticies) {
+        console.log(tri)
+        var p0 = toScreen(tri.firstPoint)
+        var p1 = toScreen(tri.secondPoint)
+        var p2 = toScreen(tri.thirdPoint)
+        triangle(p0[0], p0[1], p1[0], p1[1], p2[0], p2[1])
     }
-    new Triangle(projectedPoints[0], projectedPoints[1], projectedPoints[2]).update()
-    new Triangle(projectedPoints[0], projectedPoints[3], projectedPoints[2]).update()
-    new Triangle(projectedPoints[4], projectedPoints[5], projectedPoints[6]).update()
-    new Triangle(projectedPoints[4], projectedPoints[7], projectedPoints[6]).update()
-    new Triangle(projectedPoints[0], projectedPoints[4], projectedPoints[3]).update()
-    new Triangle(projectedPoints[7], projectedPoints[4], projectedPoints[3]).update()
-    new Triangle(projectedPoints[3], projectedPoints[2], projectedPoints[7]).update()
-    new Triangle(projectedPoints[6], projectedPoints[2], projectedPoints[7]).update()
-    new Triangle(projectedPoints[5], projectedPoints[2], projectedPoints[6]).update()
-    new Triangle(projectedPoints[5], projectedPoints[2], projectedPoints[1]).update()
-    new Triangle(projectedPoints[0], projectedPoints[1], projectedPoints[4]).update()
-    new Triangle(projectedPoints[5], projectedPoints[1], projectedPoints[4]).update()
 }
 
 class Camera {
     constructor() {
         this.pos = createVector(0, 0, 0)
-        this.focal_length = 100
+        this.focal_length = 1
         this.fov = 90
         this.fovRad = 1 / (Math.tan(this.fov * 0.5 * Math.PI / 180))
         this.zNear = 0.1;
@@ -70,14 +58,6 @@ class Triangle {
         this.secondPoint = secondPoint
         this.thirdPoint = thirdPoint
         this.color = [(Math.abs(this.firstPoint.y) / 3 + 10) + random(0, 20), 100, 100]
-    }
-    update() {
-        this.render()
-    }
-    render() {
-        noFill()
-        stroke(this.color[0], this.color[1], this.color[2])
-        triangle(this.firstPoint.x, this.firstPoint.y, this.secondPoint.x, this.secondPoint.y, this.thirdPoint.x, this.thirdPoint.y)
     }
 }
 
@@ -100,7 +80,7 @@ class Cube {
         var mw = this.w / 2
         var mh = this.h / 2
         var ml = this.l / 2
-        var triIndex = triangles.length
+        var triIndex = points.length
         points.push(new Point(x - mw, y - mh, z + ml))
         points.push(new Point(x + mw, y - mh, z + ml))
         points.push(new Point(x + mw, y - mh, z - ml))
@@ -109,12 +89,18 @@ class Cube {
         points.push(new Point(x + mw, y + mh, z + ml))
         points.push(new Point(x + mw, y + mh, z - ml))
         points.push(new Point(x - mw, y + mh, z - ml))
-        this.mesh.push(new Triangle(points[triIndex], points[triIndex + 1], points[triIndex + 2]))
-    }
-    show() {
-        for (let tri of this.mesh) {
-            tri.update()
-        }
+        verticies.push(new Triangle(points[triIndex], points[triIndex + 1], points[triIndex + 2]))
+        verticies.push(new Triangle(points[triIndex], points[triIndex + 3], points[triIndex + 2]))
+        verticies.push(new Triangle(points[triIndex + 4], points[triIndex + 5], points[triIndex + 6]))
+        verticies.push(new Triangle(points[triIndex + 4], points[triIndex + 7], points[triIndex + 6]))
+        verticies.push(new Triangle(points[triIndex], points[triIndex + 5], points[triIndex + 4]))
+        verticies.push(new Triangle(points[triIndex], points[triIndex + 5], points[triIndex + 1]))
+        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 5], points[triIndex + 6]))
+        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 5], points[triIndex + 1]))
+        verticies.push(new Triangle(points[triIndex], points[triIndex + 4], points[triIndex + 3]))
+        verticies.push(new Triangle(points[triIndex + 7], points[triIndex + 4], points[triIndex + 3]))
+        verticies.push(new Triangle(points[triIndex + 7], points[triIndex + 3], points[triIndex + 6]))
+        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 3], points[triIndex + 6]))
     }
 }
 
@@ -143,14 +129,4 @@ function keyDown() {
     if (keyIsDown(83)) {
         cam.pos.add(0, 0, -1)
     }
-}
-
-function multiplyProjectedMatrix(vector) {
-    var finalVector = createVector(0, 0, 0)
-    finalVector.x = mat4x4Projection[0][0] * vector.x + mat4x4Projection[1][0] * vector.y + mat4x4Projection[2][0] * vector.z + mat4x4Projection[3][0]
-    finalVector.y = mat4x4Projection[0][1] * vector.x + mat4x4Projection[1][1] * vector.y + mat4x4Projection[2][1] * vector.z + mat4x4Projection[3][1]
-    finalVector.z = mat4x4Projection[0][2] * vector.x + mat4x4Projection[1][2] * vector.y + mat4x4Projection[2][2] * vector.z + mat4x4Projection[3][2]
-    var w = mat4x4Projection[0][3] * vector.x + mat4x4Projection[1][3] * vector.y + mat4x4Projection[2][3] * vector.z + mat4x4Projection[3][3]
-    if (w != 0) finalVector.div(w)
-    return finalVector
 }

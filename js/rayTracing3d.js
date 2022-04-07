@@ -106,24 +106,15 @@ function setup() {
 }
 
 function draw() {
-    if (rez >= 1) {
-        for (let x = 0; x < w; x += rez) {
-            for (let y = 0; y < h; y += rez) {
-                //calculate if the pixel have already been colored
-                for (let i = 0; i < minRez - rez; i++) {
-                    if ((x + y * w) / (minRez - i) == minRez - i) {
-                        alreadyCalculted = true;
-                        break;
-                    } else {
-                        alreadyCalculted = false;
-                    }
-                }
-                if (!alreadyCalculted) {
+    for (let Y = 0; Y < rez; Y++) {
+        for (let X = 0; X < rez; X++) {
+            for (let x = X; x < w; x += rez) {
+                for (let y = Y; y < h; y += rez) {
                     var newDir = createVector(x - w / 2, h / 2 - y, 0);
                     newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
                     newDir = cam.dir.copy().add(newDir)
                     var color = castRay(cam.pos, newDir, 0)
-                    if (rez == minRez) {
+                    if (X + Y == 0) {
                         for (let i = 0; i < rez; i++) {
                             for (let j = 0; j < rez; j++) {
                                 if (x + i < w && y + j < h) {
@@ -140,45 +131,90 @@ function draw() {
                         imgData.data[index] = color[0]
                         imgData.data[index + 1] = color[1]
                         imgData.data[index + 2] = color[2]
-                        imgData.data[index + 3] = 255;
+                        imgData.data[index + 3] = 255
                     }
                 }
-
-                //calculate if the pixel have already been colored
-                // for (let i = 0; i < minRez - rez; i++) {
-                //     if ((x + y * w) % (minRez - i) == 0) {
-                //         alreadyCalculted = true;
-                //         break;
-                //     } else {
-                //         alreadyCalculted = false;
-                //     }
-                // }
-                // if (!alreadyCalculted) {
-                //     var newDir = createVector((x + rezoffsetx) - w / 2, h / 2 - (y + rezoffsety), 0);
-                //     newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-                //     newDir = cam.dir.copy().add(newDir)
-                //     var color = castRay(cam.pos, newDir, 0)
-                //     var index = ((x + rezoffsetx) + (y + rezoffsety) * w) * 4
-                //     if (x + rezoffsetx < w && y + rezoffsety < h) {
-                //         imgData.data[index] = color[0]
-                //         imgData.data[index + 1] = color[1]
-                //         imgData.data[index + 2] = color[2]
-                //         imgData.data[index + 3] = 255;
-                //     }
-                // }
             }
+            ctx.putImageData(imgData, 0, 0);
         }
-        // if (rezoffsety + 1 >= minRez) {
-        //     rezoffsety = -1;
-        //     rezoffsetx++;
-        // }
-        // rezoffsety++;
-        rez -= 1
-        ctx.putImageData(imgData, 0, 0);
     }
-    // light.pos.x = sin(frameCount / 10) * 100
-    // light.pos.z = cos(frameCount / 10) * 100 + 50
 }
+
+
+// function draw() {
+//     if (rez >= 1) {
+//         for (let x = 0; x < w; x += rez) {
+//             for (let y = 0; y < h; y += rez) {
+//                 //calculate if the pixel have already been colored
+//                 for (let i = 0; i < minRez - rez; i++) {
+//                     if ((x + y * w) / (minRez - i) == minRez - i) {
+//                         alreadyCalculted = true;
+//                         break;
+//                     } else {
+//                         alreadyCalculted = false;
+//                     }
+//                 }
+//                 if (!alreadyCalculted) {
+//                     var newDir = createVector(x - w / 2, h / 2 - y, 0);
+//                     newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+//                     newDir = cam.dir.copy().add(newDir)
+//                     var color = castRay(cam.pos, newDir, 0)
+//                     if (rez == minRez) {
+//                         for (let i = 0; i < rez; i++) {
+//                             for (let j = 0; j < rez; j++) {
+//                                 if (x + i < w && y + j < h) {
+//                                     var index = ((x + i) + (y + j) * w) * 4
+//                                     imgData.data[index] = color[0]
+//                                     imgData.data[index + 1] = color[1]
+//                                     imgData.data[index + 2] = color[2]
+//                                     imgData.data[index + 3] = 255;
+//                                 }
+//                             }
+//                         }
+//                     } else {
+//                         var index = (x + y * w) * 4
+//                         imgData.data[index] = color[0]
+//                         imgData.data[index + 1] = color[1]
+//                         imgData.data[index + 2] = color[2]
+//                         imgData.data[index + 3] = 255;
+//                     }
+//                 }
+
+//                 //calculate if the pixel have already been colored
+//                 // for (let i = 0; i < minRez - rez; i++) {
+//                 //     if ((x + y * w) % (minRez - i) == 0) {
+//                 //         alreadyCalculted = true;
+//                 //         break;
+//                 //     } else {
+//                 //         alreadyCalculted = false;
+//                 //     }
+//                 // }
+//                 // if (!alreadyCalculted) {
+//                 //     var newDir = createVector((x + rezoffsetx) - w / 2, h / 2 - (y + rezoffsety), 0);
+//                 //     newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+//                 //     newDir = cam.dir.copy().add(newDir)
+//                 //     var color = castRay(cam.pos, newDir, 0)
+//                 //     var index = ((x + rezoffsetx) + (y + rezoffsety) * w) * 4
+//                 //     if (x + rezoffsetx < w && y + rezoffsety < h) {
+//                 //         imgData.data[index] = color[0]
+//                 //         imgData.data[index + 1] = color[1]
+//                 //         imgData.data[index + 2] = color[2]
+//                 //         imgData.data[index + 3] = 255;
+//                 //     }
+//                 // }
+//             }
+//         }
+//         // if (rezoffsety + 1 >= minRez) {
+//         //     rezoffsety = -1;
+//         //     rezoffsetx++;
+//         // }
+//         // rezoffsety++;
+//         rez -= 1
+//         ctx.putImageData(imgData, 0, 0);
+//     }
+//     // light.pos.x = sin(frameCount / 10) * 100
+//     // light.pos.z = cos(frameCount / 10) * 100 + 50
+// }
 var lastPixColor = skyLight
 
 // function draw() {
@@ -216,7 +252,7 @@ function castRay(origin, dir, bounceNb) {
     }
 }
 
-//ray march and return the distance cross and if touch obj return it and it's touch point
+//ray march and return the distance walked and if touch obj return it and it's touch point
 function rayMarch(origin, dir) {
     var totalDist = 0
     var point = origin.copy()
