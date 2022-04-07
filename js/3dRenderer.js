@@ -31,11 +31,18 @@ function draw() {
     keyDown()
     noFill()
     for (let tri of verticies) {
-        console.log(tri)
-        var p0 = toScreen(tri.firstPoint)
-        var p1 = toScreen(tri.secondPoint)
-        var p2 = toScreen(tri.thirdPoint)
-        triangle(p0[0], p0[1], p1[0], p1[1], p2[0], p2[1])
+        var v1 = tri.firstPoint.pos.copy().sub(tri.secondPoint.pos)
+        var v2 = tri.thirdPoint.pos.copy().sub(tri.firstPoint.pos)
+        var crossProduct = v1.cross(v2)
+        var scalaire1 = crossProduct.dot(cam.pos.copy().sub(tri.firstPoint.pos))
+        var scalaire2 = crossProduct.dot(cam.pos.copy().sub(tri.secondPoint.pos))
+        var scalaire3 = crossProduct.dot(cam.pos.copy().sub(tri.thirdPoint.pos))
+        if (scalaire1 > 0 && scalaire2 > 0 && scalaire3 > 0) {
+            var p0 = toScreen(tri.firstPoint)
+            var p1 = toScreen(tri.secondPoint)
+            var p2 = toScreen(tri.thirdPoint)
+            triangle(p0[0], p0[1], p1[0], p1[1], p2[0], p2[1])
+        }
     }
 }
 
@@ -90,17 +97,17 @@ class Cube {
         points.push(new Point(x + mw, y + mh, z - ml))
         points.push(new Point(x - mw, y + mh, z - ml))
         verticies.push(new Triangle(points[triIndex], points[triIndex + 1], points[triIndex + 2]))
-        verticies.push(new Triangle(points[triIndex], points[triIndex + 3], points[triIndex + 2]))
-        verticies.push(new Triangle(points[triIndex + 4], points[triIndex + 5], points[triIndex + 6]))
+        verticies.push(new Triangle(points[triIndex], points[triIndex + 2], points[triIndex + 3]))
+        verticies.push(new Triangle(points[triIndex + 4], points[triIndex + 6], points[triIndex + 5]))
         verticies.push(new Triangle(points[triIndex + 4], points[triIndex + 7], points[triIndex + 6]))
-        verticies.push(new Triangle(points[triIndex], points[triIndex + 5], points[triIndex + 4]))
+        verticies.push(new Triangle(points[triIndex], points[triIndex + 4], points[triIndex + 5]))
         verticies.push(new Triangle(points[triIndex], points[triIndex + 5], points[triIndex + 1]))
         verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 5], points[triIndex + 6]))
-        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 5], points[triIndex + 1]))
-        verticies.push(new Triangle(points[triIndex], points[triIndex + 4], points[triIndex + 3]))
+        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 1], points[triIndex + 5]))
+        verticies.push(new Triangle(points[triIndex], points[triIndex + 3], points[triIndex + 4]))
         verticies.push(new Triangle(points[triIndex + 7], points[triIndex + 4], points[triIndex + 3]))
         verticies.push(new Triangle(points[triIndex + 7], points[triIndex + 3], points[triIndex + 6]))
-        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 3], points[triIndex + 6]))
+        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 6], points[triIndex + 3]))
     }
 }
 
