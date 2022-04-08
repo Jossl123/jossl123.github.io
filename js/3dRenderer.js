@@ -10,6 +10,7 @@ function setup() {
     cubes.push(new Cube(5, 0, 10, 5, 5, 5))
         //cubes.push(new Cube(0, 5, 10, 5, 5, 5))
         //cubes.push(new Cube(5, 0, 15, 5, 5, 5))
+    render()
 }
 
 function toScreen(p) {
@@ -26,9 +27,8 @@ function toScreen(p) {
     return false
 }
 
-function draw() {
+function render() {
     background(255)
-    keyDown()
     var zOrderToDraw = []
     var zOrderIndex = []
     for (let tri of verticies) {
@@ -44,13 +44,19 @@ function draw() {
             var p1 = toScreen(tri.secondPoint)
             var p2 = toScreen(tri.thirdPoint)
             zOrderIndex.push(distToCam)
-            zOrderToDraw.push([p0, p1, p2, distToCam])
+            zOrderToDraw.push([p0, p1, p2, distToCam, tri.color])
         }
     }
-    zOrderToDraw.sort((a, b) => a[3] - b[3])
+    zOrderToDraw.sort((a, b) => b[3] - a[3])
+    console.table(zOrderToDraw)
     for (let i = 0; i < zOrderToDraw.length; i++) {
+        fill(zOrderToDraw[i][4][0], zOrderToDraw[i][4][1], zOrderToDraw[i][4][2])
         triangle(zOrderToDraw[i][0][0], zOrderToDraw[i][0][1], zOrderToDraw[i][1][0], zOrderToDraw[i][1][1], zOrderToDraw[i][2][0], zOrderToDraw[i][2][1])
     }
+}
+
+function draw() {
+    keyDown()
 }
 
 class Camera {
@@ -71,7 +77,7 @@ class Triangle {
         this.firstPoint = firstPoint
         this.secondPoint = secondPoint
         this.thirdPoint = thirdPoint
-        this.color = [(Math.abs(this.firstPoint.y) / 3 + 10) + random(0, 20), 100, 100]
+        this.color = [random(255), 100, 100]
     }
 }
 
@@ -125,22 +131,30 @@ class Light {
 }
 
 function keyDown() {
+    var haveToRender = false
     if (keyIsDown(LEFT_ARROW)) {
         cam.pos.add(-1, 0, 0)
+        haveToRender = true
     }
     if (keyIsDown(RIGHT_ARROW)) {
         cam.pos.add(1, 0, 0)
+        haveToRender = true
     }
     if (keyIsDown(UP_ARROW)) {
         cam.pos.add(0, -1, 0)
+        haveToRender = true
     }
     if (keyIsDown(DOWN_ARROW)) {
         cam.pos.add(0, 1, 0)
+        haveToRender = true
     }
     if (keyIsDown(90)) {
         cam.pos.add(0, 0, 1)
+        haveToRender = true
     }
     if (keyIsDown(83)) {
         cam.pos.add(0, 0, -1)
+        haveToRender = true
     }
+    if (haveToRender) render()
 }
