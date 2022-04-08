@@ -4,30 +4,6 @@ var cubes = []
 var verticies = []
 var speed = 0.1
 
-function cplane(p, s, r, dir) {
-    if (r <= 1) return
-    var triIndex = points.length
-    var vA = createVector(dir.y, dir.z, dir.x)
-    var vB = vA.cross(dir)
-    for (let y = 0; y < r; y++) {
-        for (let x = 0; x < r; x++) {
-            var percent = createVector(x, y).div(r - 1)
-            var pointOnCube = dir.copy().add(vA.copy().mult((percent.x - 0.5) * 2)).add(vB.copy().mult((percent.y - 0.5) * 2)).mult(s / r)
-                //pointOnCube.setMag(s + Math.cos((pointOnCube.x + pointOnCube.y * 40)) / 10) // add sin(wave)
-            pointOnCube.setMag(s)
-            pointOnCube.add(p)
-            points.push(new Point(pointOnCube.x, pointOnCube.y, pointOnCube.z))
-        }
-    }
-    for (let y = 0; y < r - 1; y++) {
-        for (let x = 0; x < r - 1; x++) {
-            var i = x + y * r
-            verticies.push(new Triangle(points[triIndex + i], points[triIndex + i + 1], points[triIndex + i + r + 1]))
-            verticies.push(new Triangle(points[triIndex + i], points[triIndex + r + i + 1], points[triIndex + i + r]))
-        }
-    }
-}
-
 function toScreen(p) {
     var relativePoint = p.copy().sub(cam.Position())
     if (relativePoint.z > 0) {
@@ -52,7 +28,7 @@ function render() {
     var zOrderToDraw = []
     var zOrderIndex = []
     for (let tri of verticies) {
-        var relativeTri = [worldToCamPos(tri.firstPoint.pos), worldToCamPos(tri.secondPoint.pos), worldToCamPos(tri.thirdPoint.pos)]
+        var relativeTri = [worldToCamPos(tri.firstPoint), worldToCamPos(tri.secondPoint), worldToCamPos(tri.thirdPoint)]
         var v1 = relativeTri[0].copy().sub(relativeTri[1])
         var v2 = relativeTri[2].copy().sub(relativeTri[0])
         var normalVector = v1.cross(v2)
@@ -65,8 +41,8 @@ function render() {
             var p0 = toScreen(relativeTri[0])
             var p1 = toScreen(relativeTri[1])
             var p2 = toScreen(relativeTri[2])
-            var c = [-al * 50 + tri.color[0], -al * 50 + tri.color[1], -al * 50 + tri.color[2]]
             var al = -clamp(scalaireLight, -1, 1)
+            var c = [-al * 50 + tri.color[0], -al * 50 + tri.color[1], -al * 50 + tri.color[2]]
             zOrderIndex.push(distToCam)
             zOrderToDraw.push([p0, p1, p2, distToCam, c])
         }
@@ -116,19 +92,37 @@ class Triangle {
         this.firstPoint = firstPoint
         this.secondPoint = secondPoint
         this.thirdPoint = thirdPoint
-        this.color = [100, 100, 100]
-    }
-}
-
-class Point {
-    constructor(x, y, z) {
-        this.pos = createVector(x, y, z)
+        this.color = [200, 100, 50]
     }
 }
 
 class Light {
     constructor(x, y, z) {
         this.pos = createVector(10, 0, 0)
+    }
+}
+
+function cplane(p, s, r, dir) {
+    if (r <= 1) return
+    var triIndex = points.length
+    var vA = createVector(dir.y, dir.z, dir.x)
+    var vB = vA.cross(dir)
+    for (let y = 0; y < r; y++) {
+        for (let x = 0; x < r; x++) {
+            var percent = createVector(x, y).div(r - 1)
+            var pointOnCube = dir.copy().add(vA.copy().mult((percent.x - 0.5) * 2)).add(vB.copy().mult((percent.y - 0.5) * 2)).mult(s / r)
+                //pointOnCube.setMag(s + Math.cos((pointOnCube.x + pointOnCube.y * 40)) / 10) // add sin(wave)
+            pointOnCube.setMag(s)
+            pointOnCube.add(p)
+            points.push(createVector(pointOnCube.x, pointOnCube.y, pointOnCube.z)) //add point
+        }
+    }
+    for (let y = 0; y < r - 1; y++) {
+        for (let x = 0; x < r - 1; x++) {
+            var i = x + y * r
+            verticies.push(new Triangle(points[triIndex + i], points[triIndex + i + 1], points[triIndex + i + r + 1]))
+            verticies.push(new Triangle(points[triIndex + i], points[triIndex + r + i + 1], points[triIndex + i + r]))
+        }
     }
 }
 
