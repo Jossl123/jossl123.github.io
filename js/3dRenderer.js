@@ -30,24 +30,24 @@ function cplane(p, s, r, dir) {
 function setup() {
     createCanvas(windowWidth, windowHeight);
     cam = new Camera()
-        //cubes.push(new Cube(0, 0, 10, 5, 5, 5))
-        //cubes.push(new Cube(5.1, 0, 10, 5, 5, 5))
-        //cubes.push(new Cube(0, 5, 10, 5, 5, 5))
-        //cubes.push(new Cube(5, 0, 15, 5, 5, 5))
-    cplane(createVector(0, 1, 5), 2, 2, createVector(0, 1, 0))
-    cplane(createVector(0, 1, 5), 2, 2, createVector(1, 0, 0))
-    cplane(createVector(0, 1, 5), 2, 2, createVector(0, 0, 1))
-    cplane(createVector(0, 1, 5), 2, 2, createVector(0, -1, 0))
-    cplane(createVector(0, 1, 5), 2, 2, createVector(-1, 0, 0))
-    cplane(createVector(0, 1, 5), 2, 2, createVector(0, 0, -1))
+        // cubes.push(new Cube(0, 0, 10, 5, 5, 5))
+        // cubes.push(new Cube(5.1, 0, 10, 5, 5, 5))
+        // cubes.push(new Cube(0, 5, 10, 5, 5, 5))
+        // cubes.push(new Cube(5, 0, 15, 5, 5, 5))
+    cplane(createVector(0, 1, 5), 2, 5, createVector(0, 1, 0))
+    cplane(createVector(0, 1, 5), 2, 5, createVector(1, 0, 0))
+    cplane(createVector(0, 1, 5), 2, 5, createVector(0, 0, 1))
+    cplane(createVector(0, 1, 5), 2, 5, createVector(0, -1, 0))
+    cplane(createVector(0, 1, 5), 2, 5, createVector(-1, 0, 0))
+    cplane(createVector(0, 1, 5), 2, 5, createVector(0, 0, -1))
     render()
 }
 
 function toScreen(p) {
-    var relativePoint = createVector(p.x, p.y, p.z).sub(cam.pos)
+    var relativePoint = p.copy().sub(cam.Position())
     if (relativePoint.z > 0) {
-        var x = relativePoint.x / relativePoint.z * cam.focal_length
-        var y = relativePoint.y / relativePoint.z * cam.focal_length
+        var x = relativePoint.x / relativePoint.z
+        var y = relativePoint.y / relativePoint.z
         x *= windowWidth / 2
         x += windowWidth / 2
         y *= windowWidth / 2
@@ -57,22 +57,47 @@ function toScreen(p) {
     return false
 }
 
+function pointToMatrix(p) {
+    return [
+        [p.x],
+        [p.y],
+        [p.z],
+        [1]
+    ]
+}
+
+function pointToMatrix4x4(p) {
+    return [
+        [1, 0, 0, p.x],
+        [0, 1, 0, p.y],
+        [0, 0, 1, p.z],
+        [0, 0, 0, 1],
+    ]
+}
+
+function worldToCamPos(p) {
+    var MP = pointToMatrix(p)
+    MP = mult4x2Matrix(cam.M, MP)
+    return createVector(MP[0][0], MP[1][0], MP[2][0])
+}
+
 function render() {
     background(255)
     var zOrderToDraw = []
     var zOrderIndex = []
     for (let tri of verticies) {
-        var v1 = tri.firstPoint.pos.copy().sub(tri.secondPoint.pos)
-        var v2 = tri.thirdPoint.pos.copy().sub(tri.firstPoint.pos)
+        var relativeTri = [worldToCamPos(tri.firstPoint.pos), worldToCamPos(tri.secondPoint.pos), worldToCamPos(tri.thirdPoint.pos)]
+        var v1 = relativeTri[0].copy().sub(relativeTri[1])
+        var v2 = relativeTri[2].copy().sub(relativeTri[0])
         var crossProduct = v1.cross(v2)
-        var toPoint = cam.pos.copy().sub(tri.firstPoint.pos)
+        var toPoint = cam.Position().copy().sub(relativeTri[0])
         var scalaire1 = crossProduct.dot(toPoint)
-        var centerPoint = tri.firstPoint.pos.copy().add(tri.secondPoint.pos.copy().add(tri.thirdPoint.pos)).div(3)
+        var centerPoint = relativeTri[0].copy().add(relativeTri[1].copy().add(relativeTri[2])).div(3)
         if (scalaire1 > 0) {
-            var distToCam = centerPoint.copy().sub(cam.pos).magSq();
-            var p0 = toScreen(tri.firstPoint.pos)
-            var p1 = toScreen(tri.secondPoint.pos)
-            var p2 = toScreen(tri.thirdPoint.pos)
+            var distToCam = centerPoint.copy().sub(cam.Position()).magSq();
+            var p0 = toScreen(relativeTri[0])
+            var p1 = toScreen(relativeTri[1])
+            var p2 = toScreen(relativeTri[2])
             zOrderIndex.push(distToCam)
             zOrderToDraw.push([p0, p1, p2, distToCam, tri.color])
         }
@@ -95,16 +120,26 @@ function VrotateY(v, a) {
     return createVector(x, v.y, z)
 }
 
+function rotateMatrixY(a) {
+    return [
+        [Math.cos(a), 0, Math.sin(a), 0],
+        [0, 1, 0, 0],
+        [-Math.sin(a), 0, Math.cos(a), 0],
+        [0, 0, 0, 1]
+    ]
+}
+
 class Camera {
     constructor() {
-        this.pos = createVector(0, 0, 0)
-        this.focal_length = 1
-        this.fov = 90
-        this.fovRad = 1 / (Math.tan(this.fov * 0.5 * Math.PI / 180))
-        this.zNear = 0.1;
-        this.zFar = 1000
-        this.aRatioWH = windowHeight / windowWidth
-        this.dir = createVector(0, 0, 1)
+        this.M = [
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1],
+        ]
+    }
+    Position() {
+        return createVector(-this.M[0][3], -this.M[1][3], -this.M[2][3])
     }
 }
 
@@ -123,78 +158,83 @@ class Point {
     }
 }
 
-class Cube {
-    constructor(x, y, z, w, h, l) {
-        this.pos = createVector(x, y, z)
-        this.w = w;
-        this.h = h;
-        this.l = l
-        this.mesh = []
-        var x = this.pos.x
-        var y = this.pos.y
-        var z = this.pos.z
-        var mw = this.w / 2
-        var mh = this.h / 2
-        var ml = this.l / 2
-        var triIndex = points.length
-        points.push(new Point(x - mw, y - mh, z + ml))
-        points.push(new Point(x + mw, y - mh, z + ml))
-        points.push(new Point(x + mw, y - mh, z - ml))
-        points.push(new Point(x - mw, y - mh, z - ml))
-        points.push(new Point(x - mw, y + mh, z + ml))
-        points.push(new Point(x + mw, y + mh, z + ml))
-        points.push(new Point(x + mw, y + mh, z - ml))
-        points.push(new Point(x - mw, y + mh, z - ml))
-        verticies.push(new Triangle(points[triIndex], points[triIndex + 1], points[triIndex + 2]))
-        verticies.push(new Triangle(points[triIndex], points[triIndex + 2], points[triIndex + 3]))
-        verticies.push(new Triangle(points[triIndex + 4], points[triIndex + 6], points[triIndex + 5]))
-        verticies.push(new Triangle(points[triIndex + 4], points[triIndex + 7], points[triIndex + 6]))
-        verticies.push(new Triangle(points[triIndex], points[triIndex + 4], points[triIndex + 5]))
-        verticies.push(new Triangle(points[triIndex], points[triIndex + 5], points[triIndex + 1]))
-        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 5], points[triIndex + 6]))
-        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 1], points[triIndex + 5]))
-        verticies.push(new Triangle(points[triIndex], points[triIndex + 3], points[triIndex + 4]))
-        verticies.push(new Triangle(points[triIndex + 7], points[triIndex + 4], points[triIndex + 3]))
-        verticies.push(new Triangle(points[triIndex + 7], points[triIndex + 3], points[triIndex + 6]))
-        verticies.push(new Triangle(points[triIndex + 2], points[triIndex + 6], points[triIndex + 3]))
-    }
-}
-
-
 class Light {
     constructor() {
         this.pos = createVector(0, 0, 0)
     }
 }
 
+function mult4x4Matrix(m1, m2) {
+    var m00 = m1[0][0] * m2[0][0] + m1[0][1] * m2[1][0] + m1[0][2] * m2[2][0] + m1[0][3] * m2[3][0]
+    var m01 = m1[0][0] * m2[0][1] + m1[0][1] * m2[1][1] + m1[0][2] * m2[2][1] + m1[0][3] * m2[3][1]
+    var m02 = m1[0][0] * m2[0][2] + m1[0][1] * m2[1][2] + m1[0][2] * m2[2][2] + m1[0][3] * m2[3][2]
+    var m03 = m1[0][0] * m2[0][3] + m1[0][1] * m2[1][3] + m1[0][2] * m2[2][3] + m1[0][3] * m2[3][3]
+
+    var m10 = m1[1][0] * m2[0][0] + m1[1][1] * m2[1][0] + m1[1][2] * m2[2][0] + m1[1][3] * m2[3][0]
+    var m11 = m1[1][0] * m2[0][1] + m1[1][1] * m2[1][1] + m1[1][2] * m2[2][1] + m1[1][3] * m2[3][1]
+    var m12 = m1[1][0] * m2[0][2] + m1[1][1] * m2[1][2] + m1[1][2] * m2[2][2] + m1[1][3] * m2[3][2]
+    var m13 = m1[1][0] * m2[0][3] + m1[1][1] * m2[1][3] + m1[1][2] * m2[2][3] + m1[1][3] * m2[3][3]
+
+    var m20 = m1[2][0] * m2[0][0] + m1[2][1] * m2[1][0] + m1[2][2] * m2[2][0] + m1[2][3] * m2[3][0]
+    var m21 = m1[2][0] * m2[0][1] + m1[2][1] * m2[1][1] + m1[2][2] * m2[2][1] + m1[2][3] * m2[3][1]
+    var m22 = m1[2][0] * m2[0][2] + m1[2][1] * m2[1][2] + m1[2][2] * m2[2][2] + m1[2][3] * m2[3][2]
+    var m23 = m1[2][0] * m2[0][3] + m1[2][1] * m2[1][3] + m1[2][2] * m2[2][3] + m1[2][3] * m2[3][3]
+
+    var m30 = m1[3][0] * m2[0][0] + m1[3][1] * m2[1][0] + m1[3][2] * m2[2][0] + m1[3][3] * m2[3][0]
+    var m31 = m1[3][0] * m2[0][1] + m1[3][1] * m2[1][1] + m1[3][2] * m2[2][1] + m1[3][3] * m2[3][1]
+    var m32 = m1[3][0] * m2[0][2] + m1[3][1] * m2[1][2] + m1[3][2] * m2[2][2] + m1[3][3] * m2[3][2]
+    var m33 = m1[3][0] * m2[0][3] + m1[3][1] * m2[1][3] + m1[3][2] * m2[2][3] + m1[3][3] * m2[3][3]
+    var mf = [
+        [m00, m01, m02, m03],
+        [m10, m11, m12, m13],
+        [m20, m21, m22, m23],
+        [m30, m31, m32, m33]
+    ]
+    return mf
+}
+
+function mult4x2Matrix(m1, m2) {
+    var m00 = m1[0][0] * m2[0][0] + m1[0][1] * m2[1][0] + m1[0][2] * m2[2][0] + m1[0][3] * m2[3][0]
+    var m10 = m1[1][0] * m2[0][0] + m1[1][1] * m2[1][0] + m1[1][2] * m2[2][0] + m1[1][3] * m2[3][0]
+    var m20 = m1[2][0] * m2[0][0] + m1[2][1] * m2[1][0] + m1[2][2] * m2[2][0] + m1[2][3] * m2[3][0]
+    var m30 = m1[3][0] * m2[0][0] + m1[3][1] * m2[1][0] + m1[3][2] * m2[2][0] + m1[3][3] * m2[3][0]
+    var mf = [
+        [m00],
+        [m10],
+        [m20],
+        [m30]
+    ]
+    return mf
+}
+
 function keyDown() {
     var haveToRender = false
     if (keyIsDown(LEFT_ARROW)) {
-        cam.pos.add(-speed, 0, 0)
+        cam.M[0][3] += speed
         haveToRender = true
     }
     if (keyIsDown(RIGHT_ARROW)) {
-        cam.pos.add(speed, 0, 0)
+        cam.M[0][3] -= speed
         haveToRender = true
     }
-    if (keyIsDown(UP_ARROW)) {
-        cam.pos.add(0, -speed, 0)
+    if (keyIsDown(32) && !keyIsDown(16)) {
+        cam.M[1][3] += speed / 2
         haveToRender = true
     }
-    if (keyIsDown(DOWN_ARROW)) {
-        cam.pos.add(0, speed, 0)
+    if (keyIsDown(32) && keyIsDown(16)) {
+        cam.M[1][3] -= speed / 2
         haveToRender = true
     }
     if (keyIsDown(90)) {
-        cam.pos.add(0, 0, speed)
+        cam.M[2][3] -= speed
         haveToRender = true
     }
     if (keyIsDown(83)) {
-        cam.pos.add(0, 0, -speed)
+        cam.M[2][3] += speed
         haveToRender = true
     }
     if (keyIsDown(65)) {
-        cam.dir = VrotateY(cam.dir, 10)
+        cam.M = mult4x4Matrix(cam.M, rotateMatrixY(Math.PI / 20))
         haveToRender = true
     }
     if (haveToRender) render()
