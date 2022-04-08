@@ -209,11 +209,11 @@ function mult4x2Matrix(m1, m2) {
 
 function keyDown() {
     var haveToRender = false
-    if (keyIsDown(LEFT_ARROW)) {
+    if (keyIsDown(81)) {
         cam.M[0][3] += speed
         haveToRender = true
     }
-    if (keyIsDown(RIGHT_ARROW)) {
+    if (keyIsDown(68)) {
         cam.M[0][3] -= speed
         haveToRender = true
     }
