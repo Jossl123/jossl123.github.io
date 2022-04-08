@@ -5,8 +5,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     cam = new Camera()
     light = new Light()
-    Sphere(createVector(1, 0, 5), 2, 10)
-    Sphere(createVector(0, -3, 5), 1, 2)
+    Sphere(createVector(0, 0, 8), 2, 40, [100, 0, 200])
+        //Sphere(createVector(0, -3, 5), 1, 2, [0, 255, 0])
     update()
 }
 
