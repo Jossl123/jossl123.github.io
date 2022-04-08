@@ -8,8 +8,8 @@ function setup() {
     cam = new Camera()
     cubes.push(new Cube(0, 0, 10, 5, 5, 5))
     cubes.push(new Cube(5, 0, 10, 5, 5, 5))
-    cubes.push(new Cube(0, 5, 10, 5, 5, 5))
-    cubes.push(new Cube(5, 0, 15, 5, 5, 5))
+        //cubes.push(new Cube(0, 5, 10, 5, 5, 5))
+        //cubes.push(new Cube(5, 0, 15, 5, 5, 5))
 }
 
 function toScreen(p) {
@@ -29,20 +29,27 @@ function toScreen(p) {
 function draw() {
     background(255)
     keyDown()
-    noFill()
+    var zOrderToDraw = []
+    var zOrderIndex = []
     for (let tri of verticies) {
         var v1 = tri.firstPoint.pos.copy().sub(tri.secondPoint.pos)
         var v2 = tri.thirdPoint.pos.copy().sub(tri.firstPoint.pos)
         var crossProduct = v1.cross(v2)
-        var scalaire1 = crossProduct.dot(cam.pos.copy().sub(tri.firstPoint.pos))
-        var scalaire2 = crossProduct.dot(cam.pos.copy().sub(tri.secondPoint.pos))
-        var scalaire3 = crossProduct.dot(cam.pos.copy().sub(tri.thirdPoint.pos))
-        if (scalaire1 > 0 && scalaire2 > 0 && scalaire3 > 0) {
+        var toPoint = cam.pos.copy().sub(tri.firstPoint.pos)
+        var centerPoint = tri.firstPoint.pos.copy().add(tri.secondPoint.pos.copy().add(tri.thirdPoint.pos)).div(3)
+        var scalaire1 = crossProduct.dot(toPoint)
+        if (scalaire1 > 0) {
+            var distToCam = centerPoint.mag();
             var p0 = toScreen(tri.firstPoint)
             var p1 = toScreen(tri.secondPoint)
             var p2 = toScreen(tri.thirdPoint)
-            triangle(p0[0], p0[1], p1[0], p1[1], p2[0], p2[1])
+            zOrderIndex.push(distToCam)
+            zOrderToDraw.push([p0, p1, p2, distToCam])
         }
+    }
+    zOrderToDraw.sort((a, b) => a[3] - b[3])
+    for (let i = 0; i < zOrderToDraw.length; i++) {
+        triangle(zOrderToDraw[i][0][0], zOrderToDraw[i][0][1], zOrderToDraw[i][1][0], zOrderToDraw[i][1][1], zOrderToDraw[i][2][0], zOrderToDraw[i][2][1])
     }
 }
 
