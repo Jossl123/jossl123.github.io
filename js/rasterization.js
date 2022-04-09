@@ -141,7 +141,7 @@ function planeFace(p, r, mins, maxs, oceanLvl, dir) {
             pointOnCube.setMag(1)
                 //pointOnCube.setMag(s + Math.sin((pointOnCube.x * pointOnCube.y) * 5) / 10) // cool ball
                 //pointOnCube.setMag(s + Math.sin((pointOnCube.x + pointOnCube.y) * 5) / 10) // cool ball
-            var n = HandleNoiseHeight(pointOnCube, 10)
+            var n = HandleNoiseHeight(pointOnCube, 7)
                 // n = Math.max(oceanLvl, n)
                 //var nc = [(1 - (n * 2 - 1)) * 255, 255, 0] // max value = 2/1.6*s
             var mask = HandleNoiseHeight(pointOnCube, 2)

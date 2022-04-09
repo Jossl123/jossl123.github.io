@@ -11,8 +11,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     cam = new Camera()
     light = new Light()
-        //Planet(createVector(0, 0, 8), 100, 2, 3, 0.48)
-        //update()
+        // Planet(createVector(0, 0, 8), 400, 2, 3, 0.5)
+        // update()
 }
 
 function update() {
