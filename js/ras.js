@@ -1,12 +1,18 @@
 var light
 var cam
 
+function createUserPlanet() {
+    document.getElementById("userOption").style.visibility = "hidden"
+    Planet(createVector(0, 0, 8), parseInt(document.getElementById("resolution").value), 2, 3, 0.5)
+    update()
+}
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
     cam = new Camera()
     light = new Light()
-    Planet(createVector(0, 0, 8), 30, 2, 3, 0.48)
-    update()
+        //Planet(createVector(0, 0, 8), 100, 2, 3, 0.48)
+        //update()
 }
 
 function update() {
