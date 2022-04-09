@@ -5,22 +5,12 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     cam = new Camera()
     light = new Light()
-    Sphere(createVector(0, 0, 8), 2, 40, [100, 0, 200])
-        //Sphere(createVector(0, -3, 5), 1, 2, [0, 255, 0])
+    Planet(createVector(0, 0, 8), 30, 2, 3, 0.48)
     update()
 }
 
 function update() {
     background(130, 213, 213)
-        // c1 = color(255);
-        // c2 = color(63, 191, 191);
-
-    // for (let y = 0; y < height; y++) {
-    //     n = map(y, 0, height, 0, 1);
-    //     let newc = lerpColor(c1, c2, n);
-    //     stroke(newc);
-    //     line(0, y, width, y);
-    // }
     render()
 }
 
