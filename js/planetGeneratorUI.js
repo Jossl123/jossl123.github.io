@@ -24,6 +24,18 @@ function draw() {
     keyDown()
 }
 
+function estimateRenderingTime() {
+    var r = parseInt(document.getElementById("resolution").value)
+    var start = new Date().getTime();
+    for (i = 0; i < r; ++i) {
+        var k = perlin.get(random(), random(), random())
+        k = perlin.get(random(), random(), random())
+    }
+    var end = new Date().getTime();
+    var time = end - start;
+    alert('Calculate points position: ' + time * r / 100 + 's');
+}
+
 function keyDown() {
     var haveToRender = false
     if (keyIsDown(81)) {
@@ -52,6 +64,10 @@ function keyDown() {
     }
     if (keyIsDown(65)) {
         cam.M = mult4x4Matrix(cam.M, rotateMatrixY(Math.PI / 20))
+        haveToRender = true
+    }
+    if (keyIsDown(69)) {
+        cam.M = mult4x4Matrix(cam.M, rotateMatrixY(-Math.PI / 20))
         haveToRender = true
     }
     if (haveToRender) {

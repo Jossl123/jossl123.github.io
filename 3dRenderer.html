@@ -24,14 +24,19 @@
                     <small>Vous pouvez vous déplacer avec z, q, s, d et espace et maj + espace</small>
                 </div>
             </div>
+            <button class="self-center w-60 text-center bg-purple-600 shadow-2xl p-6 rounded-full text-white" onclick="estimateRenderingTime()">Estimate rendering time</button>
+            <div id="myProgress" class="h-full, bg-gray-200">
+                <div id="myBar" class="h-3 bg-green-200"></div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script>
     <script src='https://joeiddon.github.io/perlin/perlin.js'></script>
     <script src="./js/matrix.js"></script>
     <script src="./js/rasterization.js"></script>
+    <script src="./js/planetGenerator.js"></script>
     <script src="./js/rasterisationObjects.js"></script>
-    <script id="canvas" src="./js/ras.js"></script>
+    <script id="canvas" src="./js/planetGeneratorUI.js"></script>
 
 </body>
 
