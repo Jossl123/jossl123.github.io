@@ -33,7 +33,7 @@ function estimateRenderingTime() {
     }
     var end = new Date().getTime();
     var time = end - start;
-    alert('Calculate points position: ' + time * r / 100 + 's');
+    alert('Calculate points position: ' + time * r / 100 + 's' + '\n' + 'triangles number : ' + (r - 1) ** 2 * 12);
 }
 
 function keyDown() {
