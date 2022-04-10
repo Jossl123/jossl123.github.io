@@ -6,12 +6,12 @@
     background-image: url("../img/pp/boids.PNG");
 }
 
-#Renderer3d {
-    background-image: url("../img/pp/3dRenderer.PNG");
-}
-
 #doublePendular {
     background-image: url("../img/pp/doublePendule.PNG");
+}
+
+#planetGenerator {
+    background-image: url("../img/pp/Planet.png");
 }
 
 .project {

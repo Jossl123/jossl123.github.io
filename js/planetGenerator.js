@@ -22,13 +22,13 @@ function planeFace(p, r, mins, maxs, oceanLvl, dir) {
             mask *= 5
             mask = clamp(mask, 0.7, 1)
             n = (1 - Math.abs(Math.sin(n * mask))) ** 2
+            var nc = mixColors([50, 50, 210], [0, 0, 50], n / oceanLvl)
             n = clamp(n, oceanLvl, 1)
+            var nTo1 = (n - oceanLvl) / (1 - oceanLvl)
+                //if (n > oceanLvl) nc = mixColors([255, 255, 255], mixColors([255, 255, 0], mixColors([200, 125, 0], [0, 255, 0], Math.sqrt(nTo1)), Math.sqrt(nTo1)), nTo1 ** 2 ** 2)
+            if (n > oceanLvl) nc = mixColors([255, 255, 255], mixColors([255, 255, 0], mixColors([200, 125, 0], [0, 255, 0], nTo1 ** (1 / 1.6)), (1 - Math.abs(Math.sin(nTo1))) ** 6), nTo1 ** 20)
             pointOnCube.setMag(n * (maxs - mins) + mins)
             pointOnCube.add(p)
-                //var nc = [(n - oceanLvl) / (1 - oceanLvl) * 255, (n - oceanLvl) / (1 - oceanLvl) * 255 / 2 + 125, 0]
-            var nTo1 = (n - oceanLvl) / (1 - oceanLvl)
-            var nc = mixColors(mixColors([200, 125, 0], [0, 255, 0], nTo1 ** 1.2), [255, 255, 0], Math.sqrt(nTo1))
-            if (n <= oceanLvl) nc = [0, 0, 200]
             points.push([createVector(pointOnCube.x, pointOnCube.y, pointOnCube.z), nc]) //add point
         }
         modify(y, r)

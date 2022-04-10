@@ -3,7 +3,7 @@ var cam
 
 function createUserPlanet() {
     document.getElementById("userOption").style.visibility = "hidden"
-    Planet(createVector(0, 0, 8), parseInt(document.getElementById("resolution").value), 2, 3, 0.5)
+    Planet(createVector(0, 0, 8), parseInt(document.getElementById("resolution").value), 2, 3, 0.6)
     update()
 }
 
