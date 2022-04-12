@@ -61,7 +61,7 @@ class Camera {
         this.M = [
             [1, 0, 0, 0],
             [0, 1, 0, 0],
-            [0, 0, 1, 0],
+            [0, 0, 1, 6],
             [0, 0, 0, 1],
         ]
     }
@@ -81,6 +81,6 @@ class Triangle {
 
 class Light {
     constructor(x, y, z) {
-        this.pos = createVector(10, 0, 0)
+        this.pos = createVector(10, 4, -5)
     }
 }
