@@ -3,7 +3,7 @@ function modify(y, r) {
         //document.getElementById("myBar").innerHTML = Math.floor(y / r * 100) + "%"
 }
 
-function planeFace(p, r, mins, maxs, oceanLvl, dir) {
+function planeFacePlanet(p, r, mins, maxs, oceanLvl, dir) {
     if (r <= 1) return
     var triIndex = points.length
     var vA = createVector(dir.y, dir.z, dir.x)
@@ -42,14 +42,10 @@ function planeFace(p, r, mins, maxs, oceanLvl, dir) {
     }
 }
 
-function mixColors(c1, c2, percent) {
-    return [c1[0] * percent + c2[0] * (1 - percent), c1[1] * percent + c2[1] * (1 - percent), c1[2] * percent + c2[2] * (1 - percent)]
-}
-
 function HandleNoiseHeight(p, itt) {
     var pn = 0
     for (let i = 0; i < itt; i++) {
-        pn += perlin.get(p.x * 2 ** i + (i * 10), p.y * 2 ** i + i * 15, p.z) / 2 ** i
+        pn += perlin.get(p.x * 2 ** i + (i * 10) + p.z, p.y * 2 ** i + i * 15 + p.z) / 2 ** i
     }
     return pn
 }
