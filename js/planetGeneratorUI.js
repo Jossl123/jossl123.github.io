@@ -28,8 +28,8 @@ function estimateRenderingTime() {
     var r = parseInt(document.getElementById("resolution").value)
     var start = new Date().getTime();
     for (i = 0; i < r; ++i) {
-        var k = noise.get(random(), random(), random())
-        k = noise.get(random(), random(), random())
+        var k = perlin.get(random(), random(), random())
+        k = perlin.get(random(), random(), random())
     }
     var end = new Date().getTime();
     var time = end - start;
