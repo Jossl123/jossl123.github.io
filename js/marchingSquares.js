@@ -1,4 +1,4 @@
-var rez = 10
+var rez = 30
 var grid = []
 var cols, rows
 var zoff = 0
