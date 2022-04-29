@@ -1,4 +1,4 @@
-var rez = 30
+var rez = 10
 var grid = []
 var cols, rows
 var zoff = 0
@@ -27,6 +27,10 @@ function draw() {
         for (let x = 0; x < cols - 1; x++) {
             var xpos = x * rez;
             var ypos = y * rez;
+            // var up = grid[y][x] - grid[y][x + 1]
+            // var up1 = grid[y][x] / up
+            // var up2 = grid[y][x + 1] / up
+            // console.log(up, up1, up2)
             var a = createVector(xpos + rez / 2, ypos)
             var b = createVector(xpos + rez, ypos + rez / 2)
             var c = createVector(xpos + rez / 2, ypos + rez)
@@ -81,7 +85,6 @@ function draw() {
         }
     }
     zoff += 0.005
-
 }
 
 function getState(a, b, c, d) {
@@ -90,6 +93,7 @@ function getState(a, b, c, d) {
 
 function createline(v1, v2) {
     strokeWeight(2)
-    stroke(noise(v1.x, v1.y) * 255, noise(v2.x, v2.y) * 255, noise(v1.x, v2.y) * 255)
+        //stroke(noise(v1.x, v1.y) * 255, noise(v2.x, v2.y) * 255, noise(v1.x, v2.y) * 255)
+    stroke(0, 0, 0)
     line(v1.x, v1.y, v2.x, v2.y)
 }
