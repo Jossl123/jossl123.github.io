@@ -105,40 +105,40 @@ function setup() {
     light = new Light()
 }
 
-function draw() {
-    for (let Y = 0; Y < rez; Y++) {
-        for (let X = 0; X < rez; X++) {
-            for (let x = X; x < w; x += rez) {
-                for (let y = Y; y < h; y += rez) {
-                    var newDir = createVector(x - w / 2, h / 2 - y, 0);
-                    newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-                    newDir = cam.dir.copy().add(newDir)
-                    var color = castRay(cam.pos, newDir, 0)
-                    if (X + Y == 0) {
-                        for (let i = 0; i < rez; i++) {
-                            for (let j = 0; j < rez; j++) {
-                                if (x + i < w && y + j < h) {
-                                    var index = ((x + i) + (y + j) * w) * 4
-                                    imgData.data[index] = color[0]
-                                    imgData.data[index + 1] = color[1]
-                                    imgData.data[index + 2] = color[2]
-                                    imgData.data[index + 3] = 255;
-                                }
-                            }
-                        }
-                    } else {
-                        var index = (x + y * w) * 4
-                        imgData.data[index] = color[0]
-                        imgData.data[index + 1] = color[1]
-                        imgData.data[index + 2] = color[2]
-                        imgData.data[index + 3] = 255
-                    }
-                }
-            }
-            ctx.putImageData(imgData, 0, 0);
-        }
-    }
-}
+// function draw() {
+//     for (let Y = 0; Y < rez; Y++) {
+//         for (let X = 0; X < rez; X++) {
+//             for (let x = X; x < w; x += rez) {
+//                 for (let y = Y; y < h; y += rez) {
+//                     var newDir = createVector(x - w / 2, h / 2 - y, 0);
+//                     newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+//                     newDir = cam.dir.copy().add(newDir)
+//                     var color = castRay(cam.pos, newDir, 0)
+//                     if (X + Y == 0) {
+//                         for (let i = 0; i < rez; i++) {
+//                             for (let j = 0; j < rez; j++) {
+//                                 if (x + i < w && y + j < h) {
+//                                     var index = ((x + i) + (y + j) * w) * 4
+//                                     imgData.data[index] = color[0]
+//                                     imgData.data[index + 1] = color[1]
+//                                     imgData.data[index + 2] = color[2]
+//                                     imgData.data[index + 3] = 255;
+//                                 }
+//                             }
+//                         }
+//                     } else {
+//                         var index = (x + y * w) * 4
+//                         imgData.data[index] = color[0]
+//                         imgData.data[index + 1] = color[1]
+//                         imgData.data[index + 2] = color[2]
+//                         imgData.data[index + 3] = 255
+//                     }
+//                 }
+//             }
+//             ctx.putImageData(imgData, 0, 0);
+//         }
+//     }
+// }
 
 
 // function draw() {
@@ -217,29 +217,29 @@ function draw() {
 // }
 var lastPixColor = skyLight
 
-// function draw() {
-//     if (rez >= 1) {
-//         document.getElementById("pourcent").innerHTML = `index / 4 / h * w * w * 100%`
-//         for (let x = 0; x < w; x++) {
-//             for (let y = 0; y < h; y++) {
-//                 var index = (x + y * w) * 4
-//                 if (true) { //if pixel have not been calculed
-//                     var newDir = createVector(x - w / 2, h / 2 - y, 0);
-//                     newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-//                     newDir = cam.dir.copy().add(newDir)
-//                     var color = castRay(cam.pos, newDir, 0)
-//                     lastPixColor = color;
-//                 }
-//                 imgData.data[index] = lastPixColor[0]
-//                 imgData.data[index + 1] = lastPixColor[1]
-//                 imgData.data[index + 2] = lastPixColor[2]
-//                 imgData.data[index + 3] = 255;
-//             }
-//         }
-//         rez -= 1
-//         ctx.putImageData(imgData, 0, 0);
-//     }
-// }
+function draw() {
+    if (rez >= 1) {
+        document.getElementById("pourcent").innerHTML = `index / 4 / h * w * w * 100%`
+        for (let x = 0; x < w; x++) {
+            for (let y = 0; y < h; y++) {
+                var index = (x + y * w) * 4
+                if (true) { //if pixel have not been calculed
+                    var newDir = createVector(x - w / 2, h / 2 - y, 0);
+                    newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+                    newDir = cam.dir.copy().add(newDir)
+                    var color = castRay(cam.pos, newDir, 0)
+                    lastPixColor = color;
+                }
+                imgData.data[index] = lastPixColor[0]
+                imgData.data[index + 1] = lastPixColor[1]
+                imgData.data[index + 2] = lastPixColor[2]
+                imgData.data[index + 3] = 255;
+            }
+        }
+        rez -= 1
+        ctx.putImageData(imgData, 0, 0);
+    }
+}
 
 //cast the ray (call for every pixels) return a rgb color
 function castRay(origin, dir, bounceNb) {

@@ -14,7 +14,7 @@ function setup() {
             next[x][y] = 0
         }
     }
-    for (let x = 0; x < 50000; x++) {
+    for (let x = 0; x < 5000; x++) {
         particules.push(new Particule(width / 2, height / 2))
 
     }
@@ -122,13 +122,13 @@ class Particule {
             }
             // Turn right
             else if (senseWrite > senseLeft) {
-                this.dir.rotate(4)
-                this.dir.rotate(random(-1, 1))
+                this.dir.rotate(1)
+                this.dir.rotate(random(-0.1, 0.1))
             }
             // Turn left
             else if (senseLeft > senseWrite) {
-                this.dir.rotate(-4)
-                this.dir.rotate(random(-1, 1))
+                this.dir.rotate(-1)
+                this.dir.rotate(random(-0.1, 0.1))
             }
         }
 

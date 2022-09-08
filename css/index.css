@@ -14,16 +14,97 @@
     background-image: url("../img/pp/Planet.png");
 }
 
+#fractal {
+    background-image: url("../img/pp/fractal.png");
+}
+
 #transistoshare {
     background-image: url("../img/pp/transistoshare.png");
+}
+
+#mandlebrot {
+    background-image: url("../img/pp/mandlebrot.png");
 }
 
 #raymarching {
     background-image: url("../img/pp/raymarching.png");
 }
 
+#collatzConjecture {
+    background-image: url("../img/pp/collatzConjecture.png");
+}
+
+#lorrenzAttractor {
+    background-image: url("../img/pp/lorrenzAttractor.png");
+}
+
+#triangleMesh {
+    background-image: url("../img/pp/triangleMesh.png");
+}
+
+#marchingSquares {
+    background-image: url("../img/pp/marchingSquares.png");
+}
+
+#beautifulArt {
+    background-image: url("../img/pp/beautifulArt.png");
+}
+
+#learnPI {
+    background-image: url("../img/pp/learnPI.png");
+}
+
+#rayTracing3d {
+    background-image: url("../img/pp/rayTracing3d.png");
+}
+
 .project {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    text-align: center;
+    vertical-align: middle;
+    transition: filter 1s;
+}
+
+.name {
+    text-align: center;
+    font-size: larger;
+    font-weight: 700;
+    transition: transform 1s;
+}
+
+.project:hover>.name {
+    visibility: visible;
+    color: rgb(255, 255, 255);
+    filter: brightness(50%);
+    transform: scale(1.2);
+}
+
+.project:hover {
+    filter: brightness(80%);
+}
+
+.bg-c-0 {
+    background-color: #EC8C1A;
+}
+
+.bg-c-1 {
+    background-color: #FFFDE8;
+}
+
+.bg-c-2 {
+    background-color: #585567;
+}
+
+.bg-c-3 {
+    background-color: #3C374A;
+}
+
+.text-c-2 {
+    color: #585567;
+}
+
+.text-c-3 {
+    color: #3C374A;
 }
