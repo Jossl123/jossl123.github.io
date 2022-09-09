@@ -86,25 +86,48 @@
 }
 
 .bg-c-0 {
-    background-color: #EC8C1A;
+    background-color: var(--c-0);
 }
 
 .bg-c-1 {
-    background-color: #FFFDE8;
+    background-color: var(--c-1);
 }
 
 .bg-c-2 {
-    background-color: #585567;
+    background-color: var(--c-2);
 }
 
 .bg-c-3 {
-    background-color: #3C374A;
+    background-color: var(--c-3);
+}
+
+.text-c-0 {
+    color: var(--c-0);
+}
+
+.text-c-1 {
+    color: var(--c-1);
 }
 
 .text-c-2 {
-    color: #585567;
+    color: var(--c-2);
 }
 
 .text-c-3 {
-    color: #3C374A;
+    color: var(--c-3);
+}
+
+:root,
+ :root.light {
+    --c-0: #EC8C1A;
+    --c-1: #FFFDE8;
+    --c-2: #585567;
+    --c-3: #3C374A;
+}
+
+ :root.dark {
+    --c-0: #EC8C1A;
+    --c-1: #FFFDE8;
+    --c-2: #585567;
+    --c-3: #3C374A;
 }
