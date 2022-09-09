@@ -76,7 +76,6 @@
 
 .project:hover>.name {
     visibility: visible;
-    color: rgb(255, 255, 255);
     filter: brightness(50%);
     transform: scale(1.2);
 }
