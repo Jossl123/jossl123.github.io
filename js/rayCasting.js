@@ -81,12 +81,21 @@ function castRay() {
         var d = 8
         if (player.a > Math.PI / 2 && player.a < 3 * Math.PI / 2) {
             var posInGrid = Math.floor(player.x / worldCellSize)
-            var d = Math.abs((player.x - posInGrid * worldCellSize) / Math.cos(player.a))
+            d = Math.abs((player.x - posInGrid * worldCellSize) / Math.cos(player.a))
 
         } else if (player.a < Math.PI / 2 || player.a > 3 * Math.PI / 2) {
             var posInGrid = Math.floor(player.x / worldCellSize)
-            var d = Math.abs((player.x - (posInGrid + 1) * worldCellSize) / Math.cos(player.a))
+            d = Math.abs((player.x - (posInGrid + 1) * worldCellSize) / Math.cos(player.a))
         }
+
+        // if (player.a > Math.PI) {
+        //     var posInGrid = Math.floor(player.y / worldCellSize)
+        //     d = Math.min(d, Math.abs((player.y - posInGrid * worldCellSize) / Math.cos(player.a)))
+
+        // } else if (player.a < Math.PI) {
+        //     var posInGrid = Math.floor(player.y / worldCellSize)
+        //     d = Math.min(d, Math.abs((player.y - (posInGrid + 1) * worldCellSize) / Math.cos(player.a)))
+        // }
         if (d > maxDist * worldCellSize) d = maxDist * worldCellSize
         beginShape();
         vertex(player.x, player.y);
