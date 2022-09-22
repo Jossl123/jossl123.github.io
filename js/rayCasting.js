@@ -79,14 +79,62 @@ function drawWorld() {
 
 function castRay() {
     var ra = player.a //- (Math.PI / 4)
+    mapX = Math.floor(player.x / worldCellSize)
+    mapY = Math.floor(player.y / worldCellSize)
     var rx = player.x
     var ry = player.y
     for (let i = 0; i < 1; i++) {
+        mapX = Math.floor(player.x / worldCellSize)
+        mapY = Math.floor(player.y / worldCellSize)
+        var rayDirX = Math.cos(ra)
+        var rayDirY = Math.sin(ra)
+        deltaDistX = Math.sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
+        deltaDistY = Math.sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY))
+        var stepX, stepY, side
+        var hit = 0
+
+        //calculate step and initial sideDist
+        if (rayDirX < 0) {
+            stepX = -1;
+            sideDistX = (player.x / worldCellSize - mapX) * deltaDistX;
+        } else {
+            stepX = 1;
+            sideDistX = (mapX + 1 - player.x / worldCellSize) * deltaDistX;
+        }
+        if (rayDirY < 0) {
+            stepY = -1;
+            sideDistY = (player.y / worldCellSize - mapY) * deltaDistY;
+        } else {
+            stepY = 1;
+            sideDistY = (mapY + 1 - player.y / worldCellSize) * deltaDistY;
+        }
+
+        while (hit == 0) {
+            //jump to next map square, either in x-direction, or in y-direction
+            if (sideDistX < sideDistY) {
+                sideDistX += deltaDistX;
+                mapX += stepX;
+                side = 0;
+            } else {
+                sideDistY += deltaDistY;
+                mapY += stepY;
+                side = 1;
+            }
+            //Check if ray has hit a wall
+            if (world[mapY * worldX + mapX] > 0) hit = 1;
+        }
+        console.log(sideDistX, sideDistY)
+        var finalD = Math.min(sideDistX, sideDistY)
+        circle(player.x + rayDirX * finalD * worldCellSize, player.y + rayDirY * finalD * worldCellSize, 5)
+            //console.log(sideDistX, sideDistY)
+
+        return
+
         var dist = 0
         var sideDistX = 2 * worldCellSize
         var sideDistY = 2 * worldCellSize
-        var deltaDistX = worldCellSize / Math.cos(ra)
-        var deltaDistY = worldCellSize / Math.cos(ra + Math.PI / 2)
+            // var deltaDistX = worldCellSize / Math.cos(ra)
+            // var deltaDistY = worldCellSize / Math.cos(ra + Math.PI / 2)
         if (ra > Math.PI / 2 && ra < 3 * Math.PI / 2) {
             var posInGrid = Math.floor(player.x / worldCellSize)
             sideDistX = Math.abs((player.x - posInGrid * worldCellSize) / Math.cos(ra)) + 0.001
@@ -112,22 +160,24 @@ function castRay() {
 
         var rayPosInWorldX = Math.floor(rx / worldCellSize)
         var rayPosInWorldY = Math.floor(ry / worldCellSize)
-        var dist
-        if (sideDistX < sideDistY) var res = checkRayX(sideDistX, rx, ry, ra)
-        else res = checkRayY(sideDistY, rx, ry, ra)
-        if (res[0] > 0) {
-            stroke(255, 255, 255)
-        } else {
-            if (sideDistX > sideDistY) var res = checkRayX(sideDistX, rx, ry, ra)
-            else res = checkRayY(sideDistY, rx, ry, ra)
-            if (res[0] > 0) {
-                stroke(255, 255, 255)
-            } else {
+        var dist, res
+        if (sideDistX < sideDistY) res = checkRay(sideDistX, rx, ry, ra)
+        else res = checkRay(sideDistY, rx, ry, ra)
+        stroke(255, 255, 255)
+        fill(255, 255, 255)
+        if (res[0] == 0) {
+            if (sideDistX > sideDistY) var res = checkRay(sideDistX, rx, ry, ra)
+            else res = checkRay(sideDistY, rx, ry, ra)
+            if (res[0] == 0) {
                 stroke(0, 0, 255)
+                fill(0, 0, 255)
+            } else {
+                stroke(255, 0, 0)
+                fill(255, 0, 0)
             }
         }
         dist = res[1]
-        circle(Math.floor((rx + Math.cos(ra) * dist) / worldCellSize), Math.floor((ry + Math.sin(ra) * dist) / worldCellSize), 5)
+        circle(player.x + Math.cos(ra) * (dist), player.y + Math.sin(ra) * (dist), 5);
 
         return
 
@@ -148,18 +198,9 @@ function castRay() {
     }
 }
 
-function checkRayX(sideDistX, rx, ry, ra) {
-    dist = sideDistX
-    var rayPosInWorldX = Math.floor((rx + Math.cos(ra) * dist) / worldCellSize)
-    var rayPosInWorldY = Math.floor((ry + Math.sin(ra) * dist) / worldCellSize)
+function checkRay(sideDist, rx, ry, ra) {
+    var rayPosInWorldX = Math.floor((rx + Math.cos(ra) * sideDist) / worldCellSize)
+    var rayPosInWorldY = Math.floor((ry + Math.sin(ra) * sideDist) / worldCellSize)
     var content = world[rayPosInWorldY * worldX + rayPosInWorldX]
-    if (content > 0) return [content, dist]
-}
-
-function checkRayY(sideDistY, rx, ry, ra) {
-    dist = sideDistY
-    var rayPosInWorldX = Math.floor((rx + Math.cos(ra) * dist) / worldCellSize)
-    var rayPosInWorldY = Math.floor((ry + Math.sin(ra) * dist) / worldCellSize)
-    var content = world[rayPosInWorldY * worldX + rayPosInWorldX]
-    if (content > 0) return [content, dist]
+    return [content, sideDist]
 }
