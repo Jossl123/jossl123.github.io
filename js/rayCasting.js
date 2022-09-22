@@ -67,6 +67,7 @@ function drawPlayer() {
 }
 
 function drawWorld() {
+    stroke(0)
     for (let x = 0; x < worldX; x++) {
         for (let y = 0; y < worldY; y++) {
             fill(255)
@@ -77,31 +78,88 @@ function drawWorld() {
 }
 
 function castRay() {
+    var ra = player.a //- (Math.PI / 4)
+    var rx = player.x
+    var ry = player.y
     for (let i = 0; i < 1; i++) {
-        var d = 8
-        if (player.a > Math.PI / 2 && player.a < 3 * Math.PI / 2) {
+        var dist = 0
+        var sideDistX = 2 * worldCellSize
+        var sideDistY = 2 * worldCellSize
+        var deltaDistX = worldCellSize / Math.cos(ra)
+        var deltaDistY = worldCellSize / Math.cos(ra + Math.PI / 2)
+        if (ra > Math.PI / 2 && ra < 3 * Math.PI / 2) {
             var posInGrid = Math.floor(player.x / worldCellSize)
-            d = Math.abs((player.x - posInGrid * worldCellSize) / Math.cos(player.a))
+            sideDistX = Math.abs((player.x - posInGrid * worldCellSize) / Math.cos(ra)) + 0.001
 
-        } else if (player.a < Math.PI / 2 || player.a > 3 * Math.PI / 2) {
+        } else if (ra < Math.PI / 2 || ra > 3 * Math.PI / 2) {
             var posInGrid = Math.floor(player.x / worldCellSize)
-            d = Math.abs((player.x - (posInGrid + 1) * worldCellSize) / Math.cos(player.a))
+            sideDistX = Math.abs((player.x - (posInGrid + 1) * worldCellSize) / Math.cos(ra)) + 0.001
         }
 
-        // if (player.a > Math.PI) {
-        //     var posInGrid = Math.floor(player.y / worldCellSize)
-        //     d = Math.min(d, Math.abs((player.y - posInGrid * worldCellSize) / Math.cos(player.a)))
+        if (ra > Math.PI) {
+            var posInGrid = Math.floor(player.y / worldCellSize)
+            sideDistY = Math.abs((player.y - posInGrid * worldCellSize) / Math.cos(ra + Math.PI / 2)) + 0.001
 
-        // } else if (player.a < Math.PI) {
-        //     var posInGrid = Math.floor(player.y / worldCellSize)
-        //     d = Math.min(d, Math.abs((player.y - (posInGrid + 1) * worldCellSize) / Math.cos(player.a)))
-        // }
-        if (d > maxDist * worldCellSize) d = maxDist * worldCellSize
+        } else if (ra < Math.PI) {
+            var posInGrid = Math.floor(player.y / worldCellSize)
+            sideDistY = Math.abs((player.y - (posInGrid + 1) * worldCellSize) / Math.cos(ra + Math.PI / 2)) + 0.001
+        }
+
+        if (sideDistX > maxDist * worldCellSize) sideDistX = maxDist * worldCellSize
+        if (sideDistY > maxDist * worldCellSize) sideDistY = maxDist * worldCellSize
+
+        //check collisions
+
+        var rayPosInWorldX = Math.floor(rx / worldCellSize)
+        var rayPosInWorldY = Math.floor(ry / worldCellSize)
+        var dist
+        if (sideDistX < sideDistY) var res = checkRayX(sideDistX, rx, ry, ra)
+        else res = checkRayY(sideDistY, rx, ry, ra)
+        if (res[0] > 0) {
+            stroke(255, 255, 255)
+        } else {
+            if (sideDistX > sideDistY) var res = checkRayX(sideDistX, rx, ry, ra)
+            else res = checkRayY(sideDistY, rx, ry, ra)
+            if (res[0] > 0) {
+                stroke(255, 255, 255)
+            } else {
+                stroke(0, 0, 255)
+            }
+        }
+        dist = res[1]
+        circle(Math.floor((rx + Math.cos(ra) * dist) / worldCellSize), Math.floor((ry + Math.sin(ra) * dist) / worldCellSize), 5)
+
+        return
+
+
+
+
+
+        stroke(0, 255, 0)
         beginShape();
         vertex(player.x, player.y);
         vertex(player.x, player.y);
-        vertex(player.x + player.dx / player.speed * d, player.y + player.dy / player.speed * d);
-        vertex(player.x + player.dx / player.speed * d, player.y + player.dy / player.speed * d);
+        vertex(player.x + Math.cos(ra) * sideDistX, player.y + Math.sin(ra) * sideDistX);
+        vertex(player.x + Math.cos(ra) * sideDistX, player.y + Math.sin(ra) * sideDistX);
         endShape(CLOSE);
+        circle(player.x + Math.cos(ra) * sideDistX, player.y + Math.sin(ra) * sideDistX, 4);
+        circle(player.x + Math.cos(ra) * (sideDistY), player.y + Math.sin(ra) * (sideDistY), 4);
+        ra += Math.PI * 2 / 360
     }
+}
+
+function checkRayX(sideDistX, rx, ry, ra) {
+    dist = sideDistX
+    var rayPosInWorldX = Math.floor((rx + Math.cos(ra) * dist) / worldCellSize)
+    var rayPosInWorldY = Math.floor((ry + Math.sin(ra) * dist) / worldCellSize)
+    var content = world[rayPosInWorldY * worldX + rayPosInWorldX]
+    if (content > 0) return [content, dist]
+}
+
+function checkRayY(sideDistY, rx, ry, ra) {
+    dist = sideDistY
+    var rayPosInWorldX = Math.floor((rx + Math.cos(ra) * dist) / worldCellSize)
+    var rayPosInWorldY = Math.floor((ry + Math.sin(ra) * dist) / worldCellSize)
+    var content = world[rayPosInWorldY * worldX + rayPosInWorldX]
+    if (content > 0) return [content, dist]
 }
