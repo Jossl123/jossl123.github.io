@@ -64,24 +64,36 @@
     background-size: cover;
     text-align: center;
     vertical-align: middle;
-    transition: filter 1s;
+    transition: opacity 1s;
+    display: block;
+}
+
+.projectDiv {
+    position: relative;
+}
+
+.nameDiv {
+    position: absolute;
+    top: 25%;
+    text-align: center;
+    font-size: larger;
+    font-weight: 700;
+    opacity: 0;
+    transition: transform opacity 1s;
 }
 
 .name {
     text-align: center;
-    font-size: larger;
-    font-weight: 700;
-    transition: transform 1s;
 }
 
-.project:hover>.name {
+.projectDiv:hover>.nameDiv {
     visibility: visible;
-    filter: brightness(50%);
+    opacity: 1;
     transform: scale(1.2);
 }
 
 .project:hover {
-    filter: brightness(80%);
+    opacity: 0;
 }
 
 .bg-c-0 {
