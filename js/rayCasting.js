@@ -5,55 +5,69 @@ const worldCellSize = 50
 var world = [
     1, 1, 1, 1, 1, 1, 1, 1,
     1, 0, 1, 0, 0, 0, 0, 1,
-    1, 0, 1, 0, 0, 0, 0, 1,
+    1, 0, 1, 1, 1, 0, 1, 1,
     1, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 1, 0, 1,
-    1, 0, 0, 1, 0, 0, 0, 1,
+    1, 0, 1, 0, 1, 0, 0, 1,
+    1, 0, 1, 1, 1, 0, 1, 1,
     1, 0, 0, 0, 0, 0, 0, 1,
     1, 1, 1, 1, 1, 1, 1, 1,
 
 ]
 var player = {
-    fov: 120,
+    fov: 100,
     x: 70,
     y: 100,
-    a: 0,
-    dx: Math.cos(0) * 5,
-    dy: Math.sin(0) * 5,
-    speed: 3
+    a: Math.PI / 2,
+    dx: Math.cos(Math.PI / 2) * 5,
+    dy: Math.sin(Math.PI / 2) * 5,
+    speed: 1.2,
+    rotateSpeed: 0.05
 }
+
+var lineWidth
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
+    lineWidth = Math.floor(windowWidth / player.fov)
+
 }
 
 function draw() {
     background(100);
     keyDown()
-    drawWorld()
+        //drawWorld()
     drawPlayer()
     castRay()
 }
 
 function keyDown() {
-    if (keyIsDown(LEFT_ARROW)) {
-        player.a -= 0.1;
+    if (keyIsDown(LEFT_ARROW) || keyIsDown(81)) {
+        player.a -= player.rotateSpeed;
         if (player.a < 0) player.a += Math.PI * 2;
         player.dx = Math.cos(player.a) * player.speed;
         player.dy = Math.sin(player.a) * player.speed;
-    } else if (keyIsDown(RIGHT_ARROW)) {
-        player.a += 0.1;
+    } else if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
+        player.a += player.rotateSpeed;
         if (player.a > Math.PI * 2) player.a -= Math.PI * 2;
         player.dx = Math.cos(player.a) * player.speed;
         player.dy = Math.sin(player.a) * player.speed;
     }
-    if (keyIsDown(UP_ARROW)) {
-        player.y += player.dy;
-        player.x += player.dx;
-    } else if (keyIsDown(DOWN_ARROW)) {
-        player.y -= player.dy;
-        player.x -= player.dx;
+    if (keyIsDown(UP_ARROW) || keyIsDown(90)) {
+        if (!isColliding(player.a)) {
+            player.y += player.dy;
+            player.x += player.dx;
+        }
+    } else if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
+        if (!isColliding(player.a + Math.PI)) {
+            player.y -= player.dy;
+            player.x -= player.dx;
+        }
     }
+}
+
+function isColliding(a) {
+    if (getWallDist(a) < 0.2) return true
+    return false
 }
 
 function drawPlayer() {
@@ -78,75 +92,91 @@ function drawWorld() {
     }
 }
 
-function castRay() {
-    var ra = player.a - (player.fov / 2 * Math.PI / 180)
+function getWallDist(a) {
     mapX = Math.floor(player.x / worldCellSize)
     mapY = Math.floor(player.y / worldCellSize)
-    var rx = player.x
-    var ry = player.y
-    for (let i = -player.fov / 2; i < player.fov / 2; i++) {
-        mapX = Math.floor(player.x / worldCellSize)
-        mapY = Math.floor(player.y / worldCellSize)
-        var rayDirX = Math.cos(ra)
-        var rayDirY = Math.sin(ra)
-        deltaDistX = Math.sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
-        deltaDistY = Math.sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY))
-        var stepX, stepY, side
-        var hit = 0
-        var beginingSideX, beginingSideY, perpWallDist
+    var rayDirX = Math.cos(a)
+    var rayDirY = Math.sin(a)
+    deltaDistX = Math.sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
+    deltaDistY = Math.sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY))
+    var stepX, stepY, side
+    var hit = 0
+    var beginingSideX, beginingSideY, perpWallDist
 
-        //calculate step and initial sideDist
-        if (rayDirX < 0) {
-            stepX = -1;
-            sideDistX = (player.x / worldCellSize - mapX) * deltaDistX;
-            beginingSideX = sideDistX
+    //calculate step and initial sideDist
+    if (rayDirX < 0) {
+        stepX = -1;
+        sideDistX = (player.x / worldCellSize - mapX) * deltaDistX;
+        beginingSideX = sideDistX
+    } else {
+        stepX = 1;
+        sideDistX = (mapX + 1 - player.x / worldCellSize) * deltaDistX;
+        beginingSideX = sideDistX
+    }
+    if (rayDirY < 0) {
+        stepY = -1;
+        sideDistY = (player.y / worldCellSize - mapY) * deltaDistY;
+        beginingSideY = sideDistY
+    } else {
+        stepY = 1;
+        sideDistY = (mapY + 1 - player.y / worldCellSize) * deltaDistY;
+        beginingSideY = sideDistY
+    }
+    while (hit == 0) {
+        //jump to next map square, either in x-direction, or in y-direction
+        if (sideDistX < sideDistY) {
+            sideDistX += deltaDistX;
+            mapX += stepX;
+            side = 0;
         } else {
-            stepX = 1;
-            sideDistX = (mapX + 1 - player.x / worldCellSize) * deltaDistX;
-            beginingSideX = sideDistX
+            sideDistY += deltaDistY;
+            mapY += stepY;
+            side = 1;
         }
-        if (rayDirY < 0) {
-            stepY = -1;
-            sideDistY = (player.y / worldCellSize - mapY) * deltaDistY;
-            beginingSideY = sideDistY
-        } else {
-            stepY = 1;
-            sideDistY = (mapY + 1 - player.y / worldCellSize) * deltaDistY;
-            beginingSideY = sideDistY
-        }
-        while (hit == 0) {
-            //jump to next map square, either in x-direction, or in y-direction
-            if (sideDistX < sideDistY) {
-                sideDistX += deltaDistX;
-                mapX += stepX;
-                side = 0;
-            } else {
-                sideDistY += deltaDistY;
-                mapY += stepY;
-                side = 1;
-            }
-            //Check if ray has hit a wall
-            if (world[mapY * worldX + mapX] > 0) hit = 1;
-        }
-        if (side == 0) perpWallDist = (sideDistX - deltaDistX);
-        else perpWallDist = (sideDistY - deltaDistY);
-        circle(player.x + rayDirX * perpWallDist * worldCellSize, player.y + rayDirY * perpWallDist * worldCellSize, 5)
-            // beginShape();
-            // vertex(player.x, player.y);
-            // vertex(player.x, player.y);
-            // vertex(player.x + rayDirX * perpWallDist * worldCellSize, player.y + rayDirY * perpWallDist * worldCellSize);
-            // vertex(player.x + rayDirX * perpWallDist * worldCellSize, player.y + rayDirY * perpWallDist * worldCellSize);
-            // endShape(CLOSE);
+        //Check if ray has hit a wall
+        if (world[mapY * worldX + mapX] > 0) hit = 1;
+    }
+    if (side == 0) perpWallDist = (sideDistX - deltaDistX);
+    else perpWallDist = (sideDistY - deltaDistY);
+    return Math.cos(player.a - a) * perpWallDist
+}
+
+function castRay() {
+    var ra = player.a - (player.fov / 2 * Math.PI / 180)
+    fill(255, 100, 0)
+    rect(0, 0, windowWidth, windowHeight / 2)
+    fill(100, 255, 0)
+    rect(0, windowHeight / 2, windowWidth, windowHeight / 2)
+    for (let i = -player.fov / 2; i < player.fov / 2; i += 2) {
+        perpWallDist1 = getWallDist(ra)
         ra += Math.PI * 2 / 360
-        drawWallLine(i, Math.cos(player.a - ra) * perpWallDist)
+        perpWallDist2 = getWallDist(ra)
+            //circle(player.x + rayDirX * perpWallDist * worldCellSize, player.y + rayDirY * perpWallDist * worldCellSize, 5)
+        ra += Math.PI * 2 / 360
+        drawWallLine(i, perpWallDist1, perpWallDist2)
     }
 }
 
-function drawWallLine(pos, dist) {
+function drawWallLine(pos, dist1, dist2) {
     noStroke()
-    fill(255 - (dist * 255 / 5))
-    var height = windowHeight / dist
-    console.log(dist)
-        //rect(windowWidth / 2 + pos * 10, (windowHeight - (8 - dist) * 100) / 2, 10, (8 - dist) * 100)
-    rect(windowWidth / 2 + pos * 10, -height / 2 + windowHeight / 2, 10, height)
+    var height1 = windowHeight / dist1
+    var height2 = windowHeight / dist2
+    var ratioHeight = (height2 - height1) / lineWidth
+    var ratioDist = (dist2 - dist1) / lineWidth
+    if (ratioDist == 0) {
+        for (let i = 0; i < lineWidth * 2; i++) {
+            var dist = dist1 + ratioDist * i
+            var height = height1 + ratioHeight * i
+            fill((dist * 255 / 5), (dist * 255 / 5), 255 - (dist * 255 / 5))
+                //rect((windowWidth / 2 + pos * lineWidth) + i, -height / 2 + windowHeight / 2, (windowWidth / 2 + pos * lineWidth) + i, height / 2 + windowHeight / 2)
+            rect(windowWidth / 2 + pos * lineWidth + i, -height / 2 + windowHeight / 2, 2, height)
+        }
+
+    } else {
+        fill((dist1 * 255 / 5), (dist1 * 255 / 5), 255 - (dist1 * 255 / 5))
+        rect(windowWidth / 2 + pos * lineWidth, -height1 / 2 + windowHeight / 2, lineWidth, height1)
+        fill((dist2 * 255 / 5), (dist2 * 255 / 5), 255 - (dist2 * 255 / 5))
+        rect(windowWidth / 2 + pos * lineWidth + lineWidth, -height2 / 2 + windowHeight / 2, lineWidth, height2)
+    }
+    //rect(windowWidth / 2 + pos * 10, (windowHeight - (8 - dist) * 100) / 2, 10, (8 - dist) * 100)
 }
