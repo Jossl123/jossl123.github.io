@@ -67,7 +67,7 @@ function keyDown() {
 }
 
 function isColliding(a) {
-    if (getWallDist(a) < 0.2) return true
+    if (getWallDist(a)[0] < 0.1) return true
     return false
 }
 
@@ -148,6 +148,15 @@ function castRay() {
     rect(0, 0, windowWidth, windowHeight / 2)
     fill(50, 100, 0)
     rect(0, windowHeight / 2, windowWidth, windowHeight / 2)
+
+    // for (let i = 0; i < windowWidth / 2; i++) {
+    //     res = getWallDist(ra)
+    //     perpWallDist = Math.cos(player.a - ra) * res[0]
+    //     ra += windowWidth / 2 / player.fov * Math.PI / 180
+    //     drawWallLine(i, perpWallDist, res[1])
+    // }
+
+
     for (let i = -player.fov / 2; i < player.fov / 2; i++) {
         res = getWallDist(ra)
         perpWallDist = Math.cos(player.a - ra) * res[0]
