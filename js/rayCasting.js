@@ -35,9 +35,9 @@ function setup() {
 function draw() {
     background(100);
     keyDown()
-        //drawWorld()
     drawPlayer()
     castRay()
+    drawWorld()
 }
 
 function keyDown() {
@@ -149,28 +149,29 @@ function castRay() {
     fill(50, 100, 0)
     rect(0, windowHeight / 2, windowWidth, windowHeight / 2)
 
-    // for (let i = 0; i < windowWidth / 2; i++) {
-    //     res = getWallDist(ra)
-    //     perpWallDist = Math.cos(player.a - ra) * res[0]
-    //     ra += windowWidth / 2 / player.fov * Math.PI / 180
-    //     drawWallLine(i, perpWallDist, res[1])
-    // }
-
-
-    for (let i = -player.fov / 2; i < player.fov / 2; i++) {
+    for (let i = -player.fov * 2; i < player.fov * 2; i++) {
         res = getWallDist(ra)
         perpWallDist = Math.cos(player.a - ra) * res[0]
-        ra += Math.PI * 2 / 360
-            // perpWallDist2 = Math.cos(player.a - ra) * getWallDist(ra)
-            //     //circle(player.x + rayDirX * perpWallDist * worldCellSize, player.y + rayDirY * perpWallDist * worldCellSize, 5)
-            // ra += Math.PI * 2 / 360
-            //draw2WallLine(i, perpWallDist1, perpWallDist2)
-
+        ra += (Math.PI * 2 / 360) / 4
+            //ra += player.fov / windowWidth * Math.PI / 180
         drawWallLine(i, perpWallDist, res[1])
     }
+
+    //     for (let i = -player.fov / 2; i < player.fov / 2; i++) {
+    //         res = getWallDist(ra)
+    //         perpWallDist = Math.cos(player.a - ra) * res[0]
+    //         ra += Math.PI * 2 / 360
+    //             // perpWallDist2 = Math.cos(player.a - ra) * getWallDist(ra)
+    //             //     //circle(player.x + rayDirX * perpWallDist * worldCellSize, player.y + rayDirY * perpWallDist * worldCellSize, 5)
+    //             // ra += Math.PI * 2 / 360
+    //             //draw2WallLine(i, perpWallDist1, perpWallDist2)
+
+    //         drawWallLine(i, perpWallDist, res[1])
+    //     }
 }
 
 function drawWallLine(pos, dist, facing) {
+    lineWidth = Math.floor(windowWidth / player.fov * 4)
     noStroke()
     var height = windowHeight / dist
     if (facing) {
@@ -180,6 +181,7 @@ function drawWallLine(pos, dist, facing) {
     }
     rect(windowWidth / 2 + pos * lineWidth, -height / 2 + windowHeight / 2, lineWidth, height)
         //rect(windowWidth / 2 + pos * 10, (windowHeight - (8 - dist) * 100) / 2, 10, (8 - dist) * 100)
+        //rect(pos, (windowHeight - (8 - dist) * 100) / 2, 1, (8 - dist) * 100)
 }
 
 function draw2WallLine(pos, dist1, dist2) {
