@@ -14,7 +14,7 @@ var world = [
 
 ]
 var player = {
-    fov: 100,
+    fov: 90,
     x: 70,
     y: 100,
     a: Math.PI / 2,
@@ -28,7 +28,7 @@ var lineWidth
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    lineWidth = Math.floor(windowWidth / player.fov)
+    lineWidth = Math.floor(windowWidth / player.fov / 8)
 
 }
 
@@ -37,7 +37,7 @@ function draw() {
     keyDown()
     drawPlayer()
     castRay()
-    drawWorld()
+        //drawWorld()
 }
 
 function keyDown() {
@@ -149,13 +149,17 @@ function castRay() {
     fill(50, 100, 0)
     rect(0, windowHeight / 2, windowWidth, windowHeight / 2)
 
-    for (let i = -player.fov * 2; i < player.fov * 2; i++) {
+    fill(0)
+    rect(0, 0, windowWidth / 2 + (-player.fov * 4) * lineWidth, windowHeight)
+    for (let i = -player.fov * 4; i < player.fov * 4; i++) {
         res = getWallDist(ra)
         perpWallDist = Math.cos(player.a - ra) * res[0]
-        ra += (Math.PI * 2 / 360) / 4
+        ra += (Math.PI * 2 / 360) / 8
             //ra += player.fov / windowWidth * Math.PI / 180
         drawWallLine(i, perpWallDist, res[1])
     }
+    fill(0)
+    rect(windowWidth - (windowWidth / 2 + (-player.fov * 4) * lineWidth), 0, windowWidth / 2 + (-player.fov * 4) * lineWidth, windowHeight)
 
     //     for (let i = -player.fov / 2; i < player.fov / 2; i++) {
     //         res = getWallDist(ra)
@@ -171,9 +175,8 @@ function castRay() {
 }
 
 function drawWallLine(pos, dist, facing) {
-    lineWidth = Math.floor(windowWidth / player.fov * 4)
     noStroke()
-    var height = windowHeight / dist
+    var height = (windowHeight / dist)
     if (facing) {
         fill(255, 200 - (dist * 200 / 5), 0)
     } else {
