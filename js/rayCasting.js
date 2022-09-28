@@ -42,7 +42,7 @@ function setup() {
 function draw() {
     background(100);
     keyDown()
-    drawPlayer()
+        //drawPlayer()
     castRay()
         //drawWorld()
 }
@@ -186,10 +186,24 @@ function castRay() {
 
 }
 let wall = [
-    0, 1, 0, 1,
-    1, 0, 1, 0,
-    0, 1, 0, 1,
-    1, 0, 1, 0
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 1, 1, 0, 0,
+    0, 0, 1, 1, 0, 0, 0, 0,
+    0, 0, 1, 1, 1, 1, 0, 0,
+    0, 0, 1, 1, 1, 1, 0, 0,
+    0, 0, 0, 1, 0, 1, 0, 0
+]
+let wall2 = [
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 1, 1, 1, 0, 0,
+    0, 1, 1, 0, 0, 1, 1, 0,
+    0, 1, 1, 0, 0, 1, 1, 0,
+    0, 0, 0, 0, 0, 1, 1, 0,
+    0, 0, 0, 0, 1, 1, 0, 0,
+    0, 0, 0, 1, 1, 0, 0, 0,
+    0, 0, 0, 1, 1, 0, 0, 0
 ]
 
 function drawWallLine(pos, dist, facing, rayx, rayy) {
@@ -199,17 +213,20 @@ function drawWallLine(pos, dist, facing, rayx, rayy) {
     var y = -height / 2 + windowHeight / 2
 
     var offset
+    for (let i = 0; i < Math.sqrt(wall.length); i++) {
+        var depth = clamp(1 - dist / maxDist - 0.1 * facing, 0, 1)
+        var offset = Math.floor((((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize) / (worldCellSize / Math.sqrt(wall.length)))
+        chooseColor(i, offset, depth)
+        rect(x, y + i * (height / Math.sqrt(wall.length)), lineWidth, height / Math.sqrt(wall.length) + 1)
+    }
+}
+
+function chooseColor(i, offset, depth) {
     var red = 181
     var green = 186
     var blue = 137
-    for (let i = 0; i < Math.sqrt(wall.length); i++) {
-        var depth = clamp(1 - dist / maxDist - 0.1 * facing, 0, 1)
-        var offset = Math.floor((((player.y * facing) + (player.x * !facing) + (rayy * worldCellSize)) % worldCellSize) / (worldCellSize / Math.sqrt(wall.length)))
-        console
-        if ((offset + i) % 2 == 0) fill(171 * depth, 150 * depth, 53 * depth)
-        else fill(red * depth, green * depth, blue * depth)
-        rect(x, y + i * (height / Math.sqrt(wall.length)), lineWidth, height / Math.sqrt(wall.length) + 1)
-    }
+    if (wall[offset + i * Math.sqrt(wall.length)] == 0) fill(171 * depth, 150 * depth, 53 * depth)
+    else fill(red * depth, green * depth, blue * depth)
 }
 
 const clamp = (number, min, max) =>
