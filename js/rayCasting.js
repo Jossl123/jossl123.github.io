@@ -1,7 +1,7 @@
 var worldX = 16
 var worldY = 16
 var maxDist = 16
-const worldCellSize = 40
+const worldCellSize = 50
 var world = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -95,7 +95,7 @@ function drawWorld() {
         for (let y = 0; y < worldY; y++) {
             fill(255)
             if (world[y * worldX + x] == 1) fill(0)
-            square(x * 50, y * 50, 50)
+            square(x * worldCellSize, y * worldCellSize, worldCellSize)
         }
     }
 }
@@ -144,25 +144,42 @@ function getWallDist(a) {
         //Check if ray has hit a wall
         if (world[mapY * worldX + mapX] > 0) hit = 1;
     }
-    if (side == 0) perpWallDist = (sideDistX - deltaDistX);
-    else perpWallDist = (sideDistY - deltaDistY);
-    return [perpWallDist, side]
+    if (side == 0) {
+        perpWallDist = (sideDistX - deltaDistX);
+    } else {
+        perpWallDist = (sideDistY - deltaDistY)
+    }
+    return [perpWallDist, side, rayDirX, rayDirY]
+}
+
+function setGradient(c1, c2, height, width) {
+    // noprotect
+    noFill();
+    for (var y = 0; y < height; y++) {
+        var inter = map(y, 0, height, 0, 1);
+        var c = lerpColor(c1, c2, inter);
+        stroke(c);
+        line(0, y, width, y);
+    }
 }
 
 function castRay() {
     var ra = player.a - (player.fov / 2 * Math.PI / 180)
     fill(120, 108, 62)
     rect(0, 0, windowWidth, windowHeight / 2)
-    fill(129, 112, 68)
-    rect(0, windowHeight / 2, windowWidth, windowHeight / 2)
+    setGradient(color(151, 136, 78), color(0, 0, 0))
+        // fill(151, 136, 78)
+        // rect(0, windowHeight / 2, windowWidth, windowHeight / 2)
 
     fill(0)
     rect(0, 0, windowWidth / 2 + (-player.fov * 4) * lineWidth, windowHeight)
     for (let i = -player.fov * 4; i < player.fov * 4; i++) {
         res = getWallDist(ra)
+        res[2] *= res[0]
+        res[3] *= res[0]
         perpWallDist = Math.cos(player.a - ra) * res[0]
         ra += (Math.PI * 2 / 360) / 8
-        drawWallLine(i, perpWallDist, res[1])
+        drawWallLine(i, perpWallDist, res[1], res[2], res[3])
     }
     fill(0)
     rect(windowWidth - (windowWidth / 2 + (-player.fov * 4) * lineWidth), 0, windowWidth / 2 + (-player.fov * 4) * lineWidth, windowHeight)
@@ -175,27 +192,25 @@ let wall = [
     1, 0, 1, 0
 ]
 
-function drawWallLine(pos, dist, facing) {
+function drawWallLine(pos, dist, facing, rayx, rayy) {
     noStroke()
     var height = (windowHeight / dist)
-    if (facing) {
-        fill(255, 200 - (dist * 200 / (maxDist / 2)), 0)
-    } else {
-        fill(255, 200 - (dist * 200 / (maxDist / 2)) + 55, 0)
-    }
     var x = windowWidth / 2 + pos * lineWidth
     var y = -height / 2 + windowHeight / 2
 
+    var offset
+    var red = 181
+    var green = 186
+    var blue = 137
     for (let i = 0; i < Math.sqrt(wall.length); i++) {
-        if (i == 0) fill(240)
-            //else if (i == 3) fill(175, 200 - (dist * 200 / (maxDist / 2)), 128)
-        else {
-            if (facing) {
-                fill(255, 200 - (dist * 200 / (maxDist / 2)), 0)
-            } else {
-                fill(255, 200 - (dist * 200 / (maxDist / 2)) + 55, 0)
-            }
-        }
-        rect(x, y + i * (height / 4), lineWidth, height / 4)
+        var depth = clamp(1 - dist / maxDist - 0.1 * facing, 0, 1)
+        var offset = Math.floor((((player.y * facing) + (player.x * !facing) + (rayy * worldCellSize)) % worldCellSize) / (worldCellSize / Math.sqrt(wall.length)))
+        console
+        if ((offset + i) % 2 == 0) fill(171 * depth, 150 * depth, 53 * depth)
+        else fill(red * depth, green * depth, blue * depth)
+        rect(x, y + i * (height / Math.sqrt(wall.length)), lineWidth, height / Math.sqrt(wall.length) + 1)
     }
 }
+
+const clamp = (number, min, max) =>
+    Math.max(min, Math.min(number, max));
