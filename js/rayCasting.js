@@ -2,7 +2,8 @@ var worldX = 16
 var worldY = 16
 var maxDist = 16
 const worldCellSize = 50
-var wallPic
+var imgWall
+var imgSize = 236
 var world = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -227,7 +228,7 @@ function drawWallLine(pos, dist, facing, rayx, rayy) {
         //var offset = Math.floor((((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize) / (worldCellSize / Math.sqrt(wall.length)))
     var offset = (((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize)
         //chooseColor(i, offset, depth)
-    image(imgWall, x, y, lineWidth, height, 236 * (offset / (worldCellSize + 1)) + 1, 0, lineWidth, 236)
+    image(imgWall, x, y, lineWidth, height, imgSize * (offset / (worldCellSize + 1)) + 1, 0, lineWidth, imgSize)
     fill(0, 0, 0, 100 - depth * 100)
     rect(x, y, lineWidth, height)
 }
