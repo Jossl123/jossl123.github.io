@@ -1,17 +1,24 @@
-var worldX = 8
-var worldY = 8
-var maxDist = 8
-const worldCellSize = 50
+var worldX = 16
+var worldY = 16
+var maxDist = 16
+const worldCellSize = 40
 var world = [
-    1, 1, 1, 1, 1, 1, 1, 1,
-    1, 0, 1, 0, 0, 0, 0, 1,
-    1, 0, 1, 1, 1, 0, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 0, 1, 0, 0, 1,
-    1, 0, 1, 1, 1, 0, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 1,
-    1, 1, 1, 1, 1, 1, 1, 1,
-
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1,
+    1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+    1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1,
+    1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 ]
 var player = {
     fov: 90,
@@ -144,9 +151,9 @@ function getWallDist(a) {
 
 function castRay() {
     var ra = player.a - (player.fov / 2 * Math.PI / 180)
-    fill(100, 50, 0)
+    fill(120, 108, 62)
     rect(0, 0, windowWidth, windowHeight / 2)
-    fill(50, 100, 0)
+    fill(129, 112, 68)
     rect(0, windowHeight / 2, windowWidth, windowHeight / 2)
 
     fill(0)
@@ -155,58 +162,40 @@ function castRay() {
         res = getWallDist(ra)
         perpWallDist = Math.cos(player.a - ra) * res[0]
         ra += (Math.PI * 2 / 360) / 8
-            //ra += player.fov / windowWidth * Math.PI / 180
         drawWallLine(i, perpWallDist, res[1])
     }
     fill(0)
     rect(windowWidth - (windowWidth / 2 + (-player.fov * 4) * lineWidth), 0, windowWidth / 2 + (-player.fov * 4) * lineWidth, windowHeight)
 
-    //     for (let i = -player.fov / 2; i < player.fov / 2; i++) {
-    //         res = getWallDist(ra)
-    //         perpWallDist = Math.cos(player.a - ra) * res[0]
-    //         ra += Math.PI * 2 / 360
-    //             // perpWallDist2 = Math.cos(player.a - ra) * getWallDist(ra)
-    //             //     //circle(player.x + rayDirX * perpWallDist * worldCellSize, player.y + rayDirY * perpWallDist * worldCellSize, 5)
-    //             // ra += Math.PI * 2 / 360
-    //             //draw2WallLine(i, perpWallDist1, perpWallDist2)
-
-    //         drawWallLine(i, perpWallDist, res[1])
-    //     }
 }
+let wall = [
+    0, 1, 0, 1,
+    1, 0, 1, 0,
+    0, 1, 0, 1,
+    1, 0, 1, 0
+]
 
 function drawWallLine(pos, dist, facing) {
     noStroke()
     var height = (windowHeight / dist)
     if (facing) {
-        fill(255, 200 - (dist * 200 / 5), 0)
+        fill(255, 200 - (dist * 200 / (maxDist / 2)), 0)
     } else {
-        fill(255, 200 - (dist * 200 / 5) + 55, 0)
+        fill(255, 200 - (dist * 200 / (maxDist / 2)) + 55, 0)
     }
-    rect(windowWidth / 2 + pos * lineWidth, -height / 2 + windowHeight / 2, lineWidth, height)
-        //rect(windowWidth / 2 + pos * 10, (windowHeight - (8 - dist) * 100) / 2, 10, (8 - dist) * 100)
-        //rect(pos, (windowHeight - (8 - dist) * 100) / 2, 1, (8 - dist) * 100)
-}
+    var x = windowWidth / 2 + pos * lineWidth
+    var y = -height / 2 + windowHeight / 2
 
-function draw2WallLine(pos, dist1, dist2) {
-    noStroke()
-    var height1 = windowHeight / dist1
-    var height2 = windowHeight / dist2
-    var ratioHeight = (height2 - height1) / lineWidth
-    var ratioDist = (dist2 - dist1) / lineWidth
-    if (Math.abs(dist2 - dist1) < 0) {
-        for (let i = 0; i < lineWidth * 2; i++) {
-            var dist = dist1 + ratioDist * i
-            var height = height1 + ratioHeight * i
-            fill((dist * 255 / 5), (dist * 255 / 5), 255 - (dist * 255 / 5))
-                //rect((windowWidth / 2 + pos * lineWidth) + i, -height / 2 + windowHeight / 2, (windowWidth / 2 + pos * lineWidth) + i, height / 2 + windowHeight / 2)
-            rect(windowWidth / 2 + pos * lineWidth + i, -height / 2 + windowHeight / 2, 2, height)
+    for (let i = 0; i < Math.sqrt(wall.length); i++) {
+        if (i == 0) fill(240)
+            //else if (i == 3) fill(175, 200 - (dist * 200 / (maxDist / 2)), 128)
+        else {
+            if (facing) {
+                fill(255, 200 - (dist * 200 / (maxDist / 2)), 0)
+            } else {
+                fill(255, 200 - (dist * 200 / (maxDist / 2)) + 55, 0)
+            }
         }
-
-    } else {
-        fill(255 - (dist1 * 255 / 5))
-        rect(windowWidth / 2 + pos * lineWidth, -height1 / 2 + windowHeight / 2, lineWidth, height1)
-        fill((dist2 * 255 / 5), (dist2 * 255 / 5), 255 - (dist2 * 255 / 5))
-        rect(windowWidth / 2 + pos * lineWidth + lineWidth, -height2 / 2 + windowHeight / 2, lineWidth, height2)
+        rect(x, y + i * (height / 4), lineWidth, height / 4)
     }
-    //rect(windowWidth / 2 + pos * 10, (windowHeight - (8 - dist) * 100) / 2, 10, (8 - dist) * 100)
 }
