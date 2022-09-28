@@ -2,6 +2,7 @@ var worldX = 16
 var worldY = 16
 var maxDist = 16
 const worldCellSize = 50
+var wallPic
 var world = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -27,7 +28,7 @@ var player = {
     a: Math.PI / 2,
     dx: Math.cos(Math.PI / 2) * 5,
     dy: Math.sin(Math.PI / 2) * 5,
-    speed: 1.2,
+    speed: 1.4,
     rotateSpeed: 0.05
 }
 
@@ -36,7 +37,7 @@ var lineWidth
 function setup() {
     createCanvas(windowWidth, windowHeight);
     lineWidth = Math.floor(windowWidth / player.fov / 8)
-
+    imgWall = loadImage('./img/backroomWall.jpg')
 }
 
 function draw() {
@@ -213,12 +214,22 @@ function drawWallLine(pos, dist, facing, rayx, rayy) {
     var y = -height / 2 + windowHeight / 2
 
     var offset
-    for (let i = 0; i < Math.sqrt(wall.length); i++) {
-        var depth = clamp(1 - dist / maxDist - 0.1 * facing, 0, 1)
-        var offset = Math.floor((((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize) / (worldCellSize / Math.sqrt(wall.length)))
-        chooseColor(i, offset, depth)
-        rect(x, y + i * (height / Math.sqrt(wall.length)), lineWidth, height / Math.sqrt(wall.length) + 1)
-    }
+        // for (let i = 0; i < Math.sqrt(wall.length); i++) {
+        //     var depth = clamp(1 - dist / maxDist - 0.1 * facing, 0, 1)
+        //         //var offset = Math.floor((((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize) / (worldCellSize / Math.sqrt(wall.length)))
+        //     var offset = (((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize)
+        //         //chooseColor(i, offset, depth)
+        //     image(imgWall, x, y, lineWidth, height, 236 * (offset / (worldCellSize + 1)) + 1, 0, lineWidth, 236)
+        //     fill(0, 0, 0, 100 - depth * 100)
+        //     rect(x, y + i * (height / Math.sqrt(wall.length)), lineWidth, height / Math.sqrt(wall.length) + 1)
+        // }
+    var depth = clamp(1 - dist / maxDist - 0.1 * facing, 0, 1)
+        //var offset = Math.floor((((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize) / (worldCellSize / Math.sqrt(wall.length)))
+    var offset = (((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize)
+        //chooseColor(i, offset, depth)
+    image(imgWall, x, y, lineWidth, height, 236 * (offset / (worldCellSize + 1)) + 1, 0, lineWidth, 236)
+    fill(0, 0, 0, 100 - depth * 100)
+    rect(x, y, lineWidth, height)
 }
 
 function chooseColor(i, offset, depth) {
