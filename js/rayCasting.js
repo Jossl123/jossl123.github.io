@@ -1,36 +1,57 @@
-var worldX = 16
-var worldY = 16
+var worldX = 32
+var worldY = 32
 var maxDist = 16
 const worldCellSize = 50
 var imgWall
 var imgSize = 236
+var imgBloodSize = 1446
 var world = [
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1,
-    1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-    1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1,
-    1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1,
-    1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 ]
 var player = {
     fov: 90,
     x: 70,
     y: 100,
     a: Math.PI / 2,
-    dx: Math.cos(Math.PI / 2) * 5,
-    dy: Math.sin(Math.PI / 2) * 5,
-    speed: 1.4,
+    dx: Math.cos(Math.PI / 2),
+    dy: Math.sin(Math.PI / 2),
+    speed: 2,
     rotateSpeed: 0.05
+}
+var enemy = {
+    x: 400,
+    y: 400
 }
 
 var lineWidth
@@ -39,6 +60,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     lineWidth = Math.floor(windowWidth / player.fov / 8)
     imgWall = loadImage('./img/backroomWall.jpg')
+    imgBlood = loadImage('./img/sang.png')
 }
 
 function draw() {
@@ -50,21 +72,26 @@ function draw() {
 }
 
 function keyDown() {
+    if (keyIsDown(17)) {
+        player.speed = 5
+    } else {
+        player.speed = 2
+    }
     if (keyIsDown(LEFT_ARROW) || keyIsDown(81)) {
         player.a -= player.rotateSpeed;
         if (player.a < 0) player.a += Math.PI * 2;
-        player.dx = Math.cos(player.a) * player.speed;
-        player.dy = Math.sin(player.a) * player.speed;
+        player.dx = Math.cos(player.a);
+        player.dy = Math.sin(player.a);
     } else if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
         player.a += player.rotateSpeed;
         if (player.a > Math.PI * 2) player.a -= Math.PI * 2;
-        player.dx = Math.cos(player.a) * player.speed;
-        player.dy = Math.sin(player.a) * player.speed;
+        player.dx = Math.cos(player.a);
+        player.dy = Math.sin(player.a);
     }
     if (keyIsDown(UP_ARROW) || keyIsDown(90)) {
         if (!isColliding(player.a)) {
-            player.y += player.dy;
-            player.x += player.dx;
+            player.y += player.dy * player.speed;
+            player.x += player.dx * player.speed;
         }
     }
     //else if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
@@ -73,6 +100,7 @@ function keyDown() {
     //         player.x -= player.dx;
     //     }
     // }
+
 }
 
 function isColliding(a) {
@@ -151,7 +179,7 @@ function getWallDist(a) {
     } else {
         perpWallDist = (sideDistY - deltaDistY)
     }
-    return [perpWallDist, side, rayDirX, rayDirY]
+    return [perpWallDist, side, rayDirX, rayDirY, world[mapY * worldX + mapX]]
 }
 
 function setGradient(c1, c2, height, width) {
@@ -181,34 +209,13 @@ function castRay() {
         res[3] *= res[0]
         perpWallDist = Math.cos(player.a - ra) * res[0]
         ra += (Math.PI * 2 / 360) / 8
-        drawWallLine(i, perpWallDist, res[1], res[2], res[3])
+        drawWallLine(i, perpWallDist, res[1], ra, res[2], res[3], res[4])
     }
     fill(0)
     rect(windowWidth - (windowWidth / 2 + (-player.fov * 4) * lineWidth), 0, windowWidth / 2 + (-player.fov * 4) * lineWidth, windowHeight)
-
 }
-let wall = [
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 1, 1, 0, 0,
-    0, 0, 1, 1, 0, 0, 0, 0,
-    0, 0, 1, 1, 1, 1, 0, 0,
-    0, 0, 1, 1, 1, 1, 0, 0,
-    0, 0, 0, 1, 0, 1, 0, 0
-]
-let wall2 = [
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 1, 1, 1, 0, 0,
-    0, 1, 1, 0, 0, 1, 1, 0,
-    0, 1, 1, 0, 0, 1, 1, 0,
-    0, 0, 0, 0, 0, 1, 1, 0,
-    0, 0, 0, 0, 1, 1, 0, 0,
-    0, 0, 0, 1, 1, 0, 0, 0,
-    0, 0, 0, 1, 1, 0, 0, 0
-]
 
-function drawWallLine(pos, dist, facing, rayx, rayy) {
+function drawWallLine(pos, dist, facing, a, rayx, rayy, wall) {
     noStroke()
     var height = (windowHeight / dist)
     var x = windowWidth / 2 + pos * lineWidth
@@ -227,8 +234,10 @@ function drawWallLine(pos, dist, facing, rayx, rayy) {
     var depth = clamp(1 - dist / maxDist - 0.1 * facing, 0, 1)
         //var offset = Math.floor((((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize) / (worldCellSize / Math.sqrt(wall.length)))
     var offset = (((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize)
+    if (!facing && a > Math.PI / 2 && a < Math.PI * 3 / 2 || facing && a < Math.PI) offset = worldCellSize - offset
         //chooseColor(i, offset, depth)
     image(imgWall, x, y, lineWidth, height, imgSize * (offset / (worldCellSize + 1)) + 1, 0, lineWidth, imgSize)
+    if (wall == 2) image(imgBlood, x, y, lineWidth, height, imgBloodSize * (offset / (worldCellSize + 1)) + 1, 0, lineWidth, imgBloodSize)
     fill(0, 0, 0, 100 - depth * 100)
     rect(x, y, lineWidth, height)
 }
