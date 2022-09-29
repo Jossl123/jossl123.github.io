@@ -5,6 +5,7 @@ const worldCellSize = 50
 var imgWall
 var imgSize = 236
 var imgBloodSize = 1446
+var frameNb = 4
 var music
 var world = [
     1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1,
@@ -56,12 +57,13 @@ var enemy = {
 }
 
 var lineWidth
+var time = 0
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     lineWidth = Math.floor(windowWidth / player.fov / 8)
-    imgWall = loadImage('./img/backroomWall.jpg')
-    imgSize = 236
+    imgWall = loadImage('./img/test.png')
+    imgSize = 200
     imgBlood = loadImage('./img/sang.png')
     imgBloodSize = 1446
     music = new Audio('./music/The_backroom_dance_Waka_Waka.mp3');
@@ -74,6 +76,7 @@ function draw() {
         //drawPlayer()
     castRay()
         //drawWorld()
+    if (frameCount % 10 == 0) time = (time + 1) % frameNb
 }
 
 function keyDown() {
@@ -230,7 +233,7 @@ function drawWallLine(pos, dist, facing, a, rayx, rayy, wall) {
     var offset = (((player.y * !facing) + (player.x * facing) + (((rayy * !facing) || rayx * facing) * worldCellSize)) % worldCellSize)
     if (!facing && a > Math.PI / 2 && a < Math.PI * 3 / 2 || facing && a < Math.PI) offset = worldCellSize - offset
         //chooseColor(i, offset, depth)
-    image(imgWall, x, y, lineWidth, height, imgSize * (offset / (worldCellSize + 1)) + 1, 0, lineWidth, imgSize)
+    image(imgWall, x, y, lineWidth, height, (imgSize * (time % 2)) + imgSize * (offset / (worldCellSize + 1)) + 1, (imgSize * Math.floor(time / 2)), lineWidth, imgSize)
     if (wall == 2) image(imgBlood, x, y, lineWidth, height, imgBloodSize * (offset / (worldCellSize + 1)) + 1, 0, lineWidth, imgBloodSize)
     fill(0, 0, 0, 255 - depth * 255)
     rect(x, y, lineWidth, height)
