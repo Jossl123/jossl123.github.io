@@ -12,7 +12,7 @@ var world = [
     1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1,
     1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1,
     1, 0, 0, 3, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1,
+    4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1,
     1, 0, 1, 0, 2, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1,
     1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1,
     1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
@@ -62,8 +62,8 @@ var time = 0
 function setup() {
     createCanvas(windowWidth, windowHeight);
     lineWidth = Math.floor(windowWidth / player.fov / 8)
-    imgWall = [loadImage('./img/backroomWall.jpg'), loadImage('./img/sang.png'), loadImage('./img/test.png')]
-    imgSize = [236, 1446, 200]
+    imgWall = [loadImage('./img/backroomWall.jpg'), loadImage('./img/sang.png'), loadImage('./img/test.png'), loadImage('./img/light.png')]
+    imgSize = [236, 1446, 200, 350]
     music = new Audio('./music/The_backroom_dance_Waka_Waka.mp3');
     music.loop = true;
 }
@@ -243,7 +243,10 @@ function drawWallLine(pos, dist, facing, a, rayx, rayy, wall) {
         var wallPic = imgWall[2]
         var wallPicSize = imgSize[2]
         image(wallPic, x, y, lineWidth, height, (wallPicSize * (time % 2)) + wallPicSize * (offset / (worldCellSize + 1)) + 1, (wallPicSize * Math.floor(time / 2)), lineWidth, wallPicSize)
-
+    } else if (wall == 4) {
+        var wallPic = imgWall[3]
+        var wallPicSize = imgSize[3]
+        image(wallPic, x, y, lineWidth, height, (wallPicSize * (time % 2)) + wallPicSize * (offset / (worldCellSize + 1)) + 1, (wallPicSize * Math.floor(time / 2)), lineWidth, wallPicSize)
     }
 
     //  if (wall == 2) image(imgBlood, x, y, lineWidth, height, imgBloodSize * (offset / (worldCellSize + 1)) + 1, 0, lineWidth, imgBloodSize)
