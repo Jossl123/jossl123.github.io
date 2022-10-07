@@ -90,6 +90,20 @@ function draw() {
     castRay()
         //drawWorld()
     if (frameCount % 10 == 0) time = (time + 1) % frameNb
+        //drawEnemy()
+}
+
+function drawEnemy() {
+    var vy = enemy.y - player.y
+    var vx = enemy.x - player.x
+    var s = Math.sqrt(vx ** 2 + vy ** 2)
+    vy /= s
+    vx /= s
+    var s2 = Math.sqrt(player.dy ** 2 + player.dx ** 2)
+    var vx2 = player.dx / s2
+    var vy2 = player.dy / s2
+    var angle = Math.atan2(vy - vy2, vx - vx2) * (180 / Math.PI)
+    console.log(angle)
 }
 
 function keyDown() {
@@ -160,8 +174,6 @@ function getMouseDirection(e) {
         oldX = windowWidth / 2;
         oldY = windowHeight / 2;
     }
-    if (e.pageX <= 0) document.getElementById("cursor").style.left = windowWidth - 1
-    if (e.pageY <= 0) document.getElementById("cursor").style.top = windowHeight - 1
     var xMove = e.pageX - oldX;
     var yMove = e.pageY - oldY;
     oldX = e.pageX
