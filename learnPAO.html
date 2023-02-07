@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+
+    </style>
+    <title>Projects - Learn PAO</title>
+</head>
+
+<body id="body" class="flex flex-col items-center">
+    <div class="flex gap-2 m-2">
+        <div>
+            <h1 id="seq" class="text-xl font-bold p-2"></h1>
+            <h1 id="soluce" class="text-xl "></h1>
+        </div>
+        <button id="geneSeq" onclick="geneSeq()" class="bg-red-500 rounded p-2">regene</button>
+        <button id="showTable" onclick="showTable()" class="bg-green-500 rounded p-2">show table</button>
+        <button id="showSoluce" onclick="showSoluce()" class="bg-green-500 rounded p-2">show soluce</button>
+    </div>
+    <table id="pao"></table>
+    <script src="./js/PAO.js"></script>
+    <script>
+        var seq = ""
+
+        function showSoluce() {
+            if (document.getElementById("soluce").innerHTML == "") {
+                var res = ""
+                for (let i = 0; i < seq.length; i += 2) {
+                    pos = parseInt(seq[i] + seq[i + 1]) - 1
+                    type = (i / 2) % Object.keys(pao[pos]).length
+                    word = pao[pos][Object.keys(pao[pos])[type]]
+                    if (word == "") word = "..."
+                    if (type == 2) res += "avec "
+                    res += word + " "
+                }
+                document.getElementById("soluce").innerHTML = res
+
+                document.getElementById("showSoluce").innerHTML = "hide soluce"
+            } else {
+                document.getElementById("soluce").innerHTML = ""
+                document.getElementById("showSoluce").innerHTML = "show soluce"
+            }
+        }
+
+        function geneTable() {
+            var result = ""
+            for (var i = 0; i < pao.length; i++) {
+                result += "<tr>";
+                result += "<td>" + (i + 1) + "</td>";
+                for (var key in pao[i]) {
+                    result += "<td>" + pao[i][key] + "</td>";
+                }
+                result += "</tr>";
+            }
+            document.getElementById("pao").innerHTML += result
+            return result;
+        }
+
+        function showTable() {
+            if (document.getElementById("pao").innerHTML == "") {
+                geneTable()
+                document.getElementById("showTable").innerHTML = "hide table"
+            } else {
+                document.getElementById("pao").innerHTML = ""
+                document.getElementById("showTable").innerHTML = "show table"
+            }
+        }
+
+        function randomSeq(n = 3) {
+            seq = ""
+            for (let i = 0; i < n; i++) {
+                seq += Math.floor(Math.random() * (10));
+                seq += Math.floor(Math.random() * (10));
+            }
+            return seq
+        }
+
+        function geneSeq() {
+            document.getElementById("seq").innerHTML = randomSeq()
+            if (document.getElementById("soluce").innerHTML != "") {
+                showSoluce()
+                showSoluce()
+            }
+        }
+        geneSeq()
+    </script>
+</body>
+
+</html>
