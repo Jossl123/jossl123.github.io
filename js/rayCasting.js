@@ -51,7 +51,7 @@ var player = {
     rotateSpeed: 0.04
 }
 var enemy = {
-    x: 400,
+    x: 800,
     y: 100
 }
 
@@ -94,20 +94,15 @@ function draw() {
 }
 
 function drawEnemy() {
-    var vy = enemy.y - player.y
-    var vx = enemy.x - player.x
-    var s = Math.sqrt(vx ** 2 + vy ** 2)
-    vy /= s
-    vx /= s
-    var s2 = Math.sqrt(player.dy ** 2 + player.dx ** 2)
-    var vx2 = player.dx / s2
-    var vy2 = player.dy / s2
-    var angle = Math.atan2(vy - vy2, vx - vx2) * (180 / Math.PI)
+    let en = createVector(enemy.x - player.x, enemy.y - player.y)
+    let pl = createVector(player.dx, player.dy)
+    let angle = degrees(pl.angleBetween(en))
     console.log(angle)
+    rect(windowWidth / 2 + angle * 360 / 100, windowHeight / 2, 10, 10)
 }
 
 function keyDown() {
-    if (keyIsDown(17)) {
+    if (keyIsDown(16)) {
         player.speed = 5
     } else {
         player.speed = 2
