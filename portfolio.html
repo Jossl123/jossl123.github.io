@@ -13,6 +13,8 @@
 
 <body>
     <header>
+        <a href="#">
+            <img class="logo" src="./img/email.png" alt=""></a>
         <a href="https://github.com/Jossl123">
             <img class="logo" src="./img/githubLogo.png" alt=""></a>
         <a href="#">
@@ -20,12 +22,31 @@
     </header>
 
     <main>
-        <div class="postit">
-            <h1>Hi, <br> I'm Josselin</h1>
-            <p>I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
-        </div>
-        <div class="postit">
-            <p>Full stack developper</p>
+        <div id="firstView">
+            <div>
+                <h1>Hi, <br> I'm Josselin</h1>
+                <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
+            </div>
+            <div id="skills">
+                <div>
+                    <p>Nodejs, javascript</p>
+                    <div>
+                        <div></div>
+                    </div>
+                </div>
+                <div>
+                    <p>Nodejs, javascript</p>
+                    <div>
+                        <div></div>
+                    </div>
+                </div>
+                <div>
+                    <p>Nodejs, javascript</p>
+                    <div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -51,24 +72,39 @@
         }
         
         main {
+            padding-top: 10%;
+            padding-inline: 20%;
+        }
+        
+        #firstView {
+            font-size: x-large;
             gap: 1rem;
             display: flex;
             align-items: center;
             flex-direction: row;
-            padding-top: 20rem;
-            padding-left: 20rem;
         }
         
-        main div:nth-child(2) {
-            background-color: brown;
-            height: 10rem;
+        main>div {
+            padding: 1rem;
+        }
+        
+        #skills {}
+        
+        #skills>div {
             display: flex;
             align-items: center;
+            margin-left: 2rem;
         }
         
-        .postit {
-            padding: 1rem;
-            max-width: 20rem;
+        #skills>div div {
+            width: 30rem;
+            background-color: gray;
+            height: 10px;
+        }
+        
+        #skills>div>div>div:nth-child(1) {
+            width: 20rem;
+            background-color: red;
         }
     </style>
 </body>
