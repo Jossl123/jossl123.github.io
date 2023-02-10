@@ -50,10 +50,14 @@
         </div>
     </main>
 
-    <div id="retexs" draggable="true" 
-    ondrag="element_drag(event)"
-    ondragstart="element_drag_ghost(event)">
+    <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
     </div>
+
+    <div>
+        <h1>Presnfiuh h fe</h1>
+        <p>efozieh fuhz iu </p>
+    </div>
+
     <footer></footer>
     <style>
         html {
@@ -124,7 +128,6 @@
         #retexs {
             display: flex;
             gap: 1rem;
-            overflow: hidden;
             position: absolute;
         }
         
@@ -133,10 +136,40 @@
             left: 50%;
             transform: translate(-50%, -50%);
             display: flex;
-            background-color: black;
+            background-color: rgb(24, 24, 24);
             height: 80%;
             width: 80%;
             position: absolute;
+            flex-direction: column;
+            padding: 0.5rem;
+        }
+        
+        .retex button {
+            border: none;
+            background-color: rgb(24, 24, 24);
+            width: fit-content;
+        }
+        
+        .retex button img {
+            filter: invert(1);
+            cursor: pointer;
+        }
+        
+        .retex>div {
+            display: flex;
+            padding-inline: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .retex>div>div {
+            display: flex;
+            text-align: justify;
+            flex-direction: column;
+            flex-basis: calc(50%);
+        }
+        
+        .retex>div>div>img {
+            width: 100%;
         }
     </style>
     <script>
@@ -181,35 +214,35 @@
 
         window.onload = function() {
             Object.entries(data).forEach(retex => {
-                var r = document.createElement("button")
-                r.addEventListener("click", () => {
-                    showRetex(event)
-                })
-                r.id = retex[0]
-                r.classList = "retexBut"
-                r.style.background = `url("./img/pp/${retex[0]}.png")`
-                document.getElementById("retexs").appendChild(r)
+                var button = `<button id="${retex[0]}" onclick="showRetex(event)" class="retexBut" style="background: url('./img/pp/${retex[0]}.png');"></button>`
+                document.getElementById("retexs").innerHTML += button
             })
         }
         var canClose = true
 
         function showRetex(e) {
+            console.log("rtest")
             if (isRetex()) return
             id = e.target.id
-            var div = document.createElement("div")
-
-            var quit = document.createElement("button")
-            quit.addEventListener("click", (e) => {
-                hideRetex()
-            })
-            var title = document.createElement("div")
-            title.innerHTML += data[id].title
-            div.appendChild(quit)
-            div.appendChild(title)
-            div.classList = "retex"
-            div.id = "visibleRetex"
-            document.body.appendChild(div)
-
+            var div = `<div class="retex" id="visibleRetex">
+                <button onclick="hideRetex()"><img src="./img/closeIcon.png"></button>
+                <div>
+                    <div><img src="./img/pp/${id}.png" alt=""></div>
+                    <div>
+                        <h3>${data[id].title}</h3>
+                        <p>clskebf oiuhf oriugh eoirugh oiezurgh oeirugh oeirugh qoiuh </p>
+                    </div>
+                    <div>
+                        <h3>Method</h3>
+                        <p>clskebf oiuhf oriugh eoirugh oiezurgh oeirugh oeirugh qoiuh </p>
+                    </div>
+                    <div>
+                        <h3>Skills</h3>
+                        <p>clskebf oiuhf oriugh eoirugh oiezurgh oeirugh oeirugh qoiuh </p>
+                    </div>
+                </div>
+            </div>`
+            document.body.innerHTML += div
             canClose = false
         }
 
@@ -217,7 +250,7 @@
             document.getElementById("visibleRetex").parentNode.removeChild(document.getElementById("visibleRetex"))
         }
         document.addEventListener("click", (e) => {
-            if (canClose && e.target.id != "visibleRetex" && isRetex()) {
+            if (canClose && !e.target.closest("#visibleRetex") && isRetex()) {
                 hideRetex()
             } else {
                 canClose = true
@@ -228,26 +261,20 @@
             var element = document.getElementById("visibleRetex")
             return typeof(element) != 'undefined' && element != null
         }
-        var element_drag, beginingx
-        function element_drag(event) {
-            element_dragged = event.target.id
-            drop(event)
-        }
+        var beginingx
 
         function element_drag_ghost(event) {
             event.dataTransfer.setDragImage(document.createElement('img'), 0, 0)
         }
 
         function drop(event) {
-            var dm = document.getElementById(element_dragged)
-
-            const matrix = new DOMMatrixReadOnly(document.getElementById('retexs').style.transform)
-            const translateX = matrix.m41;
-            console.log(translateX) 
+            var dm = document.getElementById("retexs")
             if (event.clientX != 0) {
-                var difx = -beginingx+ event.clientX
-                //console.log(difx)
-                dm.style.transform = `translateX(${translateX+difx}px)`
+                var difx = -beginingx + event.clientX
+                const matrix = new DOMMatrixReadOnly(document.getElementById('retexs').style.transform)
+                const translateX = matrix.m41;
+                dm.style.transform = `translateX(${Math.min(0, Math.max(translateX+difx, -dm.offsetWidth + window.innerWidth))}px)`
+
             }
             beginingx = event.clientX
             event.preventDefault()
@@ -256,12 +283,12 @@
         document.addEventListener("mousemove", (event) => {
             beginingx = event.clientX
         })
+
         function drag_over(event) {
             event.preventDefault()
             return false
         }
-
-</script>
+    </script>
 </body>
 
 </html>
