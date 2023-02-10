@@ -51,16 +51,6 @@
     </main>
 
     <div id="retexs">
-        <button class="retexBut"></button>
-        <button class="retexBut"></button>
-        <button class="retexBut"></button>
-        <button class="retexBut"></button>
-        <button class="retexBut"></button>
-        <button class="retexBut"></button>
-        <button class="retexBut"></button>
-        <button class="retexBut"></button>
-        <button class="retexBut"></button>
-        <button class="retexBut"></button>
     </div>
     <footer></footer>
     <style>
@@ -120,16 +110,101 @@
         }
         
         .retexBut {
-            background: url("./img/pp/beautifulArt.png");
-            height: 10rem;
-            width: 10rem;
+            border: none;
+            background-position: center center !important;
+            background-size: cover !important;
+            height: 15rem;
+            width: 50rem;
         }
         
         #retexs {
             display: flex;
+            gap: 1rem;
             overflow: hidden;
         }
+        
+        .retex {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            background-color: black;
+            height: 80%;
+            width: 80%;
+            position: absolute;
+        }
     </style>
+    <script>
+        var data = {
+            "beautifulArt": {
+                "title": "Beautiful Art",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
+            "learnPI": {
+                "title": "Learn PI",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
+            "rayTracing3d": {
+                "title": "Ray Tracing 3d",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
+        }
+
+        window.onload = function() {
+            Object.entries(data).forEach(retex => {
+                var r = document.createElement("button")
+                r.addEventListener("click", () => {
+                    showRetex(event)
+                })
+                r.id = retex[0]
+                r.classList = "retexBut"
+                r.style.background = `url("./img/pp/${retex[0]}.png")`
+                document.getElementById("retexs").appendChild(r)
+            })
+        }
+        var canClose = true
+
+        function showRetex(e) {
+            id = e.target.id
+            var div = document.createElement("div")
+
+            var quit = document.createElement("button")
+            quit.addEventListener("click", (e) => {
+                hideRetex()
+            })
+            var title = document.createElement("div")
+            title.innerHTML += data[id].title
+            div.appendChild(quit)
+            div.appendChild(title)
+            div.classList = "retex"
+            div.id = "visibleRetex"
+            document.body.appendChild(div)
+
+            canClose = false
+        }
+
+        function hideRetex() {
+            document.getElementById("visibleRetex").parentNode.removeChild(document.getElementById("visibleRetex"))
+        }
+        document.body.addEventListener("click", (e) => {
+            if (canClose && e.target.id != "visibleRetex" && !isRetex()) {
+                hideRetex()
+            } else {
+                canClose = true
+            }
+        })
+
+        function isRetex() {
+            var element = document.getElementById("visibleRetex")
+            return typeof(element) != 'undefined' && element != null
+        }
+    </script>
 </body>
 
 </html>
