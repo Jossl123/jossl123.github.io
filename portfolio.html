@@ -154,6 +154,24 @@
                 "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
                 "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
             },
+            "celullarAutomata": {
+                "title": "Beautiful Art",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
+            "hilbertCurve": {
+                "title": "Learn PI",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
+            "quadTree": {
+                "title": "Ray Tracing 3d",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
         }
 
         window.onload = function() {
@@ -171,6 +189,7 @@
         var canClose = true
 
         function showRetex(e) {
+            if (isRetex()) return
             id = e.target.id
             var div = document.createElement("div")
 
@@ -192,8 +211,9 @@
         function hideRetex() {
             document.getElementById("visibleRetex").parentNode.removeChild(document.getElementById("visibleRetex"))
         }
-        document.body.addEventListener("click", (e) => {
-            if (canClose && e.target.id != "visibleRetex" && !isRetex()) {
+        document.addEventListener("click", (e) => {
+            console.log("tres")
+            if (canClose && e.target.id != "visibleRetex" && isRetex()) {
                 hideRetex()
             } else {
                 canClose = true
