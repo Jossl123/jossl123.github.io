@@ -20,17 +20,18 @@ document.addEventListener("mousemove", (e) => {
 class Ball {
     constructor(pos, v) {
         this.pos = pos;
-        this.y = 0;
+        this.gravity = createVector(0, 50)
+        this.stringLength = 400
         this.s = 60;
         this.v = v;
-        this.m = 0.15;
     }
     update() {
-        if (dist(this.pos.x, this.pos.y, mousePos.x, mousePos.y) > 200) {
-            this.v = mousePos.copy().sub(this.pos).normalize().mult((dist(this.pos.x, this.pos.y, mousePos.x, mousePos.y) - 200))
+        if (dist(this.pos.x, this.pos.y, mousePos.x, mousePos.y) > this.stringLength) {
+            this.v.add(mousePos.copy().sub(this.pos).normalize().mult(min((dist(this.pos.x, this.pos.y, mousePos.x, mousePos.y) - this.stringLength), this.stringLength)))
         }
-        this.v.add(createVector(0, 9.81))
-        this.v.mult(0.9)
+        console.log(this.v)
+        this.v.mult(0.95)
         this.pos.add(this.v)
+        this.pos.add(this.gravity)
     }
 }
