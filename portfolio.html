@@ -21,25 +21,52 @@
             <img class="logo" src="./img/email.png" alt=""></a>
     </header>
     <canvas id="mouse_flow"></canvas>
-    <main>
-        <div id="firstView">
-            <div id="presentation">
-                <h1>Hi, <br> I'm Josselin</h1>
-                <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
+    <div id="first_block">
+        <main>
+            <div id="firstView">
+                <div id="presentation">
+                    <h1>Hi, <br> I'm Josselin</h1>
+                    <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
+                </div>
+                <div id="canvas_container"></div>
             </div>
-            <div id="canvas_container"></div>
-        </div>
-    </main>
+        </main>
 
-    <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
+        <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
+        </div>
+        <br>
     </div>
 
-    <article>
-        <h1>Presnfiuh h fe</h1>
-        <p>efozieh fuhz iu </p>
-    </article>
-
-
+    <div id="second_block">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h1>Competitions</h1>
+        <h1>Hobbies</h1>
+    </div>
     <footer></footer>
     <style>
         html {
@@ -67,6 +94,27 @@
             top: 0;
             left: 0;
             position: absolute;
+        }
+        
+        #first_block {
+            position: sticky;
+            top: -100px;
+            margin-bottom: 0rem;
+        }
+        
+        #first_block * {
+            z-index: 10 !important;
+        }
+        
+        #second_block {
+            position: relative;
+            z-index: 20 !important;
+            background-color: white;
+        }
+        
+        #second_block * {
+            color: black;
+            z-index: 20 !important;
         }
         
         main {
@@ -363,6 +411,10 @@
             if (points.length > maxPointsNumber) points.shift()
             drawPoints()
         })
+        window.onresize = function() {
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+        }
     </script>
 </body>
 
