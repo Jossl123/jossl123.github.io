@@ -13,11 +13,11 @@
 
 <body>
     <header>
-        <a href="#">
+        <a target="_blank" href="#">
             <img class="logo" src="./img/email.png" alt=""></a>
-        <a href="https://github.com/Jossl123">
+        <a target="_blank" href="https://github.com/Jossl123">
             <img class="logo" src="./img/githubLogo.png" alt=""></a>
-        <a href="#">
+        <a target="_blank" href="#">
             <img class="logo" src="./img/email.png" alt=""></a>
     </header>
     <main>
@@ -26,6 +26,7 @@
             <div id="presentation">
                 <h1>Hi, <br> I'm Josselin</h1>
                 <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
+                <h4>Here are some of my projects :</h4>
             </div>
             <div id="canvas_container"></div>
         </div>
@@ -90,6 +91,13 @@
             flex-direction: row;
         }
         
+        @media (max-width: 1200px) {
+            #firstView {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+        
         .retexBut {
             flex-shrink: 0;
             border: none;
@@ -107,6 +115,7 @@
         }
         
         .retex {
+            z-index: 6;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -304,8 +313,7 @@
     <script>
         var maxCircleWidth = 10
         var maxPointsNumber = 30
-        var lineColor = "#FF0000"
-        var bubbleColor = "#00FF00"
+        var lineColor = "#880000"
         var canvas = document.getElementById('mouse_flow');
         canvas.width = window.innerWidth
         canvas.height = window.innerHeight
