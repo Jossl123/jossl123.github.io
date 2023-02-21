@@ -38,34 +38,34 @@
     </div>
 
     <div id="second_block">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
         <h1>Competitions</h1>
         <h1>Hobbies</h1>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </div>
     <footer></footer>
     <style>
@@ -205,7 +205,7 @@
             flex-basis: calc(50%);
         }
         
-        .retex>div>div>img {
+        .retex>div>div img {
             width: 100%;
         }
         
@@ -268,7 +268,7 @@
             var div = `<div class="retex" id="visibleRetex">
                 <button onclick="hideRetex()"><img src="./img/closeIcon.png"></button>
                 <div>
-                    <div><img src="./img/pp/${id}.png" alt=""></div>
+                    <div><a href="./${id}.html"><img src="./img/pp/${id}.png" alt=""></a></div>
                     <div>
                         <h3>${data[id].title}</h3>
                         <p>clskebf oiuhf oriugh eoirugh oiezurgh oeirugh oeirugh qoiuh </p>
@@ -388,7 +388,7 @@
             for (let i = 0; i < points.length; i++) {
                 ctx.fillStyle = lineColor;
                 ctx.strokeStyle = lineColor;
-                drawPoint(points[i], maxCircleWidth * i / points.length)
+                drawPoint(points[i], maxCircleWidth * (1 + i) / points.length)
                 if (i > 0) {
                     ctx.beginPath(); // Start a new path
                     ctx.lineWidth = (maxCircleWidth * i / points.length) * 2;
@@ -399,7 +399,7 @@
             }
         }
         setInterval(() => {
-            if (points.length > 2) points.shift()
+            if (points.length >= 2) points.shift()
             drawPoints()
         }, 30)
         ctx.scale(1, 1)
