@@ -24,39 +24,12 @@ var imgData = ctx.createImageData(canvas.width, canvas.height)
 
 function setup() {
     createCanvas(0, 0)
-    var randomBubbleScene = [
-        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        //new Cube(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true),
-        new Plane(0, [198, 135, 103], true),
-    ]
+    var randomBubbleScene = []
+    for (let i = 0; i < 30; i++) {
+        randomBubbleScene.push(new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), Math.random() < 0.7))
+    }
+    randomBubbleScene.push(new Cube(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true))
+    randomBubbleScene.push(new Plane(0, [198, 135, 103], true))
 
     var mirrorScene = [
         new Cube(0, 10, 40, 20, 2, 20, randomColor(), true),
