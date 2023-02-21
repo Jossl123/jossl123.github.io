@@ -69,8 +69,9 @@ function setup() {
     ]
 
     var newScene = [
-        new MandleBulb(),
-        //new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true)
+        //new MandleBulb(),
+        new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true),
+        new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
     ]
 
     cam = new Camera()

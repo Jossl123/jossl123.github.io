@@ -21,52 +21,21 @@
             <img class="logo" src="./img/email.png" alt=""></a>
     </header>
     <canvas id="mouse_flow"></canvas>
-    <div id="first_block">
-        <main>
-            <div id="firstView">
-                <div id="presentation">
-                    <h1>Hi, <br> I'm Josselin</h1>
-                    <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
-                </div>
-                <div id="canvas_container"></div>
+    <main>
+        <div id="firstView">
+            <div id="presentation">
+                <h1>Hi, <br> I'm Josselin</h1>
+                <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
             </div>
-        </main>
-
+            <div id="canvas_container"></div>
+        </div>
         <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
         </div>
-        <br>
-    </div>
+    </main>
 
-    <div id="second_block">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <h1>Competitions</h1>
-        <h1>Hobbies</h1>
-    </div>
+
+    <h1>Competitions</h1>
+    <h1>Hobbies</h1>
     <footer></footer>
     <style>
         html {
@@ -80,6 +49,7 @@
         }
         
         header {
+            position: fixed;
             padding: 1rem;
             display: flex;
             gap: 0.7rem;
@@ -96,61 +66,18 @@
             position: absolute;
         }
         
-        #first_block {
-            position: sticky;
-            top: -100px;
-            margin-bottom: 50rem;
-        }
-        
-        #first_block * {
-            z-index: 10 !important;
-        }
-        
-        #second_block {
-            position: relative;
-            z-index: 20 !important;
-            background-color: white;
-        }
-        
-        #second_block * {
-            color: black;
-            z-index: 20 !important;
-        }
-        
         main {
             padding-top: 10%;
-            padding-inline: 20%;
+            margin-bottom: 20rem;
         }
         
         #firstView {
+            padding-inline: 20%;
             font-size: x-large;
             gap: 1rem;
             display: flex;
             align-items: center;
             flex-direction: row;
-        }
-        
-        main>div {
-            padding: 1rem;
-        }
-        
-        #skills {}
-        
-        #skills>div {
-            display: flex;
-            align-items: center;
-            margin-left: 2rem;
-        }
-        
-        #skills>div div {
-            width: 30rem;
-            background-color: gray;
-            height: 10px;
-        }
-        
-        #skills>div>div>div:nth-child(1) {
-            width: 20rem;
-            background-color: red;
         }
         
         .retexBut {
@@ -166,6 +93,7 @@
             display: flex;
             gap: 1rem;
             position: absolute;
+            padding-right: 1rem;
         }
         
         .retex {
@@ -205,12 +133,8 @@
             flex-basis: calc(50%);
         }
         
-        .retex>div>div>img {
+        .retex>div>div img {
             width: 100%;
-        }
-        
-        article {
-            margin-top: 20rem;
         }
     </style>
     <script src="./js/three.js"></script>
@@ -268,7 +192,7 @@
             var div = `<div class="retex" id="visibleRetex">
                 <button onclick="hideRetex()"><img src="./img/closeIcon.png"></button>
                 <div>
-                    <div><img src="./img/pp/${id}.png" alt=""></div>
+                    <div><a href="./${id}.html"><img src="./img/pp/${id}.png" alt=""></a></div>
                     <div>
                         <h3>${data[id].title}</h3>
                         <p>clskebf oiuhf oriugh eoirugh oiezurgh oeirugh oeirugh qoiuh </p>
@@ -388,7 +312,7 @@
             for (let i = 0; i < points.length; i++) {
                 ctx.fillStyle = lineColor;
                 ctx.strokeStyle = lineColor;
-                drawPoint(points[i], maxCircleWidth * i / points.length)
+                drawPoint(points[i], maxCircleWidth * (1 + i) / points.length)
                 if (i > 0) {
                     ctx.beginPath(); // Start a new path
                     ctx.lineWidth = (maxCircleWidth * i / points.length) * 2;
@@ -399,7 +323,7 @@
             }
         }
         setInterval(() => {
-            if (points.length > 2) points.shift()
+            if (points.length >= 2) points.shift()
             drawPoints()
         }, 30)
         ctx.scale(1, 1)
