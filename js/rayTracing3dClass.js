@@ -116,8 +116,8 @@ class RoundedCube {
 class Plane {
     constructor(y, color, bounce = false) {
         this.y = y
-        this.color = color,
-            this.bounce = bounce
+        this.color = color
+        this.bounce = bounce
     }
     getDist(point) {
         return point.y - this.y
