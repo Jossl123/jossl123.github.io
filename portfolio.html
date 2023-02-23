@@ -13,60 +13,31 @@
 
 <body>
     <header>
-        <a href="#">
+        <a target="_blank" href="#">
             <img class="logo" src="./img/email.png" alt=""></a>
-        <a href="https://github.com/Jossl123">
+        <a target="_blank" href="https://github.com/Jossl123">
             <img class="logo" src="./img/githubLogo.png" alt=""></a>
-        <a href="#">
+        <a target="_blank" href="#">
             <img class="logo" src="./img/linkedinLogo.png" alt=""></a>
     </header>
-    <canvas id="mouse_flow"></canvas>
-    <div id="first_block">
-        <main>
-            <div id="firstView">
-                <div id="presentation">
-                    <h1>Hi, <br> I'm Josselin</h1>
-                    <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
-                </div>
-                <div id="canvas_container"></div>
+    <main>
+        <canvas id="mouse_flow"></canvas>
+        <div id="firstView">
+            <div id="presentation">
+                <h1>Hi, <br> I'm Josselin</h1>
+                <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
+                <h4>Here are some of my projects :</h4>
             </div>
-        </main>
-
+            <div id="canvas_container"></div>
+        </div>
         <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
         </div>
-        <br>
-    </div>
-
-    <div id="second_block">
+    </main>
+    <div id="second_part">
         <h1>Competitions</h1>
         <h1>Hobbies</h1>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
     </div>
+
     <footer></footer>
     <style>
         html {
@@ -79,7 +50,13 @@
             overflow-x: hidden;
         }
         
+        body {
+            margin: 0;
+        }
+        
         header {
+            z-index: 10;
+            position: fixed;
             padding: 1rem;
             display: flex;
             gap: 0.7rem;
@@ -96,33 +73,17 @@
             position: absolute;
         }
         
-        #first_block {
-            position: sticky;
-            top: -100px;
-            margin-bottom: 50rem;
-        }
-        
-        #first_block * {
-            z-index: 10 !important;
-        }
-        
-        #second_block {
-            position: relative;
-            z-index: 20 !important;
-            background-color: white;
-        }
-        
-        #second_block * {
-            color: black;
-            z-index: 20 !important;
-        }
-        
         main {
+            height: 100%;
+            z-index: 2;
+            position: sticky;
+            top: 0;
             padding-top: 10%;
-            padding-inline: 20%;
+            margin-bottom: 25rem;
         }
         
         #firstView {
+            padding-inline: 20%;
             font-size: x-large;
             gap: 1rem;
             display: flex;
@@ -130,27 +91,11 @@
             flex-direction: row;
         }
         
-        main>div {
-            padding: 1rem;
-        }
-        
-        #skills {}
-        
-        #skills>div {
-            display: flex;
-            align-items: center;
-            margin-left: 2rem;
-        }
-        
-        #skills>div div {
-            width: 30rem;
-            background-color: gray;
-            height: 10px;
-        }
-        
-        #skills>div>div>div:nth-child(1) {
-            width: 20rem;
-            background-color: red;
+        @media (max-width: 1200px) {
+            #firstView {
+                display: flex;
+                flex-direction: column;
+            }
         }
         
         .retexBut {
@@ -166,9 +111,11 @@
             display: flex;
             gap: 1rem;
             position: absolute;
+            padding-right: 1rem;
         }
         
         .retex {
+            z-index: 6;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -209,14 +156,41 @@
             width: 100%;
         }
         
-        article {
-            margin-top: 20rem;
+        #second_part {
+            position: relative;
+            z-index: 5;
+            background-color: antiquewhite;
+            padding-top: 200rem;
         }
     </style>
     <script src="./js/three.js"></script>
     <script>
         var data = {
-            "beautifulArt": {
+            "rayTracing3d": {
+                "title": "Ray Tracing 3d",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
+            "planetGenerator": {
+                "title": "Learn PI",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
+            "raymarching": {
+                "title": "Learn PI",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
+            "rayCasting": {
+                "title": "Learn PI",
+                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+            },
+            "boids": {
                 "title": "Beautiful Art",
                 "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
                 "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
@@ -228,26 +202,14 @@
                 "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
                 "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
             },
-            "rayTracing3d": {
-                "title": "Ray Tracing 3d",
-                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
-                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
-                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
-            },
-            "boids": {
+            "beautifulArt": {
                 "title": "Beautiful Art",
                 "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
                 "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
                 "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
             },
-            "planetGenerator": {
-                "title": "Learn PI",
-                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
-                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
-                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
-            },
             "quadTree": {
-                "title": "Ray Tracing 3d",
+                "title": "QuadTree",
                 "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
                 "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
                 "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
@@ -342,18 +304,19 @@
 
         var geometry = new THREE.SphereGeometry(3, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
         var material = new THREE.MeshNormalMaterial();
-        var cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
+        var sphere = new THREE.Mesh(geometry, material);
+        sphere.position.x += 1
+        scene.add(sphere);
+
 
         scene.fog = new THREE.Fog(0x2f3640, 5, 50);
         camera.position.z = 10;
+        var t = 0
         var render = function() {
             requestAnimationFrame(render);
-
-            cube.rotation.y += 0.01;
-            cube.rotation.z += 0.012;
-            cube.rotation.x += 0.008;
-
+            sphere.rotation.y += 0.01;
+            sphere.rotation.z += 0.012;
+            sphere.rotation.x += 0.008;
             renderer.render(scene, camera);
         };
 
@@ -362,8 +325,7 @@
     <script>
         var maxCircleWidth = 10
         var maxPointsNumber = 30
-        var lineColor = "#FF0000"
-        var bubbleColor = "#00FF00"
+        var lineColor = "#880000"
         var canvas = document.getElementById('mouse_flow');
         canvas.width = window.innerWidth
         canvas.height = window.innerHeight
@@ -405,8 +367,8 @@
         ctx.scale(1, 1)
         document.addEventListener("mousemove", (e) => {
             points.push({
-                x: e.clientX + window.scrollX,
-                y: e.clientY + window.scrollY
+                x: e.clientX,
+                y: e.clientY
             })
             if (points.length > maxPointsNumber) points.shift()
             drawPoints()
