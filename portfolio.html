@@ -20,44 +20,53 @@
         <a href="#">
             <img class="logo" src="./img/linkedinLogo.png" alt=""></a>
     </header>
+    <canvas id="mouse_flow"></canvas>
+    <div id="first_block">
+        <main>
+            <div id="firstView">
+                <div id="presentation">
+                    <h1>Hi, <br> I'm Josselin</h1>
+                    <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
+                </div>
+                <div id="canvas_container"></div>
+            </div>
+        </main>
 
-    <main>
-        <div id="firstView">
-            <div id="presentation">
-                <h1>Hi, <br> I'm Josselin</h1>
-                <p>&emsp;I've always enjoyed playing with visual things and other and lorem ipsum bla bla and other and lorem ipsum bla bla</p>
-            </div>
-            <div id="skills">
-                <div>
-                    <p>Nodejs, javascript</p>
-                    <div>
-                        <div></div>
-                    </div>
-                </div>
-                <div>
-                    <p>Nodejs, javascript</p>
-                    <div>
-                        <div></div>
-                    </div>
-                </div>
-                <div>
-                    <p>Nodejs, javascript</p>
-                    <div>
-                        <div></div>
-                    </div>
-                </div>
-            </div>
+        <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
         </div>
-    </main>
-
-    <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
+        <br>
     </div>
 
-    <article>
-        <h1>Presnfiuh h fe</h1>
-        <p>efozieh fuhz iu </p>
-    </article>
-
+    <div id="second_block">
+        <h1>Competitions</h1>
+        <h1>Hobbies</h1>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
     <footer></footer>
     <style>
         html {
@@ -78,6 +87,34 @@
         
         .logo {
             height: 2rem;
+        }
+        
+        #mouse_flow {
+            z-index: -1;
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+        
+        #first_block {
+            position: sticky;
+            top: -100px;
+            margin-bottom: 50rem;
+        }
+        
+        #first_block * {
+            z-index: 10 !important;
+        }
+        
+        #second_block {
+            position: relative;
+            z-index: 20 !important;
+            background-color: white;
+        }
+        
+        #second_block * {
+            color: black;
+            z-index: 20 !important;
         }
         
         main {
@@ -168,7 +205,7 @@
             flex-basis: calc(50%);
         }
         
-        .retex>div>div>img {
+        .retex>div>div img {
             width: 100%;
         }
         
@@ -176,6 +213,7 @@
             margin-top: 20rem;
         }
     </style>
+    <script src="./js/three.js"></script>
     <script>
         var data = {
             "beautifulArt": {
@@ -215,7 +253,7 @@
                 "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
             },
         }
-
+        window.scrollTo(0, 0);
         window.onload = function() {
             Object.entries(data).forEach(retex => {
                 var button = `<button id="${retex[0]}" onclick="showRetex(event)" class="retexBut" style="background: url('./img/pp/${retex[0]}.png');"></button>`
@@ -225,13 +263,12 @@
         var canClose = true
 
         function showRetex(e) {
-            console.log("rtest")
             if (isRetex()) return
             id = e.target.id
             var div = `<div class="retex" id="visibleRetex">
                 <button onclick="hideRetex()"><img src="./img/closeIcon.png"></button>
                 <div>
-                    <div><img src="./img/pp/${id}.png" alt=""></div>
+                    <div><a href="./${id}.html"><img src="./img/pp/${id}.png" alt=""></a></div>
                     <div>
                         <h3>${data[id].title}</h3>
                         <p>clskebf oiuhf oriugh eoirugh oiezurgh oeirugh oeirugh qoiuh </p>
@@ -291,6 +328,92 @@
         function drag_over(event) {
             event.preventDefault()
             return false
+        }
+    </script>
+    <script>
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(50, 500 / 400, 0.1, 1000);
+
+        var renderer = new THREE.WebGLRenderer({
+            alpha: true
+        });
+        renderer.setSize(500, 400);
+        document.getElementById("canvas_container").appendChild(renderer.domElement);
+
+        var geometry = new THREE.SphereGeometry(3, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
+        var material = new THREE.MeshNormalMaterial();
+        var cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        scene.fog = new THREE.Fog(0x2f3640, 5, 50);
+        camera.position.z = 10;
+        var render = function() {
+            requestAnimationFrame(render);
+
+            cube.rotation.y += 0.01;
+            cube.rotation.z += 0.012;
+            cube.rotation.x += 0.008;
+
+            renderer.render(scene, camera);
+        };
+
+        render();
+    </script>
+    <script>
+        var maxCircleWidth = 10
+        var maxPointsNumber = 30
+        var lineColor = "#FF0000"
+        var bubbleColor = "#00FF00"
+        var canvas = document.getElementById('mouse_flow');
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+        var ctx = canvas.getContext('2d');
+        var points = []
+
+        function drawPoint(point, width) {
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, width, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function randomOffsetedPoint(point) {
+            return {
+                x: point.x + Math.random() * 10 - 5,
+                y: point.y + Math.random() * 10 - 5
+            }
+        }
+
+        function drawPoints() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < points.length; i++) {
+                ctx.fillStyle = lineColor;
+                ctx.strokeStyle = lineColor;
+                drawPoint(points[i], maxCircleWidth * (1 + i) / points.length)
+                if (i > 0) {
+                    ctx.beginPath(); // Start a new path
+                    ctx.lineWidth = (maxCircleWidth * i / points.length) * 2;
+                    ctx.moveTo(points[i - 1].x, points[i - 1].y); // Move the pen to (30, 50)
+                    ctx.lineTo(points[i].x, points[i].y); // Draw a line to (150, 100)
+                    ctx.stroke();
+                }
+            }
+        }
+        setInterval(() => {
+            if (points.length >= 2) points.shift()
+            drawPoints()
+        }, 30)
+        ctx.scale(1, 1)
+        document.addEventListener("mousemove", (e) => {
+            points.push({
+                x: e.clientX + window.scrollX,
+                y: e.clientY + window.scrollY
+            })
+            if (points.length > maxPointsNumber) points.shift()
+            drawPoints()
+        })
+        window.onresize = function() {
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
         }
     </script>
 </body>

@@ -8,8 +8,8 @@ var cam
 var scene
 var light
 var distMax = 5000
-var maxStep = 350
-var touchDist = 1
+var maxStep = 5000
+var touchDist = 0.05
 var bounceLimit = 7
 var alreadyCalculted = false
 var skyLight = [135, 231, 235]
@@ -28,30 +28,30 @@ function setup() {
         new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), true),
         new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), true),
         new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), true),
+        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), false),
+        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), false),
+        new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), false),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
-        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
+        new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), false),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
         new Sphere(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 10, randomColor(), true),
         //new Cube(Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true),
@@ -96,50 +96,45 @@ function setup() {
     ]
 
     var newScene = [
-        new MandleBulb(),
-        //new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true)
+        //new MandleBulb(),
+        new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true),
+        new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
     ]
 
     cam = new Camera()
     scene = randomBubbleScene
     light = new Light()
 }
+var offset = [0, 0]
 
-// function draw() {
-//     for (let Y = 0; Y < rez; Y++) {
-//         for (let X = 0; X < rez; X++) {
-//             for (let x = X; x < w; x += rez) {
-//                 for (let y = Y; y < h; y += rez) {
-//                     var newDir = createVector(x - w / 2, h / 2 - y, 0);
-//                     newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-//                     newDir = cam.dir.copy().add(newDir)
-//                     var color = castRay(cam.pos, newDir, 0)
-//                     if (X + Y == 0) {
-//                         for (let i = 0; i < rez; i++) {
-//                             for (let j = 0; j < rez; j++) {
-//                                 if (x + i < w && y + j < h) {
-//                                     var index = ((x + i) + (y + j) * w) * 4
-//                                     imgData.data[index] = color[0]
-//                                     imgData.data[index + 1] = color[1]
-//                                     imgData.data[index + 2] = color[2]
-//                                     imgData.data[index + 3] = 255;
-//                                 }
-//                             }
-//                         }
-//                     } else {
-//                         var index = (x + y * w) * 4
-//                         imgData.data[index] = color[0]
-//                         imgData.data[index + 1] = color[1]
-//                         imgData.data[index + 2] = color[2]
-//                         imgData.data[index + 3] = 255
-//                     }
-//                 }
-//             }
-//             ctx.putImageData(imgData, 0, 0);
-//         }
-//     }
-// }
-
+function draw() {
+    if (offset[1] < rez) {
+        document.getElementById("pourcent").innerHTML = `${Math.floor((offset[0]+offset[1]*rez)*100/rez**2)}%`
+        for (let x = offset[0]; x < w; x += rez) {
+            for (let y = offset[1]; y < h; y += rez) {
+                var newDir = createVector(x - w / 2, h / 2 - y, 0);
+                newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+                var color = castRay(cam.pos, newDir.add(cam.dir))
+                var index = (x + y * w) * 4
+                    // imgData.data[index] = color[0]
+                    // imgData.data[index + 1] = color[1]
+                    // imgData.data[index + 2] = color[2]
+                    // imgData.data[index + 3] = 255
+                ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 255)`;
+                if (!offset[0] && !offset[1]) ctx.fillRect(x, y, rez - offset[0], rez - offset[1]);
+                else ctx.fillRect(x, y, 1, rez - offset[1]);
+            }
+        }
+        offset[0] += 1
+        if (offset[0] >= rez) {
+            offset[0] = 0
+            offset[1] += 1
+        }
+    } else {
+        document.getElementById("pourcent").innerHTML = ``
+            //ctx.putImageData(imgData, 0, 0);
+    }
+}
 
 // function draw() {
 //     if (rez >= 1) {
@@ -217,32 +212,32 @@ function setup() {
 // }
 var lastPixColor = skyLight
 
-function draw() {
-    if (rez >= 1) {
-        document.getElementById("pourcent").innerHTML = `index / 4 / h * w * w * 100%`
-        for (let x = 0; x < w; x++) {
-            for (let y = 0; y < h; y++) {
-                var index = (x + y * w) * 4
-                if (true) { //if pixel have not been calculed
-                    var newDir = createVector(x - w / 2, h / 2 - y, 0);
-                    newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-                    newDir = cam.dir.copy().add(newDir)
-                    var color = castRay(cam.pos, newDir, 0)
-                    lastPixColor = color;
-                }
-                imgData.data[index] = lastPixColor[0]
-                imgData.data[index + 1] = lastPixColor[1]
-                imgData.data[index + 2] = lastPixColor[2]
-                imgData.data[index + 3] = 255;
-            }
-        }
-        rez -= 1
-        ctx.putImageData(imgData, 0, 0);
-    }
-}
+// function draw() {
+//     if (rez >= 1) {
+//         document.getElementById("pourcent").innerHTML = `index / 4 / h * w * w * 100%`
+//         for (let x = 0; x < w; x++) {
+//             for (let y = 0; y < h; y++) {
+//                 var index = (x + y * w) * 4
+//                 if (true) { //if pixel have not been calculed
+//                     var newDir = createVector(x - w / 2, h / 2 - y, 0);
+//                     newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+//                     newDir = cam.dir.copy().add(newDir)
+//                     var color = castRay(cam.pos, newDir, 0)
+//                     lastPixColor = color;
+//                 }
+//                 imgData.data[index] = lastPixColor[0]
+//                 imgData.data[index + 1] = lastPixColor[1]
+//                 imgData.data[index + 2] = lastPixColor[2]
+//                 imgData.data[index + 3] = 255;
+//             }
+//         }
+//         rez -= 1
+//         ctx.putImageData(imgData, 0, 0);
+//     }
+// }
 
 //cast the ray (call for every pixels) return a rgb color
-function castRay(origin, dir, bounceNb) {
+function castRay(origin, dir, bounceNb = 0) {
     var rayResult = rayMarch(origin, dir)
         //return a color
     if (rayResult.objTouch) {
@@ -252,7 +247,7 @@ function castRay(origin, dir, bounceNb) {
     }
 }
 
-//ray march and return the distance walked and if touch obj return it and it's touch point
+//ray march and return the distance walked and if touch obj return it and it's touched point
 function rayMarch(origin, dir) {
     var totalDist = 0
     var point = origin.copy()
@@ -324,7 +319,7 @@ function getLight(rayResult, dir, bounceNb) {
 }
 
 function reflectedVector(normal, dir) {
-    return dir.copy().sub(normal.copy().mult(dir.dot(normal)).mult(2)).normalize()
+    return dir.sub(normal.mult(dir.dot(normal)).mult(2)).normalize()
 }
 
 function mixColor(c1, c2) {
@@ -356,43 +351,43 @@ function rotateVectorX(v, a) {
 document.addEventListener("keydown", (e) => {
     if (e.keyCode == 37) { //fleche gauche
         cam.pos.add(rotateVectorY(cam.dir, -90).setMag(cam.speed))
-        rez = minRez
+        offset = [0, 0]
     }
     if (e.keyCode == 39) { //fleche droite
         cam.pos.add(rotateVectorY(cam.dir, 90).setMag(cam.speed))
-        rez = minRez
+        offset = [0, 0]
     }
     if (e.keyCode == 40) { //fleche bas
         cam.pos.sub(cam.dir.copy().setMag(cam.speed))
-        rez = minRez
+        offset = [0, 0]
     }
     if (e.keyCode == 38) { //fleche haut
         cam.pos.add(cam.dir.copy().setMag(cam.speed));
-        rez = minRez
+        offset = [0, 0]
     }
     if (e.keyCode == 16) { //shift key
         cam.pos.y += cam.speed;
-        rez = minRez
+        offset = [0, 0]
     }
     if (e.keyCode == 90) { //z key
         cam.ay += 2
         cam.dir = rotateVectorY(cam.dir, 2)
-        rez = minRez
+        offset = [0, 0]
     }
     if (e.keyCode == 65) { //a key
         cam.ay -= 2
         cam.dir = rotateVectorY(cam.dir, -2)
-        rez = minRez
+        offset = [0, 0]
     }
     if (e.keyCode == 81) { //q key
         cam.ax += 2
         cam.dir = rotateVectorX(cam.dir, 2)
-        rez = minRez
+        offset = [0, 0]
     }
     if (e.keyCode == 83) { //s key
         cam.ax -= 2
         cam.dir = rotateVectorX(cam.dir, -2)
-        rez = minRez
+        offset = [0, 0]
     }
 })
 
