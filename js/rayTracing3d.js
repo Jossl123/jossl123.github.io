@@ -1,6 +1,6 @@
 var w = window.innerWidth;
 var h = window.innerHeight;
-var minRez = 2 ** 5
+var minRez = 2 ** 6
 var rez = minRez
 var rezoffsetx = 0
 var rezoffsety = 0
@@ -77,7 +77,7 @@ function setup() {
     cam = new Camera()
     scene = randomBubbleScene
     light = new Light()
-    frameRate(300000)
+    frameRate(100)
 }
 var offset = [0, 0]
 
