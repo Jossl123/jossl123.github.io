@@ -310,7 +310,7 @@ function resetRendering() {
 }
 
 function randomColor() {
-    return [parseInt(Math.random(250)), parseInt(Math.random(250)), 100]
+    return [parseInt(Math.random() * 250), parseInt(Math.random() * 250), parseInt(Math.random() * 250)]
 }
 window.addEventListener("mousedown", (e) => {
     var newDir = createVector(e.clientX - w / 2, h / 2 - e.clientY, 0);
