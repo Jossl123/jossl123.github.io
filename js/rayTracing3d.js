@@ -312,3 +312,13 @@ function resetRendering() {
 function randomColor() {
     return [parseInt(Math.random(250)), parseInt(Math.random(250)), 100]
 }
+window.addEventListener("mousedown", (e) => {
+    var newDir = createVector(e.clientX - w / 2, h / 2 - e.clientY, 0);
+    newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+    var res = rayMarch(cam.pos, newDir.add(cam.dir))
+    if (res.objTouch) {
+        res.objTouch.bounce = !res.objTouch.bounce
+        console.log(res.objTouch.bounce)
+        resetRendering()
+    }
+})
