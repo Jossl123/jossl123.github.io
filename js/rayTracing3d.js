@@ -318,7 +318,6 @@ window.addEventListener("mousedown", (e) => {
     var res = rayMarch(cam.pos, newDir.add(cam.dir))
     if (res.objTouch) {
         res.objTouch.bounce = !res.objTouch.bounce
-        console.log(res.objTouch.bounce)
         resetRendering()
     }
 })

@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <header>
+    <header id="header">
         <a target="_blank" href="#">
             <img class="logo" src="./img/email.png" alt=""></a>
         <a target="_blank" href="https://github.com/Jossl123">
@@ -34,10 +34,14 @@
         </div>
     </main>
     <div id="second_part">
-        <h1>Competitions</h1>
-        <p>3rd Place in Castor, semi-finals in Algorea, semi-finals on TechChallenger</p>
-        <h1>Hobbies</h1>
-        <p>Kendama, Piano, Parkou, Yoyo, Coding, Scooter, ...</p>
+        <div id="competitions">
+            <h1>Coding competitions</h1>
+            <div>
+                <img src="./img/algorea.png" alt="">
+                <img src="./img/castor.png" alt="">
+                <img src="./img/techChallenger.png" alt=""></div>
+            <p>3rd Place in Castor, semi-finals in Algorea, semi-finals on TechChallenger</p>
+        </div>
         <br>
         <br>
         <br>
@@ -58,6 +62,36 @@
         <br>
         <br>
         <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div id="hobbies">
+            <h1>Hobbies</h1>
+            <div>
+                <img src="./img/kendama.jpg" alt="">
+                <img src="./img/rubiksCube.jpeg" alt="">
+                <img src="./img/parkour.jpg" alt="">
+                <img src="./img/piano.jpg" alt="">
+                <img src="./img/yoyo.jpg" alt="">
+                <img src="./img/tir.jpg" alt="">
+                <img src="./img/trot.jpg" alt="">
+                <img src="./img/surf.webp" alt="">
+                <img src="./img/skim.jpeg" alt="">
+            </div>
+        </div>
         <br>
         <br>
         <br>
@@ -85,6 +119,7 @@
             width: 100%;
             background-color: var(--gray);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
         
         body {
@@ -202,6 +237,21 @@
             align-items: center;
             color: var(--gray);
         }
+        
+        #second_part>div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        
+        #second_part #competitions img {
+            height: 5rem;
+        }
+        
+        #second_part #hobbies img {
+            height: 15rem;
+        }
     </style>
     <script src="./js/three.js"></script>
     <script>
@@ -224,17 +274,17 @@
                 "method": "ray marching",
                 "skills": "javascript skills and math knowledge improvements"
             },
+            "twotris": {
+                "title": "Twotris",
+                "description": "A website to play tetris in multiplayer mode",
+                "method": "Nodejs : websocket and express js",
+                "skills": "javascript skills and websockets"
+            },
             "rayCasting": {
                 "title": "Ray casting",
                 "description": "A raycasting website representing the backrooms",
                 "method": "ray casting",
                 "skills": "javascript skills and math knowledge improvements"
-            },
-            "twotris": {
-                "title": "Twotris",
-                "description": "A website to play tetris in multiplayer mode",
-                "method": "Nodejs : websocket and express js",
-                "skills": "javascript skills and socket "
             },
             "boids": {
                 "title": "Boids",
@@ -261,22 +311,35 @@
                 "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
             },
         }
-        window.scrollTo(0, 0);
         window.onload = function() {
             Object.entries(data).forEach(retex => {
                 var button = `<button id="${retex[0]}" onclick="showRetex(event)" class="retexBut" style="background: url('./img/pp/${retex[0]}.png');"></button>`
                 document.getElementById("retexs").innerHTML += button
             })
+            window.scrollTo(0, 0)
         }
         var canClose = true
+
+        function doesFileExist(urlToFile) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('HEAD', urlToFile, false);
+            xhr.send();
+
+            if (xhr.status == "404") {
+                return false;
+            } else {
+                return true;
+            }
+        }
 
         function showRetex(e) {
             if (isRetex()) return
             id = e.target.id
+            var link = doesFileExist(`./${id}.html`) ? `href="./${id}.html" target="_blank"` : `href="#"`
             var div = `<div class="retex" id="visibleRetex">
                 <button onclick="hideRetex()"><img src="./img/closeIcon.png"></button>
                 <div>
-                    <div><a href="./${id}.html"><img src="./img/pp/${id}.png" alt=""></a></div>
+                    <div><a ${link}><img src="./img/pp/${id}.png" alt=""></a></div>
                     <div>
                         <h3>${data[id].title}</h3>
                         <p>${data[id].description}</p>
@@ -423,6 +486,7 @@
             canvas.width = window.innerWidth
             canvas.height = window.innerHeight
         }
+        window.scrollTo(0, 0);
     </script>
 </body>
 
