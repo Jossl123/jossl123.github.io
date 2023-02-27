@@ -17,6 +17,7 @@ class Light {
         this.r = 2;
         this.color = [252, 212, 100]
     }
+    getColor(point) { return this.color }
 }
 
 class Sphere {
@@ -30,6 +31,10 @@ class Sphere {
         return distancePoints(this.pos, point) - this.r
             //return distancePoints(this.pos, point) - this.r + Math.sin(point.x) * 2 - Math.cos(point.y)
             //return distancePoints(this.pos, createVector(point.x % 10, point.y % 10, point.z % 10)) - this.r
+    }
+    getColor(point) {
+        var n = getNormal(point)
+        return [n.x * 255, n.y * 255, n.z * 255]
     }
 }
 
@@ -50,6 +55,7 @@ class SmoothTwoSpheres {
         var h = Math.max(this.k - Math.abs(dist1 - dist2), 0) / this.k;
         return Math.min(dist1, dist2) - h * h * h * this.k * 1 / 6;
     }
+    getColor(point) { return this.color }
 }
 
 class MandleBulb {
@@ -84,6 +90,7 @@ class MandleBulb {
         return 0.5 * Math.log(r) * r / dr;
 
     }
+    getColor(point) { return this.color }
 }
 
 class Cube {
@@ -97,6 +104,7 @@ class Cube {
         var q = absVector(point.copy().sub(this.pos)).sub(this.size)
         return length(maxVector(q, createVector(0, 0, 0))) + Math.min(Math.max(q.x, Math.max(q.y, q.z)), 0);
     }
+    getColor(point) { return this.color }
 }
 
 class RoundedCube {
@@ -111,6 +119,7 @@ class RoundedCube {
         var q = absVector(point.copy().sub(this.pos)).sub(this.size)
         return length(maxVector(q, createVector(0, 0, 0))) + Math.min(Math.max(q.x, Math.max(q.y, q.z)), 0) - this.r;
     }
+    getColor(point) { return this.color }
 }
 
 class Plane {
@@ -122,6 +131,7 @@ class Plane {
     getDist(point) {
         return point.y - this.y
     }
+    getColor(point) { return this.color }
 }
 
 class Triangle {
@@ -149,6 +159,7 @@ class Triangle {
         }
         return point.dot(this.pos) + 0
     }
+    getColor(point) { return this.color }
 }
 
 function absVector(v) {

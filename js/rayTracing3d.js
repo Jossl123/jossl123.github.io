@@ -26,7 +26,10 @@ function setup() {
     createCanvas(0, 0)
     var randomBubbleScene = []
     for (let i = 0; i < 20; i++) {
-        randomBubbleScene.push(new Sphere(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 10, randomColor(), Math.random() < 0.7))
+        var x = Math.random() * 60 - 30
+        var y = Math.random() * 60 - 30
+        var z = Math.random() * 60 - 30
+        randomBubbleScene.push(new Sphere(x, y, z, Math.random() * 10, randomColor(), Math.random() < 0.7))
     }
     //randomBubbleScene.push(new Cube(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true))
     randomBubbleScene.push(new Plane(0, [198, 135, 103], true))
@@ -216,7 +219,7 @@ function getLight(rayResult, dir, bounceNb) {
     }
     //var objReflected = rayMarch(rayResult.point.add(reflect), reflect).objTouch
     var rayToLight = rayMarch(rayResult.point.add(lightDir), lightDir)
-    var finalColor = rayResult.objTouch.color
+    var finalColor = rayResult.objTouch.getColor(rayResult.point)
     if (colorBounce) {
         finalColor = mixColor(finalColor, colorBounce)
     }
@@ -224,7 +227,7 @@ function getLight(rayResult, dir, bounceNb) {
     if (rayToLight.dist < distancePoints(rayResult.point, light.pos) && rayToLight.objTouch != rayResult.objTouch) {
         finalColor = mixColor(finalColor, [0, 0, 0])
     }
-    finalColor = mixColor(finalColor, light.color)
+    finalColor = mixColor(finalColor, light.getColor(rayResult.point))
 
     return mixColor(finalColor, [diff * 255, diff * 255, diff * 255])
 }
