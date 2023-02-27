@@ -12,7 +12,6 @@ var maxStep = 5000
 var touchDist = 0.05
 var bounceLimit = 7
 var alreadyCalculted = false
-var skyLight = [135, 231, 235]
 var canvas = document.getElementById("canvas")
 canvas.width = w;
 canvas.height = h
@@ -72,11 +71,11 @@ function setup() {
     ]
 
     var newScene = [
-        //new MandleBulb(),
-        new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true),
-        new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
-    ]
+        new MandleBulb(),
+        //new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true),
 
+        //new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
+    ]
     cam = new Camera()
     scene = randomBubbleScene
     light = new Light()
@@ -99,6 +98,7 @@ function draw() {
                 var newDir = createVector(x - w / 2, h / 2 - y, 0);
                 newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
                 var color = castRay(cam.pos, newDir.add(cam.dir))
+                console.log(color)
                 ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 255)`;
                 ctx.fillRect(x, y, s, s);
             }
@@ -119,36 +119,23 @@ function draw() {
         document.getElementById("pourcent").innerHTML = ``
     }
 }
-// function draw() {
-//     if (offset[1] < rez) {
-//         document.getElementById("pourcent").innerHTML = `${Math.floor((offset[0]+offset[1]*rez)*100/rez**2)}%`
-//         for (let x = offset[0]; x < w; x += rez) {
-//             for (let y = offset[1]; y < h; y += rez) {
-//                 var newDir = createVector(x - w / 2, h / 2 - y, 0);
-//                 newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-//                 var color = castRay(cam.pos, newDir.add(cam.dir))
-//                     // var index = (x + y * w) * 4
-//                     // imgData.data[index] = color[0]
-//                     // imgData.data[index + 1] = color[1]
-//                     // imgData.data[index + 2] = color[2]
-//                     // imgData.data[index + 3] = 255
-//                 ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 255)`;
-//                 if (!offset[0] && !offset[1]) ctx.fillRect(x, y, rez - offset[0], rez - offset[1]);
-//                 else ctx.fillRect(x, y, 1, rez - offset[1]);
-//             }
-//         }
-//         offset[0] += 1
-//         if (offset[0] >= rez) {
-//             offset[0] = 0
-//             offset[1] += 1
-//         }
-//     } else {
-//         document.getElementById("pourcent").innerHTML = ``
-//             //ctx.putImageData(imgData, 0, 0);
-//     }
-// }
+const myImg = new Image();
+myImg.crossOrigin = "Anonymous";
+var img
+myImg.onload = () => {
+    img = document.createElement('canvas').getContext('2d');
+    img.drawImage(myImg, 0, 0);
+}
+myImg.src = './img/skybox.jpg';
 
-var lastPixColor = skyLight
+function skyLight(dir) {
+    var u = 0.5 + Math.atan2(dir.z, dir.x) / 2 * Math.PI
+    var v = 0.5 + Math.asin(dir.y) / Math.PI
+    var data = img.getImageData(parseFloat(Math.floor(u * img.width)), parseFloat(Math.floor(v * img.width)), 1, 1).data
+    console.log(data)
+    return [data[0], data[1], data[2]]
+}
+var lastPixColor
 
 //cast the ray (call for every pixels) return a rgb color
 function castRay(origin, dir, bounceNb = 0) {
@@ -157,7 +144,7 @@ function castRay(origin, dir, bounceNb = 0) {
     if (rayResult.objTouch) {
         return getLight(rayResult, dir, bounceNb)
     } else {
-        return skyLight
+        return skyLight(dir)
     }
 }
 

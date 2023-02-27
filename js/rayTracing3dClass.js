@@ -34,9 +34,11 @@ class Sphere {
     }
     getColor(point) {
         var n = getNormal(point)
+        return this.color
         return [n.x * 255, n.y * 255, n.z * 255]
     }
 }
+
 
 class SmoothTwoSpheres {
     constructor(x1, y1, z1, x2, y2, z2, r1, r2, color1, color2, k, bounce = false) {
@@ -62,17 +64,16 @@ class MandleBulb {
     constructor() {
         this.bailout = 2;
         this.power = 10
-        this.color = [255, 0, 0]
+        this.color = [255, 255, 0]
         this.bounce = false
     }
     getDist(point) {
-        var z = point.copy().sub(createVector(0, 0, 200));
-        var dr = 1
-        var r = 0;
+        var z = point.copy().sub(createVector(0, 0, 100));
+        var dr = 1;
+        var r;
         for (var i = 0; i < 15; i++) {
             r = z.mag();
             if (r > this.bailout) break;
-
             // convert to polar coordinates
             var theta = Math.acos(z.z / r);
             var phi = Math.atan(z.y, z.x);
@@ -85,10 +86,9 @@ class MandleBulb {
 
             // convert back to cartesian coordinates
             z = zr * createVector(Math.sin(theta) * Math.cos(phi), Math.sin(phi) * Math.sin(theta), Math.cos(theta));
-            z += pos.copy();
+            z.add(pos)
         }
         return 0.5 * Math.log(r) * r / dr;
-
     }
     getColor(point) { return this.color }
 }
