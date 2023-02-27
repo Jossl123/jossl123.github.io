@@ -21,14 +21,14 @@ class Light {
 }
 
 class Sphere {
-    constructor(x, y, z, r, color, bounce = false) {
-        this.pos = createVector(x, y, z);
+    constructor(pos, r, color, bounce = false) {
+        this.pos = pos
         this.r = r
         this.color = color
         this.bounce = bounce
     }
     getDist(point) {
-        return distancePoints(this.pos, point) - this.r
+        return distancePoints(this.pos, point) - this.r //+ Math.sin(point.x) + Math.cos(point.y) + Math.tan(point.z)
             //return distancePoints(this.pos, point) - this.r + Math.sin(point.x) * 2 - Math.cos(point.y)
             //return distancePoints(this.pos, createVector(point.x % 10, point.y % 10, point.z % 10)) - this.r
     }
@@ -94,8 +94,8 @@ class MandleBulb {
 }
 
 class Cube {
-    constructor(x, y, z, w, h, depth, color, bounce = false) {
-        this.pos = createVector(x, y, z);
+    constructor(pos, w, h, depth, color, bounce = false) {
+        this.pos = pos
         this.size = createVector(w, h, depth)
         this.color = color
         this.bounce = bounce
@@ -108,8 +108,8 @@ class Cube {
 }
 
 class RoundedCube {
-    constructor(x, y, z, w, h, depth, r, color, bounce = false) {
-        this.pos = createVector(x, y, z);
+    constructor(pos, w, h, depth, r, color, bounce = false) {
+        this.pos = pos
         this.size = createVector(w, h, depth)
         this.r = r
         this.color = color;

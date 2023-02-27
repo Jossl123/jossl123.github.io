@@ -28,7 +28,7 @@ function setup() {
         var x = Math.random() * 60 - 30
         var y = Math.random() * 60 - 30
         var z = Math.random() * 60 - 30
-        randomBubbleScene.push(new Sphere(x, y, z, Math.random() * 10, randomColor(), Math.random() < 0.7))
+        randomBubbleScene.push(new Sphere(createVector(x, y, z), Math.random() * 10, randomColor(), Math.random() < 0.7))
     }
     //randomBubbleScene.push(new Cube(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true))
     randomBubbleScene.push(new Plane(0, [198, 135, 103], true))
@@ -127,7 +127,7 @@ myImg.onload = () => {
     img.canvas.height = myImg.height
     img.drawImage(myImg, 0, 0);
 }
-myImg.src = './img/skybox.jpg';
+myImg.src = './img/skybox3.jpg';
 
 function skyLight(dir) {
     dir.normalize()
