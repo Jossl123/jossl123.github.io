@@ -98,7 +98,6 @@ function draw() {
                 var newDir = createVector(x - w / 2, h / 2 - y, 0);
                 newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
                 var color = castRay(cam.pos, newDir.add(cam.dir))
-                console.log(color)
                 ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 255)`;
                 ctx.fillRect(x, y, s, s);
             }
@@ -124,16 +123,18 @@ myImg.crossOrigin = "Anonymous";
 var img
 myImg.onload = () => {
     img = document.createElement('canvas').getContext('2d');
+    img.canvas.width = myImg.width
+    img.canvas.height = myImg.height
     img.drawImage(myImg, 0, 0);
 }
 myImg.src = './img/skybox.jpg';
 
 function skyLight(dir) {
-    var u = 0.5 + Math.atan2(dir.z, dir.x) / 2 * Math.PI
-    var v = 0.5 + Math.asin(dir.y) / Math.PI
-    var data = img.getImageData(parseFloat(Math.floor(u * img.width)), parseFloat(Math.floor(v * img.width)), 1, 1).data
-    console.log(data)
-    return [data[0], data[1], data[2]]
+    dir.normalize()
+    var u = 0.5 + Math.atan2(dir.z, dir.x) / (2 * Math.PI)
+    var v = 0.5 + Math.asin(-dir.y) / Math.PI
+    color = img.getImageData(Math.floor(u * myImg.width), Math.floor(v * myImg.height), 1, 1).data
+    return [color[0], color[1], color[2]]
 }
 var lastPixColor
 
