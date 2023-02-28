@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
@@ -165,10 +165,22 @@
             flex-direction: row;
         }
         
+        @media (max-width: 1490px) {
+            #firstView {
+                padding-inline: 10% !important;
+            }
+        }
+        
         @media (max-width: 1200px) {
             #firstView {
                 display: flex;
                 flex-direction: column;
+            }
+            #canvas_container {
+                position: absolute;
+                top: 0;
+                right: 0;
+                z-index: -1;
             }
         }
         
@@ -363,7 +375,16 @@
         function hideRetex() {
             document.getElementById("visibleRetex").parentNode.removeChild(document.getElementById("visibleRetex"))
         }
-        document.addEventListener("click", (e) => {
+        document.addEventListener("mousedown", (e) => {
+            if (canClose && !e.target.closest("#visibleRetex") && isRetex()) {
+                hideRetex()
+            } else {
+                canClose = true
+            }
+        })
+
+        document.addEventListener("touchstart", (e) => {
+            beginingx = event.changedTouches[0].clientX
             if (canClose && !e.target.closest("#visibleRetex") && isRetex()) {
                 hideRetex()
             } else {
@@ -397,6 +418,17 @@
         document.addEventListener("mousemove", (event) => {
             beginingx = event.clientX
         })
+        document.addEventListener("touchmove", (event) => {
+            var dm = document.getElementById("retexs")
+            if (event.clientX != 0) {
+                var difx = -beginingx + event.changedTouches[0].clientX
+                const matrix = new DOMMatrixReadOnly(document.getElementById('retexs').style.transform)
+                const translateX = matrix.m41;
+                dm.style.transform = `translateX(${Math.min(0, Math.max(translateX+difx, -dm.offsetWidth + window.innerWidth))}px)`
+
+            }
+            beginingx = event.changedTouches[0].clientX
+        })
 
         function drag_over(event) {
             event.preventDefault()
@@ -416,7 +448,6 @@
         var geometry = new THREE.SphereGeometry(3, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
         var material = new THREE.MeshNormalMaterial();
         var sphere = new THREE.Mesh(geometry, material);
-        sphere.position.x += 1
         scene.add(sphere);
 
 
