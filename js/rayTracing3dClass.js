@@ -132,6 +132,7 @@ class Plane {
         this.y = y
         this.color = color
         this.bounce = bounce
+        this.pos = createVector(0, y, 0)
     }
     getDist(point) {
         return point.y - this.y

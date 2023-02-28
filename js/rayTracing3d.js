@@ -12,10 +12,14 @@ var maxStep = 5000
 var touchDist = 0.05
 var bounceLimit = 7
 var alreadyCalculted = false
-var canvas = document.getElementById("canvas")
+var canvas = document.getElementById("rendering")
 canvas.width = w;
 canvas.height = h
 var ctx = canvas.getContext('2d');
+var canvasUI = document.getElementById("UI")
+canvasUI.width = w;
+canvasUI.height = h
+var ui = canvasUI.getContext('2d');
 var pixelsAlreadyColored = []
 
 var imgData = ctx.createImageData(canvas.width, canvas.height)
@@ -306,6 +310,13 @@ function length(v) {
     return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
 }
 
+function rotateVectorZ(v, a) {
+    a = a * Math.PI / 180
+    var x = v.x * Math.cos(a) - v.y * Math.sin(a)
+    var y = v.x * Math.sin(a) + v.y * Math.cos(a)
+    return createVector(x, y, v.z)
+}
+
 function rotateVectorY(v, a) {
     a = a * Math.PI / 180
     var x = v.x * Math.cos(a) + v.z * Math.sin(a)
@@ -383,12 +394,53 @@ function randomColor() {
     return [parseInt(Math.random() * 250), parseInt(Math.random() * 250), parseInt(Math.random() * 250)]
 }
 window.addEventListener("mousedown", (e) => {
-    var newDir = createVector(e.clientX - w / 2, h / 2 - e.clientY, 0);
-    newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+    clearCanva(ui)
+    var newDir = pixelCoordToDir(e.clientX, e.clientY)
     var res = rayMarch(cam.pos, newDir.add(cam.dir))
     if (res.objTouch) {
-        if (res.objTouch.bounce > 0) res.objTouch.bounce = 0
-        else res.objTouch.bounce = 1
-        resetRendering()
+        var pixel = worldCoordToPixelCoord(res.objTouch.pos)
+        ui.beginPath();
+        canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y);
+        canvas_arrow(ui, pixel.x, pixel.y, pixel.x, pixel.y + 50);
+        canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y + 50);
+        ui.stroke();
     }
 })
+
+function toCamCoord(point) {
+    var res = point.copy()
+    res.sub(cam.pos)
+    res = rotateVectorX(res, cam.ax)
+    res = rotateVectorY(res, cam.ay)
+    res = rotateVectorZ(res, -cam.az)
+    return res
+}
+
+function worldCoordToPixelCoord(point) {
+    point = toCamCoord(point)
+    var x = point.x / point.z
+    var y = point.y / point.z
+    console.log(x, y)
+    return createVector(Math.floor(x * 200) + w / 2, Math.floor(y * 200) + h / 2, 0)
+}
+
+function pixelCoordToDir(x, y) {
+    var newDir = createVector(x - w / 2, h / 2 - y, 0);
+    return rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+}
+
+function canvas_arrow(context, fromx, fromy, tox, toy) {
+    var headlen = 10; // length of head in pixels
+    var dx = tox - fromx;
+    var dy = toy - fromy;
+    var angle = Math.atan2(dy, dx);
+    context.moveTo(fromx, fromy);
+    context.lineTo(tox, toy);
+    context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+    context.moveTo(tox, toy);
+    context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+}
+
+function clearCanva(context) {
+    context.clearRect(0, 0, w, h)
+}
