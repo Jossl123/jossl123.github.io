@@ -12,16 +12,21 @@ class Camera {
 }
 
 class Light {
-    constructor() {
-        this.pos = createVector(100, 400, 100);
-        this.r = 2;
-        this.color = [252, 212, 100]
+    constructor(pos, r, color) {
+        this.pos = pos;
+        this.r = r;
+        this.color = color
     }
-    getColor(point) { return this.color }
+    getColor(point) {
+        return [this.color.x, this.color.y, this.color.z]
+    }
+    strenght(point) {
+        return Math.min(distancePoints(point, this.pos), this.r) / this.r
+    }
 }
 
 class Sphere {
-    constructor(pos, r, color, bounce = false) {
+    constructor(pos, r, color, bounce = 0) {
         this.pos = pos
         this.r = r
         this.color = color
@@ -123,7 +128,7 @@ class RoundedCube {
 }
 
 class Plane {
-    constructor(y, color, bounce = false) {
+    constructor(y, color, bounce = 0) {
         this.y = y
         this.color = color
         this.bounce = bounce
