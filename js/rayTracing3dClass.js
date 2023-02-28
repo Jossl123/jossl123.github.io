@@ -3,7 +3,7 @@ class Camera {
         this.pos = createVector(11.810494016852257, 35.917491249333054, -69.58120603956999);
         this.fov = 90;
         this.dir = createVector(-34.89949670250097, -173.54239588891244, 984.2078347376881);
-        this.ax = 10;
+        this.ax = 0;
         this.ay = -2;
         this.az = 0;
         this.distFromScreen = 1000;
