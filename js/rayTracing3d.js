@@ -31,6 +31,7 @@ function setup() {
         var bouncness = Math.random()
         randomBubbleScene.push(new Sphere(createVector(x, y, z), Math.random() * 10 + 5, randomColor(), bouncness > 0.1 ? bouncness : 0))
     }
+
     //randomBubbleScene.push(new Cube(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true))
     randomBubbleScene.push(new Plane(0, [198, 135, 103], 0.6))
 
@@ -42,6 +43,7 @@ function setup() {
     ]
 
     var humhumSceen = [
+
         //heart
         new Sphere(0, 0, 100, 15, [255, 10, 10]),
         new Sphere(-5, 5, 100, 15, [255, 10, 10]),
@@ -57,6 +59,7 @@ function setup() {
         new Sphere(-10, 25, 100, 15, [255, 10, 10]),
         new Sphere(10, 25, 100, 15, [255, 10, 10]),
         new Sphere(0, 15, 100, 15, [255, 10, 10]),
+
         //coca...
         new Sphere(0, 20, 120, 10, [255, 30, 50]),
         new Sphere(0, 15, 125, 10, [255, 30, 50]),
@@ -66,14 +69,18 @@ function setup() {
         new Sphere(0, -5, 145, 10, [255, 30, 50]),
         new Sphere(15, -10, 150, 10, [255, 30, 50]),
         new Sphere(-15, -10, 150, 10, [255, 30, 50]),
-        // //bubble
+
+        // 
+        //bubble
         new Sphere(0, 32, 115, 3, [255, 255, 255]),
         new Sphere(0, 35, 113, 3, [255, 255, 255])
     ]
 
     var newScene = [
         new MandleBulb(),
+
         //new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true),
+
 
         //new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
     ]
@@ -81,6 +88,25 @@ function setup() {
     scene = randomBubbleScene
     lights = [new Light(createVector(500, 500, 0), 1500, createVector(251, 251, 251))]
     frameRate(100)
+        //fullRender()
+}
+
+function fullRender() {
+    var imgData = ctx.createImageData(w, h);
+    for (let x = 0; x < w; x += 1) {
+        for (let y = 0; y < h; y += 1) {
+            var newDir = createVector(x - w / 2, h / 2 - y, 0);
+            newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+            var color = castRay(cam.pos, newDir.add(cam.dir))
+            var index = (x + y * w) * 4
+            imgData.data[index] = color[0]
+            imgData.data[index + 1] = color[1]
+            imgData.data[index + 2] = color[2]
+            imgData.data[index + 3] = 255
+        }
+    }
+    document.getElementById("pourcent").innerHTML = ``
+    ctx.putImageData(imgData, 0, 0);
 }
 var offset = [0, 0]
 
@@ -119,6 +145,27 @@ function draw() {
         document.getElementById("pourcent").innerHTML = ``
     }
 }
+
+
+// function draw() {
+//     var imgData = ctx.createImageData(w, h);
+//     for (let x = 0; x < w; x += 1) {
+//         console.log(x)
+//         for (let y = 0; y < h; y += 1) {
+//             document.getElementById("pourcent").innerHTML = `${Math.floor(x + y * width)}%`
+//             var newDir = createVector(x - w / 2, h / 2 - y, 0);
+//             newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+//             var color = castRay(cam.pos, newDir.add(cam.dir))
+//             var index = (x + y * w) * 4
+//             imgData.data[index] = color[0]
+//             imgData.data[index + 1] = color[1]
+//             imgData.data[index + 2] = color[2]
+//             imgData.data[index + 3] = 255
+//         }
+//     }
+//     document.getElementById("pourcent").innerHTML = ``
+//     ctx.putImageData(imgData, 0, 0);
+// }
 const myImg = new Image();
 myImg.crossOrigin = "Anonymous";
 var img
@@ -139,16 +186,19 @@ function skyLight(dir) {
 }
 var lastPixColor
 
+
 //cast the ray (call for every pixels) return a rgb color
 function castRay(origin, dir, bounceNb = 0) {
     var rayResult = rayMarch(origin, dir)
-        //return a color
+
+    //return a color
     if (rayResult.objTouch) {
         return getLight(rayResult, dir, bounceNb)
     } else {
         return skyLight(dir)
     }
 }
+
 
 //ray march and return the distance walked and if touch obj return it and it's touched point
 function rayMarch(origin, dir) {
@@ -166,11 +216,13 @@ function rayMarch(origin, dir) {
     return { point: point, objTouch: objTouch, dist: totalDist }
 }
 
+
 //return the shorter distance between all objects
 function getDistToAllObj(point) {
     var minDist = distMax
     var objTouch
-        //if (point.x > -20 && point.x < 50) {
+
+    //if (point.x > -20 && point.x < 50) {
     for (let obj of scene) {
         var dist = obj.getDist(point)
         if (dist < minDist) {
@@ -180,9 +232,11 @@ function getDistToAllObj(point) {
             }
         }
     }
+
     //}
     return [minDist, objTouch]
 }
+
 
 //return the normal vector of the shape (the vector which point to is front)
 function getNormal(point) {
@@ -200,6 +254,7 @@ function inShadow(rayResult, light, lightDir) {
     return rayToLight.dist < distancePoints(rayResult.point, light.pos) && rayToLight.objTouch != rayResult.objTouch
 }
 
+
 //return the color affected by the lights environement
 function getLight(rayResult, dir, bounceNb) {
     var finalColor = [0, 0, 0]
@@ -212,11 +267,13 @@ function getLight(rayResult, dir, bounceNb) {
         var lightStrenght = light.strenght(rayResult.point)
         finalColor = mixColor(finalColor, lightColor, 1 - (diff * (1 - lightStrenght)))
         finalColor = mixColor(finalColor, rayResult.objTouch.getColor(rayResult.point), lightStrenght)
-            //si un objet est placé entre l'objet et la lumiere => true (ombre porté)
+
+        //si un objet est placé entre l'objet et la lumiere => true (ombre porté)
         if (inShadow(rayResult, light, lightDir)) {
             finalColor = mixColor(finalColor, [0, 0, 0])
         }
     });
+
     //reflect
     bounceNb++
     var colorBounce
@@ -224,6 +281,7 @@ function getLight(rayResult, dir, bounceNb) {
         var reflect = reflectedVector(normal, dir)
         colorBounce = castRay(rayResult.point.add(reflect.mult(touchDist * 1.1)), reflect, bounceNb)
     }
+
     //var objReflected = rayMarch(rayResult.point.add(reflect), reflect).objTouch
     if (colorBounce) {
         finalColor = mixColor(finalColor, colorBounce, 1 - rayResult.objTouch.bounce)
@@ -263,42 +321,51 @@ function rotateVectorX(v, a) {
 }
 
 document.addEventListener("keydown", (e) => {
-    if (e.keyCode == 37) { //fleche gauche
+    if (e.keyCode == 37) {
+        //fleche gauche
         cam.pos.add(rotateVectorY(cam.dir, -90).setMag(cam.speed))
         resetRendering()
     }
-    if (e.keyCode == 39) { //fleche droite
+    if (e.keyCode == 39) {
+        //fleche droite
         cam.pos.add(rotateVectorY(cam.dir, 90).setMag(cam.speed))
         resetRendering()
     }
-    if (e.keyCode == 40) { //fleche bas
+    if (e.keyCode == 40) {
+        //fleche bas
         cam.pos.sub(cam.dir.copy().setMag(cam.speed))
         resetRendering()
     }
-    if (e.keyCode == 38) { //fleche haut
+    if (e.keyCode == 38) {
+        //fleche haut
         cam.pos.add(cam.dir.copy().setMag(cam.speed));
         resetRendering()
     }
-    if (e.keyCode == 16) { //shift key
+    if (e.keyCode == 16) {
+        //shift key
         cam.pos.y += cam.speed;
         resetRendering()
     }
-    if (e.keyCode == 90) { //z key
+    if (e.keyCode == 90) {
+        //z key
         cam.ay += 2
         cam.dir = rotateVectorY(cam.dir, 2)
         resetRendering()
     }
-    if (e.keyCode == 65) { //a key
+    if (e.keyCode == 65) {
+        //a key
         cam.ay -= 2
         cam.dir = rotateVectorY(cam.dir, -2)
         resetRendering()
     }
-    if (e.keyCode == 81) { //q key
+    if (e.keyCode == 81) {
+        //q key
         cam.az += 2
         cam.dir = rotateVectorX(cam.dir, 2)
         resetRendering()
     }
-    if (e.keyCode == 83) { //s key
+    if (e.keyCode == 83) {
+        //s key
         cam.az -= 2
         cam.dir = rotateVectorX(cam.dir, -2)
         resetRendering()
