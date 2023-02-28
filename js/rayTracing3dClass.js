@@ -46,7 +46,7 @@ class Sphere {
 
 
 class SmoothTwoSpheres {
-    constructor(x1, y1, z1, x2, y2, z2, r1, r2, color1, color2, k, bounce = false) {
+    constructor(x1, y1, z1, x2, y2, z2, r1, r2, color1, color2, k, bounce = 0) {
         this.pos1 = createVector(x1, y1, z1);
         this.r1 = r1
         this.pos2 = createVector(x2, y2, z2);
@@ -70,7 +70,7 @@ class MandleBulb {
         this.bailout = 2;
         this.power = 10
         this.color = [255, 255, 0]
-        this.bounce = false
+        this.bounce = 0
     }
     getDist(point) {
         var z = point.copy().sub(createVector(0, 0, 100));
@@ -99,7 +99,7 @@ class MandleBulb {
 }
 
 class Cube {
-    constructor(pos, w, h, depth, color, bounce = false) {
+    constructor(pos, w, h, depth, color, bounce = 0) {
         this.pos = pos
         this.size = createVector(w, h, depth)
         this.color = color
@@ -113,7 +113,7 @@ class Cube {
 }
 
 class RoundedCube {
-    constructor(pos, w, h, depth, r, color, bounce = false) {
+    constructor(pos, w, h, depth, r, color, bounce = 0) {
         this.pos = pos
         this.size = createVector(w, h, depth)
         this.r = r
@@ -140,7 +140,7 @@ class Plane {
 }
 
 class Triangle {
-    constructor(x1, y1, z1, x2, y2, z2, x3, y3, z3, color, bounce = false) {
+    constructor(x1, y1, z1, x2, y2, z2, x3, y3, z3, color, bounce = 0) {
         this.a = createVector(x1, y1, z1)
         this.b = createVector(x1, y1, z1)
         this.c = createVector(x1, y1, z1)
