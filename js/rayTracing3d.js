@@ -217,8 +217,7 @@ function getLight(rayResult, dir, bounceNb) {
             finalColor = mixColor(finalColor, [0, 0, 0])
         }
     });
-    if (bounceNb > 0) console.log(rayResult.objTouch)
-        //reflect
+    //reflect
     bounceNb++
     var colorBounce
     if (rayResult.objTouch.bounce > 0 && bounceNb <= bounceLimit) {
