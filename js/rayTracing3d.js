@@ -35,10 +35,10 @@ function setup() {
     randomBubbleScene.push(new Plane(0, [198, 135, 103], 0.6))
 
     var mirrorScene = [
-        new Cube(0, 10, 40, 20, 2, 20, randomColor(), true),
-        new Cube(21, 30, 40, 2, 20, 20, randomColor(), true),
-        new Cube(0, 30, 60, 20, 20, 2, randomColor(), true),
-        new Sphere(0, 30, 40, 10, randomColor())
+        new Cube(createVector(0, 10, 40), 20, 2, 20, randomColor(), 1),
+        new Cube(createVector(21, 30, 40), 2, 20, 20, randomColor(), 1),
+        new Cube(createVector(0, 30, 60), 20, 20, 2, randomColor(), 1),
+        new Sphere(createVector(0, 30, 40), 10, randomColor(), 0.2)
     ]
 
     var humhumSceen = [
