@@ -133,13 +133,12 @@ class RoundedCube {
 
 class Plane {
     constructor(y, color, bounce = 0) {
-        this.y = y
         this.color = color
         this.bounce = bounce
         this.pos = createVector(0, y, 0)
     }
     getDist(point) {
-        return point.y - this.y
+        return point.y - this.pos.y
     }
     getColor(point) { return this.color }
 }

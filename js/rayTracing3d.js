@@ -37,7 +37,7 @@ function setup() {
     }
 
     //randomBubbleScene.push(new Cube(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true))
-    randomBubbleScene.push(new Plane(0, [198, 135, 103], 0.6))
+    //randomBubbleScene.push(new Plane(0, [198, 135, 103], 0.6))
 
     var mirrorScene = [
         new Cube(createVector(0, 10, 40), 20, 2, 20, randomColor(), 1),
@@ -81,12 +81,12 @@ function setup() {
     ]
 
     var newScene = [
-        new MandleBulb(),
+        //new MandleBulb(),
 
-        //new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true),
+        new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true),
 
 
-        //new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
+        new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
     ]
     cam = new Camera()
     scene = randomBubbleScene
@@ -154,7 +154,7 @@ myImg.onload = () => {
     img.canvas.height = myImg.height
     img.drawImage(myImg, 0, 0);
 }
-myImg.src = './img/skybox3.jpg';
+myImg.src = './img/skyboxMosque.jpg';
 
 function skyLight(dir) {
     dir.normalize()
@@ -430,6 +430,7 @@ window.addEventListener("wheel", (e) => {
 })
 
 var moving = false
+var rotating = false
 var movingStart = [0, 0]
 var objMoving = undefined
 window.addEventListener("mousedown", (e) => {
@@ -450,7 +451,7 @@ window.addEventListener("mousedown", (e) => {
             ui.stroke();
         } else objMoving = undefined
     } else if (e.which == 3) {
-        moving = true
+        rotating = true
         movingStart = [e.clientX, e.clientY]
         document.body.style.cursor = "grab"
     }
@@ -459,6 +460,12 @@ window.addEventListener("mousedown", (e) => {
 window.addEventListener("contextmenu", e => e.preventDefault());
 window.addEventListener("mousemove", (e) => {
     if (moving) {
+        var difx = movingStart[0] - e.clientX
+        var dify = movingStart[1] - e.clientY
+        cam.pos.add(createVector(difx, -dify))
+        resetRendering()
+        movingStart = [e.clientX, e.clientY]
+    } else if (rotating) {
         var difx = movingStart[0] - e.clientX
         var dify = movingStart[1] - e.clientY
         cam.rot.add(createVector(dify, difx))
@@ -470,8 +477,11 @@ window.addEventListener("mousemove", (e) => {
     e.preventDefault()
 })
 window.addEventListener("mouseup", (e) => {
-    if (e.which == 2 || e.which == 3) {
+    if (e.which == 2) {
         moving = false
+        document.body.style.cursor = ""
+    } else if (e.which == 3) {
+        rotating = false
         document.body.style.cursor = ""
     }
     e.preventDefault()
