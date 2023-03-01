@@ -49,30 +49,30 @@ function setup() {
     var humhumSceen = [
 
         //heart
-        new Sphere(0, 0, 100, 15, [255, 10, 10]),
-        new Sphere(-5, 5, 100, 15, [255, 10, 10]),
-        new Sphere(5, 5, 100, 15, [255, 10, 10]),
-        new Sphere(-10, 10, 100, 15, [255, 10, 10]),
-        new Sphere(10, 10, 100, 15, [255, 10, 10]),
-        new Sphere(-15, 15, 100, 15, [255, 10, 10]),
-        new Sphere(15, 15, 100, 15, [255, 10, 10]),
-        new Sphere(-20, 20, 100, 15, [255, 10, 10]),
-        new Sphere(20, 20, 100, 15, [255, 10, 10]),
-        new Sphere(-15, 30, 100, 15, [255, 10, 10]),
-        new Sphere(15, 30, 100, 15, [255, 10, 10]),
-        new Sphere(-10, 25, 100, 15, [255, 10, 10]),
-        new Sphere(10, 25, 100, 15, [255, 10, 10]),
-        new Sphere(0, 15, 100, 15, [255, 10, 10]),
+        new Sphere(createVector(0, 0, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-5, 5, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(5, 5, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-10, 10, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(10, 10, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-15, 15, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(15, 15, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-20, 20, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(20, 20, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-15, 30, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(15, 30, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-10, 25, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(10, 25, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(0, 15, 100), 15, [255, 10, 10]),
 
-        //coca...
-        new Sphere(0, 20, 120, 10, [255, 30, 50]),
-        new Sphere(0, 15, 125, 10, [255, 30, 50]),
-        new Sphere(0, 10, 130, 10, [255, 30, 50]),
-        new Sphere(0, 5, 135, 10, [255, 30, 50]),
-        new Sphere(0, 0, 140, 10, [255, 30, 50]),
-        new Sphere(0, -5, 145, 10, [255, 30, 50]),
-        new Sphere(15, -10, 150, 10, [255, 30, 50]),
-        new Sphere(-15, -10, 150, 10, [255, 30, 50]),
+        //cocka...
+        new Sphere(createVector(0, 20, 120), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, 15, 125), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, 10, 130), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, 5, 135), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, 0, 140), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, -5, 145), 10, [255, 30, 50], 1),
+        new Sphere(createVector(15, -10, 150), 10, [255, 30, 50], 1),
+        new Sphere(createVector(-15, -10, 150), 10, [255, 30, 50], 1),
 
         // 
         //bubble
@@ -89,7 +89,7 @@ function setup() {
         new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
     ]
     cam = new Camera()
-    scene = randomBubbleScene
+    scene = mirrorScene
     lights = [new Light(createVector(500, 500, 0), 1500, createVector(251, 251, 251))]
     frameRate(100)
         //fullRender()
@@ -154,7 +154,7 @@ myImg.onload = () => {
     img.canvas.height = myImg.height
     img.drawImage(myImg, 0, 0);
 }
-myImg.src = './img/skyboxMosque.jpg';
+myImg.src = './img/skyboxTown.jpg';
 
 function skyLight(dir) {
     dir.normalize()

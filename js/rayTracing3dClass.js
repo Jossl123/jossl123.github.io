@@ -42,8 +42,8 @@ class Sphere {
             //return distancePoints(this.pos, createVector(point.x % 10, point.y % 10, point.z % 10)) - this.r
     }
     getColor(point) {
-        var n = getNormal(point)
         return this.color
+        var n = getNormal(point)
         return [n.x * 255, n.y * 255, n.z * 255]
     }
 }
