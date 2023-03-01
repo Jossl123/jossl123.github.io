@@ -367,6 +367,19 @@ function resetRendering() {
     count = 0
     s = rez
     alt = true
+    resetUi()
+}
+
+function resetUi() {
+    if (objMoving) {
+        clearCanva(ui)
+        var pixel = worldCoordToPixelCoord(objMoving.pos)
+        ui.beginPath();
+        canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y);
+        canvas_arrow(ui, pixel.x, pixel.y, pixel.x, pixel.y + 50);
+        canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y + 50);
+        ui.stroke();
+    }
 }
 
 function randomColor() {
@@ -436,22 +449,28 @@ window.addEventListener("mousedown", (e) => {
             canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y + 50);
             ui.stroke();
         } else objMoving = undefined
+    } else if (e.which == 3) {
+        moving = true
+        movingStart = [e.clientX, e.clientY]
+        document.body.style.cursor = "grab"
     }
     e.preventDefault()
 })
+window.addEventListener("contextmenu", e => e.preventDefault());
 window.addEventListener("mousemove", (e) => {
     if (moving) {
         var difx = movingStart[0] - e.clientX
         var dify = movingStart[1] - e.clientY
-        cam.pos.add(cam.dirY().mult(dify))
-        cam.pos.add(cam.dirX().mult(difx))
+        cam.rot.add(createVector(dify, difx))
+        cam.dir = rotateVectorY(cam.dir, difx)
+        cam.dir = rotateVectorX(cam.dir, dify)
         resetRendering()
         movingStart = [e.clientX, e.clientY]
     }
     e.preventDefault()
 })
 window.addEventListener("mouseup", (e) => {
-    if (e.which == 2) {
+    if (e.which == 2 || e.which == 3) {
         moving = false
         document.body.style.cursor = ""
     }
