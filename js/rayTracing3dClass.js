@@ -6,8 +6,14 @@ class Camera {
         this.ax = 0;
         this.ay = -2;
         this.az = 0;
-        this.distFromScreen = 1000;
+        this.distFromScreen = 1;
         this.speed = 2
+    }
+    dirY() {
+        return rotateVectorX(this.dir, 90)
+    }
+    dirX() {
+        return rotateVectorY(this.dir, 90)
     }
 }
 

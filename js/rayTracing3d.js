@@ -99,9 +99,7 @@ function fullRender() {
     var imgData = ctx.createImageData(w, h);
     for (let x = 0; x < w; x += 1) {
         for (let y = 0; y < h; y += 1) {
-            var newDir = createVector(x - w / 2, h / 2 - y, 0);
-            newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-            var color = castRay(cam.pos, newDir.add(cam.dir))
+            var color = castRay(cam.pos, pixelCoordToDir(x, y))
             var index = (x + y * w) * 4
             imgData.data[index] = color[0]
             imgData.data[index + 1] = color[1]
@@ -126,9 +124,7 @@ function draw() {
         document.getElementById("pourcent").innerHTML = `${Math.floor(count*100/rez**2)}%`
         for (let x = offset[0]; x < w; x += rez) {
             for (let y = offset[1]; y < h; y += rez) {
-                var newDir = createVector(x - w / 2, h / 2 - y, 0);
-                newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-                var color = castRay(cam.pos, newDir.add(cam.dir))
+                var color = castRay(cam.pos, pixelCoordToDir(x, y))
                 ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 255)`;
                 ctx.fillRect(x, y, s, s);
             }
@@ -395,8 +391,7 @@ function randomColor() {
 }
 window.addEventListener("mousedown", (e) => {
     clearCanva(ui)
-    var newDir = pixelCoordToDir(e.clientX, e.clientY)
-    var res = rayMarch(cam.pos, newDir.add(cam.dir))
+    var res = rayMarch(cam.pos, pixelCoordToDir(e.clientX, e.clientY))
     if (res.objTouch) {
         var pixel = worldCoordToPixelCoord(res.objTouch.pos)
         ui.beginPath();
@@ -412,7 +407,7 @@ function toCamCoord(point) {
     res.sub(cam.pos)
     res = rotateVectorX(res, cam.ax)
     res = rotateVectorY(res, cam.ay)
-    res = rotateVectorZ(res, -cam.az)
+    res = rotateVectorZ(res, cam.az)
     return res
 }
 
@@ -421,12 +416,13 @@ function worldCoordToPixelCoord(point) {
     var x = point.x / point.z
     var y = point.y / point.z
     console.log(x, y)
-    return createVector(Math.floor(x * 200) + w / 2, Math.floor(y * 200) + h / 2, 0)
+    return createVector(Math.floor(x * 1000 * cam.distFromScreen) + w / 2, Math.floor(-y * 1000 * cam.distFromScreen) + 250, 0)
 }
 
 function pixelCoordToDir(x, y) {
     var newDir = createVector(x - w / 2, h / 2 - y, 0);
-    return rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+    newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+    return newDir.add(cam.dir.copy().mult(cam.distFromScreen))
 }
 
 function canvas_arrow(context, fromx, fromy, tox, toy) {
@@ -444,3 +440,38 @@ function canvas_arrow(context, fromx, fromy, tox, toy) {
 function clearCanva(context) {
     context.clearRect(0, 0, w, h)
 }
+
+window.addEventListener("wheel", (e) => {
+    cam.distFromScreen = Math.max(0.5, cam.distFromScreen - Math.sign(e.deltaY) * 0.1)
+    resetRendering()
+})
+
+var moving = false
+var movingStart = [0, 0]
+
+window.addEventListener("mousedown", (e) => {
+    if (e.which == 2) {
+        moving = true
+        movingStart = [e.clientX, e.clientY]
+        document.body.style.cursor = "grab"
+    }
+    e.preventDefault()
+})
+window.addEventListener("mousemove", (e) => {
+    if (moving) {
+        var difx = e.clientX - movingStart[0]
+        var dify = e.clientY - movingStart[1]
+        cam.pos.add(cam.dirY().mult(dify * 0.001))
+        cam.pos.add(cam.dirX().mult(difx * 0.001))
+        resetRendering()
+        movingStart = [e.clientX, e.clientY]
+    }
+    e.preventDefault()
+})
+window.addEventListener("mouseup", (e) => {
+    if (e.which == 2) {
+        moving = false
+        document.body.style.cursor = ""
+    }
+    e.preventDefault()
+})
