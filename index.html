@@ -85,13 +85,14 @@
                 <img src="./img/rubiksCube.jpeg" alt="">
                 <img src="./img/parkour.jpg" alt="">
                 <img src="./img/piano.jpg" alt="">
+                <img src="./img/ssl.jpg" alt="">
                 <img src="./img/yoyo.jpg" alt="">
+                <img src="./img/surf.webp" alt="">
                 <img src="./img/tir.jpg" alt="">
                 <img src="./img/trot.jpg" alt="">
-                <img src="./img/surf.webp" alt="">
                 <img src="./img/skim.jpeg" alt="">
-                <img src="./img/ssl.jpg" alt="">
                 <img src="./img/ingeLight.png" alt="">
+                <img src="./img/javascript.png" alt="">
             </div>
         </div>
         <br>
@@ -226,13 +227,20 @@
         }
         
         .retex>div {
-            display: flex;
-            padding-inline: 2rem;
+            display: grid;
+            padding-inline: 1rem;
             flex-wrap: wrap;
+        }
+        
+        @media (min-width: 800px) {
+            .retex>div {
+                grid-template-columns: repeat(2, 50%);
+            }
         }
         
         .retex>div>div {
             display: flex;
+            padding: 0.5rem;
             text-align: justify;
             flex-direction: column;
             flex-basis: calc(50%);
