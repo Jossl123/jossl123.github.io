@@ -1,12 +1,10 @@
 class Camera {
     constructor() {
-        this.pos = createVector(11.810494016852257, 35.917491249333054, -69.58120603956999);
+        this.pos = createVector(0, 10, -50);
         this.fov = 90;
-        this.dir = createVector(-34.89949670250097, -173.54239588891244, 984.2078347376881);
-        this.ax = 0;
-        this.ay = -2;
-        this.az = 0;
-        this.distFromScreen = 1;
+        this.dir = createVector(0, 0, 1);
+        this.rot = createVector(0, -2, 0);
+        this.distFromScreen = 800;
         this.speed = 2
     }
     dirY() {

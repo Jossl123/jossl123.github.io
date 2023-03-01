@@ -1,6 +1,6 @@
 var w = window.innerWidth;
 var h = window.innerHeight;
-var minRez = 2 ** 6
+var minRez = 2 ** 5
 var rez = minRez
 var rezoffsetx = 0
 var rezoffsety = 0
@@ -145,27 +145,6 @@ function draw() {
         document.getElementById("pourcent").innerHTML = ``
     }
 }
-
-
-// function draw() {
-//     var imgData = ctx.createImageData(w, h);
-//     for (let x = 0; x < w; x += 1) {
-//         console.log(x)
-//         for (let y = 0; y < h; y += 1) {
-//             document.getElementById("pourcent").innerHTML = `${Math.floor(x + y * width)}%`
-//             var newDir = createVector(x - w / 2, h / 2 - y, 0);
-//             newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-//             var color = castRay(cam.pos, newDir.add(cam.dir))
-//             var index = (x + y * w) * 4
-//             imgData.data[index] = color[0]
-//             imgData.data[index + 1] = color[1]
-//             imgData.data[index + 2] = color[2]
-//             imgData.data[index + 3] = 255
-//         }
-//     }
-//     document.getElementById("pourcent").innerHTML = ``
-//     ctx.putImageData(imgData, 0, 0);
-// }
 const myImg = new Image();
 myImg.crossOrigin = "Anonymous";
 var img
@@ -330,22 +309,26 @@ function rotateVectorX(v, a) {
 document.addEventListener("keydown", (e) => {
     if (e.keyCode == 37) {
         //fleche gauche
-        cam.pos.add(rotateVectorY(cam.dir, -90).setMag(cam.speed))
+        if (objMoving) objMoving.pos.x -= 1
+        else cam.pos.add(rotateVectorY(cam.dir, -90).setMag(cam.speed))
         resetRendering()
     }
     if (e.keyCode == 39) {
         //fleche droite
-        cam.pos.add(rotateVectorY(cam.dir, 90).setMag(cam.speed))
+        if (objMoving) objMoving.pos.x += 1
+        else cam.pos.add(rotateVectorY(cam.dir, 90).setMag(cam.speed))
         resetRendering()
     }
     if (e.keyCode == 40) {
         //fleche bas
-        cam.pos.sub(cam.dir.copy().setMag(cam.speed))
+        if (objMoving) objMoving.pos.y -= 1
+        else cam.pos.sub(cam.dir.copy().setMag(cam.speed))
         resetRendering()
     }
     if (e.keyCode == 38) {
         //fleche haut
-        cam.pos.add(cam.dir.copy().setMag(cam.speed));
+        if (objMoving) objMoving.pos.y += 1
+        else cam.pos.add(cam.dir.copy().setMag(cam.speed));
         resetRendering()
     }
     if (e.keyCode == 16) {
@@ -355,25 +338,25 @@ document.addEventListener("keydown", (e) => {
     }
     if (e.keyCode == 90) {
         //z key
-        cam.ay += 2
+        cam.rot.y += 2
         cam.dir = rotateVectorY(cam.dir, 2)
         resetRendering()
     }
     if (e.keyCode == 65) {
         //a key
-        cam.ay -= 2
+        cam.rot.y -= 2
         cam.dir = rotateVectorY(cam.dir, -2)
         resetRendering()
     }
     if (e.keyCode == 81) {
         //q key
-        cam.az += 2
+        cam.rot.z += 2
         cam.dir = rotateVectorX(cam.dir, 2)
         resetRendering()
     }
     if (e.keyCode == 83) {
         //s key
-        cam.az -= 2
+        cam.rot.z -= 2
         cam.dir = rotateVectorX(cam.dir, -2)
         resetRendering()
     }
@@ -389,39 +372,26 @@ function resetRendering() {
 function randomColor() {
     return [parseInt(Math.random() * 250), parseInt(Math.random() * 250), parseInt(Math.random() * 250)]
 }
-window.addEventListener("mousedown", (e) => {
-    clearCanva(ui)
-    var res = rayMarch(cam.pos, pixelCoordToDir(e.clientX, e.clientY))
-    if (res.objTouch) {
-        var pixel = worldCoordToPixelCoord(res.objTouch.pos)
-        ui.beginPath();
-        canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y);
-        canvas_arrow(ui, pixel.x, pixel.y, pixel.x, pixel.y + 50);
-        canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y + 50);
-        ui.stroke();
-    }
-})
 
 function toCamCoord(point) {
     var res = point.copy()
     res.sub(cam.pos)
-    res = rotateVectorX(res, cam.ax)
-    res = rotateVectorY(res, cam.ay)
-    res = rotateVectorZ(res, cam.az)
+    res = rotateVectorX(res, cam.rot.x)
+    res = rotateVectorY(res, cam.rot.y)
+    res = rotateVectorZ(res, cam.rot.z)
     return res
 }
 
 function worldCoordToPixelCoord(point) {
-    point = toCamCoord(point)
-    var x = point.x / point.z
-    var y = point.y / point.z
-    console.log(x, y)
-    return createVector(Math.floor(x * 1000 * cam.distFromScreen) + w / 2, Math.floor(-y * 1000 * cam.distFromScreen) + 250, 0)
+    point = toCamCoord(point).setMag(cam.distFromScreen)
+    var x = point.x + w / 2
+    var y = -point.y + h / 2
+    return createVector(x, y, 0)
 }
 
 function pixelCoordToDir(x, y) {
     var newDir = createVector(x - w / 2, h / 2 - y, 0);
-    newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
+    newDir = rotateVectorX(rotateVectorY(newDir, cam.rot.y), cam.rot.x)
     return newDir.add(cam.dir.copy().mult(cam.distFromScreen))
 }
 
@@ -442,27 +412,39 @@ function clearCanva(context) {
 }
 
 window.addEventListener("wheel", (e) => {
-    cam.distFromScreen = Math.max(0.5, cam.distFromScreen - Math.sign(e.deltaY) * 0.1)
+    cam.distFromScreen = Math.max(0.5, cam.distFromScreen - Math.sign(e.deltaY) * 30)
     resetRendering()
 })
 
 var moving = false
 var movingStart = [0, 0]
-
+var objMoving = undefined
 window.addEventListener("mousedown", (e) => {
     if (e.which == 2) {
         moving = true
         movingStart = [e.clientX, e.clientY]
         document.body.style.cursor = "grab"
+    } else if (e.which == 1) {
+        clearCanva(ui)
+        var res = rayMarch(cam.pos, pixelCoordToDir(e.clientX, e.clientY))
+        if (res.objTouch) {
+            objMoving = res.objTouch
+            var pixel = worldCoordToPixelCoord(res.objTouch.pos)
+            ui.beginPath();
+            canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y);
+            canvas_arrow(ui, pixel.x, pixel.y, pixel.x, pixel.y + 50);
+            canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y + 50);
+            ui.stroke();
+        } else objMoving = undefined
     }
     e.preventDefault()
 })
 window.addEventListener("mousemove", (e) => {
     if (moving) {
-        var difx = e.clientX - movingStart[0]
-        var dify = e.clientY - movingStart[1]
-        cam.pos.add(cam.dirY().mult(dify * 0.001))
-        cam.pos.add(cam.dirX().mult(difx * 0.001))
+        var difx = movingStart[0] - e.clientX
+        var dify = movingStart[1] - e.clientY
+        cam.pos.add(cam.dirY().mult(dify))
+        cam.pos.add(cam.dirX().mult(difx))
         resetRendering()
         movingStart = [e.clientX, e.clientY]
     }
