@@ -153,7 +153,7 @@ myImg.onload = () => {
     img.canvas.height = myImg.height
     img.drawImage(myImg, 0, 0);
 }
-myImg.src = './img/skybox3.jpg';
+myImg.src = './img/skyboxTown.jpg';
 
 function skyLight(dir) {
     dir.normalize()
