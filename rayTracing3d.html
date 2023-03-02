@@ -16,6 +16,11 @@
     <div id="setupPanel" class="top-0 left-0 absolute h-20 w-10 p-8">
         <p id="pourcent">0%</p>
     </div>
+    <div class="absolute top-0 right-0 bg-gray-100 flex flex-col" style="visibility: hidden;" id="object_properties">
+        <label for="x">x :</label><input type="number" onchange="updatePos(event)" name="x" id="object_properties_x">
+        <label for="y">y :</label><input type="number" onchange="updatePos(event)" name="y" id="object_properties_y">
+        <label for="z">z :</label><input type="number" onchange="updatePos(event)" name="z" id="object_properties_z">
+    </div>
     <script src="./js/rayTracing3dClass.js"></script>
     <script src="./js/rayTracing3dSceneView.js"></script>
     <script src="./js/rayTracing3d.js"></script>

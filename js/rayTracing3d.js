@@ -7,11 +7,10 @@ var rezoffsety = 0
 var cam
 var scene
 var lights
-var distMax = 5000
-var maxStep = 5000
+var distMax = 1000
+var maxStep = 1000
 var touchDist = 0.05
-var bounceLimit = 7
-var alreadyCalculted = false
+var bounceLimit = 4
 var canvas = document.getElementById("rendering")
 canvas.width = w;
 canvas.height = h
@@ -89,9 +88,9 @@ function setup() {
         new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
     ]
     cam = new Camera()
-    scene = mirrorScene
+    scene = randomBubbleScene
     lights = [new Light(createVector(500, 500, 0), 1500, createVector(251, 251, 251))]
-    frameRate(100)
+        //frameRate(100)
         //fullRender()
 }
 
@@ -154,7 +153,7 @@ myImg.onload = () => {
     img.canvas.height = myImg.height
     img.drawImage(myImg, 0, 0);
 }
-myImg.src = './img/skyboxTown.jpg';
+myImg.src = './img/skybox3.jpg';
 
 function skyLight(dir) {
     dir.normalize()
@@ -331,7 +330,7 @@ document.addEventListener("keydown", (e) => {
         else cam.pos.add(cam.dir.copy().setMag(cam.speed));
         resetRendering()
     }
-    if (e.keyCode == 16) {
+    if (e.keyCode == 32) {
         //shift key
         cam.pos.y += cam.speed;
         resetRendering()
@@ -427,8 +426,13 @@ function clearCanva(context) {
 window.addEventListener("wheel", (e) => {
     cam.distFromScreen = Math.max(0.5, cam.distFromScreen - Math.sign(e.deltaY) * 30)
     resetRendering()
+    e.preventDefault();
 })
 
+function updatePos(e) {
+    objMoving.pos[e.target.name] = document.getElementById("object_properties_" + e.target.name).value
+    resetRendering()
+}
 var moving = false
 var rotating = false
 var movingStart = [0, 0]
@@ -439,17 +443,26 @@ window.addEventListener("mousedown", (e) => {
         movingStart = [e.clientX, e.clientY]
         document.body.style.cursor = "grab"
     } else if (e.which == 1) {
+        if (e.target.id != "UI") return
         clearCanva(ui)
         var res = rayMarch(cam.pos, pixelCoordToDir(e.clientX, e.clientY))
         if (res.objTouch) {
             objMoving = res.objTouch
+            document.getElementById("object_properties").style.visibility = "visible"
+            document.getElementById("object_properties_x").value = objMoving.pos.x
+            document.getElementById("object_properties_y").value = objMoving.pos.y
+            document.getElementById("object_properties_z").value = objMoving.pos.z
             var pixel = worldCoordToPixelCoord(res.objTouch.pos)
             ui.beginPath();
             canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y);
             canvas_arrow(ui, pixel.x, pixel.y, pixel.x, pixel.y + 50);
             canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y + 50);
             ui.stroke();
-        } else objMoving = undefined
+        } else {
+            objMoving = undefined
+
+            document.getElementById("object_properties").style.visibility = "hidden"
+        }
     } else if (e.which == 3) {
         rotating = true
         movingStart = [e.clientX, e.clientY]
@@ -485,4 +498,9 @@ window.addEventListener("mouseup", (e) => {
         document.body.style.cursor = ""
     }
     e.preventDefault()
-})
+});
+document.querySelectorAll('input').forEach(i => {
+    i.addEventListener('mouseup', (e) => {
+        e.stopPropagation();
+    })
+});

@@ -51,7 +51,7 @@ class Sphere {
 
 class SmoothTwoSpheres {
     constructor(x1, y1, z1, x2, y2, z2, r1, r2, color1, color2, k, bounce = 0) {
-        this.pos1 = createVector(x1, y1, z1);
+        this.pos = createVector(x1, y1, z1);
         this.r1 = r1
         this.pos2 = createVector(x2, y2, z2);
         this.r2 = r2
@@ -61,7 +61,7 @@ class SmoothTwoSpheres {
         this.bounce = bounce
     }
     getDist(point) {
-        var dist1 = distancePoints(this.pos1, point) - this.r1
+        var dist1 = distancePoints(this.pos, point) - this.r1
         var dist2 = distancePoints(this.pos2, point) - this.r2
         var h = Math.max(this.k - Math.abs(dist1 - dist2), 0) / this.k;
         return Math.min(dist1, dist2) - h * h * h * this.k * 1 / 6;
