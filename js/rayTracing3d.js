@@ -35,8 +35,11 @@ function setup() {
         randomBubbleScene.push(new Sphere(createVector(x, y, z), Math.random() * 10 + 5, randomColor(), bouncness > 0.1 ? bouncness : 0))
     }
 
-    //randomBubbleScene.push(new Cube(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true))
-    //randomBubbleScene.push(new Plane(0, [198, 135, 103], 0.6))
+    var cubic = [
+            new Cube(createVector(0, 0, 20), 10, 10, 10, randomColor(), 0.8)
+        ]
+        //randomBubbleScene.push(new Cube(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true))
+        //randomBubbleScene.push(new Plane(0, [198, 135, 103], 0.6))
 
     var mirrorScene = [
         new Cube(createVector(0, 10, 40), 20, 2, 20, randomColor(), 1),
