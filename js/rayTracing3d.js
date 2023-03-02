@@ -1,21 +1,24 @@
 var w = window.innerWidth;
 var h = window.innerHeight;
-var minRez = 2 ** 6
+var minRez = 2 ** 5
 var rez = minRez
 var rezoffsetx = 0
 var rezoffsety = 0
 var cam
 var scene
 var lights
-var distMax = 5000
-var maxStep = 5000
+var distMax = 1000
+var maxStep = 1000
 var touchDist = 0.05
-var bounceLimit = 7
-var alreadyCalculted = false
-var canvas = document.getElementById("canvas")
+var bounceLimit = 4
+var canvas = document.getElementById("rendering")
 canvas.width = w;
 canvas.height = h
 var ctx = canvas.getContext('2d');
+var canvasUI = document.getElementById("UI")
+canvasUI.width = w;
+canvasUI.height = h
+var ui = canvasUI.getContext('2d');
 var pixelsAlreadyColored = []
 
 var imgData = ctx.createImageData(canvas.width, canvas.height)
@@ -32,8 +35,11 @@ function setup() {
         randomBubbleScene.push(new Sphere(createVector(x, y, z), Math.random() * 10 + 5, randomColor(), bouncness > 0.1 ? bouncness : 0))
     }
 
-    //randomBubbleScene.push(new Cube(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true))
-    randomBubbleScene.push(new Plane(0, [198, 135, 103], 0.6))
+    var cubic = [
+            new Cube(createVector(0, 0, 20), 10, 10, 10, randomColor(), 0.8)
+        ]
+        //randomBubbleScene.push(new Cube(Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 60 - 30, Math.random() * 80 - 40, Math.random() * 80 - 40, Math.random() * 80 - 40, randomColor(), true))
+        //randomBubbleScene.push(new Plane(0, [198, 135, 103], 0.6))
 
     var mirrorScene = [
         new Cube(createVector(0, 10, 40), 20, 2, 20, randomColor(), 1),
@@ -45,30 +51,30 @@ function setup() {
     var humhumSceen = [
 
         //heart
-        new Sphere(0, 0, 100, 15, [255, 10, 10]),
-        new Sphere(-5, 5, 100, 15, [255, 10, 10]),
-        new Sphere(5, 5, 100, 15, [255, 10, 10]),
-        new Sphere(-10, 10, 100, 15, [255, 10, 10]),
-        new Sphere(10, 10, 100, 15, [255, 10, 10]),
-        new Sphere(-15, 15, 100, 15, [255, 10, 10]),
-        new Sphere(15, 15, 100, 15, [255, 10, 10]),
-        new Sphere(-20, 20, 100, 15, [255, 10, 10]),
-        new Sphere(20, 20, 100, 15, [255, 10, 10]),
-        new Sphere(-15, 30, 100, 15, [255, 10, 10]),
-        new Sphere(15, 30, 100, 15, [255, 10, 10]),
-        new Sphere(-10, 25, 100, 15, [255, 10, 10]),
-        new Sphere(10, 25, 100, 15, [255, 10, 10]),
-        new Sphere(0, 15, 100, 15, [255, 10, 10]),
+        new Sphere(createVector(0, 0, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-5, 5, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(5, 5, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-10, 10, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(10, 10, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-15, 15, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(15, 15, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-20, 20, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(20, 20, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-15, 30, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(15, 30, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(-10, 25, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(10, 25, 100), 15, [255, 10, 10]),
+        new Sphere(createVector(0, 15, 100), 15, [255, 10, 10]),
 
-        //coca...
-        new Sphere(0, 20, 120, 10, [255, 30, 50]),
-        new Sphere(0, 15, 125, 10, [255, 30, 50]),
-        new Sphere(0, 10, 130, 10, [255, 30, 50]),
-        new Sphere(0, 5, 135, 10, [255, 30, 50]),
-        new Sphere(0, 0, 140, 10, [255, 30, 50]),
-        new Sphere(0, -5, 145, 10, [255, 30, 50]),
-        new Sphere(15, -10, 150, 10, [255, 30, 50]),
-        new Sphere(-15, -10, 150, 10, [255, 30, 50]),
+        //cocka...
+        new Sphere(createVector(0, 20, 120), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, 15, 125), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, 10, 130), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, 5, 135), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, 0, 140), 10, [255, 30, 50], 1),
+        new Sphere(createVector(0, -5, 145), 10, [255, 30, 50], 1),
+        new Sphere(createVector(15, -10, 150), 10, [255, 30, 50], 1),
+        new Sphere(createVector(-15, -10, 150), 10, [255, 30, 50], 1),
 
         // 
         //bubble
@@ -77,17 +83,17 @@ function setup() {
     ]
 
     var newScene = [
-        new MandleBulb(),
+        //new MandleBulb(),
 
-        //new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true),
+        new SmoothTwoSpheres(-10, 10, 20, 12, 10, 20, 10, 10, randomColor(), randomColor(), 20, true),
 
 
-        //new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
+        new SmoothTwoSpheres(-5, 50, 20, 12, 50, 30, 10, 10, randomColor(), randomColor(), 20, true)
     ]
     cam = new Camera()
     scene = randomBubbleScene
     lights = [new Light(createVector(500, 500, 0), 1500, createVector(251, 251, 251))]
-    frameRate(100)
+        //frameRate(100)
         //fullRender()
 }
 
@@ -95,9 +101,7 @@ function fullRender() {
     var imgData = ctx.createImageData(w, h);
     for (let x = 0; x < w; x += 1) {
         for (let y = 0; y < h; y += 1) {
-            var newDir = createVector(x - w / 2, h / 2 - y, 0);
-            newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-            var color = castRay(cam.pos, newDir.add(cam.dir))
+            var color = castRay(cam.pos, pixelCoordToDir(x, y))
             var index = (x + y * w) * 4
             imgData.data[index] = color[0]
             imgData.data[index + 1] = color[1]
@@ -122,9 +126,7 @@ function draw() {
         document.getElementById("pourcent").innerHTML = `${Math.floor(count*100/rez**2)}%`
         for (let x = offset[0]; x < w; x += rez) {
             for (let y = offset[1]; y < h; y += rez) {
-                var newDir = createVector(x - w / 2, h / 2 - y, 0);
-                newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-                var color = castRay(cam.pos, newDir.add(cam.dir))
+                var color = castRay(cam.pos, pixelCoordToDir(x, y))
                 ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 255)`;
                 ctx.fillRect(x, y, s, s);
             }
@@ -145,27 +147,6 @@ function draw() {
         document.getElementById("pourcent").innerHTML = ``
     }
 }
-
-
-// function draw() {
-//     var imgData = ctx.createImageData(w, h);
-//     for (let x = 0; x < w; x += 1) {
-//         console.log(x)
-//         for (let y = 0; y < h; y += 1) {
-//             document.getElementById("pourcent").innerHTML = `${Math.floor(x + y * width)}%`
-//             var newDir = createVector(x - w / 2, h / 2 - y, 0);
-//             newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-//             var color = castRay(cam.pos, newDir.add(cam.dir))
-//             var index = (x + y * w) * 4
-//             imgData.data[index] = color[0]
-//             imgData.data[index + 1] = color[1]
-//             imgData.data[index + 2] = color[2]
-//             imgData.data[index + 3] = 255
-//         }
-//     }
-//     document.getElementById("pourcent").innerHTML = ``
-//     ctx.putImageData(imgData, 0, 0);
-// }
 const myImg = new Image();
 myImg.crossOrigin = "Anonymous";
 var img
@@ -175,7 +156,7 @@ myImg.onload = () => {
     img.canvas.height = myImg.height
     img.drawImage(myImg, 0, 0);
 }
-myImg.src = './img/skybox3.jpg';
+myImg.src = './img/skyboxTown.jpg';
 
 function skyLight(dir) {
     dir.normalize()
@@ -306,6 +287,13 @@ function length(v) {
     return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
 }
 
+function rotateVectorZ(v, a) {
+    a = a * Math.PI / 180
+    var x = v.x * Math.cos(a) - v.y * Math.sin(a)
+    var y = v.x * Math.sin(a) + v.y * Math.cos(a)
+    return createVector(x, y, v.z)
+}
+
 function rotateVectorY(v, a) {
     a = a * Math.PI / 180
     var x = v.x * Math.cos(a) + v.z * Math.sin(a)
@@ -323,50 +311,54 @@ function rotateVectorX(v, a) {
 document.addEventListener("keydown", (e) => {
     if (e.keyCode == 37) {
         //fleche gauche
-        cam.pos.add(rotateVectorY(cam.dir, -90).setMag(cam.speed))
+        if (objMoving) objMoving.pos.x -= 1
+        else cam.pos.add(rotateVectorY(cam.dir, -90).setMag(cam.speed))
         resetRendering()
     }
     if (e.keyCode == 39) {
         //fleche droite
-        cam.pos.add(rotateVectorY(cam.dir, 90).setMag(cam.speed))
+        if (objMoving) objMoving.pos.x += 1
+        else cam.pos.add(rotateVectorY(cam.dir, 90).setMag(cam.speed))
         resetRendering()
     }
     if (e.keyCode == 40) {
         //fleche bas
-        cam.pos.sub(cam.dir.copy().setMag(cam.speed))
+        if (objMoving) objMoving.pos.y -= 1
+        else cam.pos.sub(cam.dir.copy().setMag(cam.speed))
         resetRendering()
     }
     if (e.keyCode == 38) {
         //fleche haut
-        cam.pos.add(cam.dir.copy().setMag(cam.speed));
+        if (objMoving) objMoving.pos.y += 1
+        else cam.pos.add(cam.dir.copy().setMag(cam.speed));
         resetRendering()
     }
-    if (e.keyCode == 16) {
+    if (e.keyCode == 32) {
         //shift key
         cam.pos.y += cam.speed;
         resetRendering()
     }
     if (e.keyCode == 90) {
         //z key
-        cam.ay += 2
+        cam.rot.y += 2
         cam.dir = rotateVectorY(cam.dir, 2)
         resetRendering()
     }
     if (e.keyCode == 65) {
         //a key
-        cam.ay -= 2
+        cam.rot.y -= 2
         cam.dir = rotateVectorY(cam.dir, -2)
         resetRendering()
     }
     if (e.keyCode == 81) {
         //q key
-        cam.az += 2
+        cam.rot.z += 2
         cam.dir = rotateVectorX(cam.dir, 2)
         resetRendering()
     }
     if (e.keyCode == 83) {
         //s key
-        cam.az -= 2
+        cam.rot.z -= 2
         cam.dir = rotateVectorX(cam.dir, -2)
         resetRendering()
     }
@@ -377,18 +369,141 @@ function resetRendering() {
     count = 0
     s = rez
     alt = true
+    resetUi()
+}
+
+function resetUi() {
+    if (objMoving) {
+        clearCanva(ui)
+        var pixel = worldCoordToPixelCoord(objMoving.pos)
+        ui.beginPath();
+        canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y);
+        canvas_arrow(ui, pixel.x, pixel.y, pixel.x, pixel.y + 50);
+        canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y + 50);
+        ui.stroke();
+    }
 }
 
 function randomColor() {
     return [parseInt(Math.random() * 250), parseInt(Math.random() * 250), parseInt(Math.random() * 250)]
 }
-window.addEventListener("mousedown", (e) => {
-    var newDir = createVector(e.clientX - w / 2, h / 2 - e.clientY, 0);
-    newDir = rotateVectorX(rotateVectorY(newDir, cam.ay), cam.ax)
-    var res = rayMarch(cam.pos, newDir.add(cam.dir))
-    if (res.objTouch) {
-        if (res.objTouch.bounce > 0) res.objTouch.bounce = 0
-        else res.objTouch.bounce = 1
-        resetRendering()
-    }
+
+function toCamCoord(point) {
+    var res = point.copy()
+    res.sub(cam.pos)
+    res = rotateVectorX(res, cam.rot.x)
+    res = rotateVectorY(res, cam.rot.y)
+    res = rotateVectorZ(res, cam.rot.z)
+    return res
+}
+
+function worldCoordToPixelCoord(point) {
+    point = toCamCoord(point).setMag(cam.distFromScreen)
+    var x = point.x + w / 2
+    var y = -point.y + h / 2
+    return createVector(x, y, 0)
+}
+
+function pixelCoordToDir(x, y) {
+    var newDir = createVector(x - w / 2, h / 2 - y, 0);
+    newDir = rotateVectorX(rotateVectorY(newDir, cam.rot.y), cam.rot.x)
+    return newDir.add(cam.dir.copy().mult(cam.distFromScreen))
+}
+
+function canvas_arrow(context, fromx, fromy, tox, toy) {
+    var headlen = 10; // length of head in pixels
+    var dx = tox - fromx;
+    var dy = toy - fromy;
+    var angle = Math.atan2(dy, dx);
+    context.moveTo(fromx, fromy);
+    context.lineTo(tox, toy);
+    context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+    context.moveTo(tox, toy);
+    context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+}
+
+function clearCanva(context) {
+    context.clearRect(0, 0, w, h)
+}
+
+window.addEventListener("wheel", (e) => {
+    cam.distFromScreen = Math.max(0.5, cam.distFromScreen - Math.sign(e.deltaY) * 30)
+    resetRendering()
+    e.preventDefault();
 })
+
+function updatePos(e) {
+    objMoving.pos[e.target.name] = document.getElementById("object_properties_" + e.target.name).value
+    resetRendering()
+}
+var moving = false
+var rotating = false
+var movingStart = [0, 0]
+var objMoving = undefined
+window.addEventListener("mousedown", (e) => {
+    if (e.which == 2) {
+        moving = true
+        movingStart = [e.clientX, e.clientY]
+        document.body.style.cursor = "grab"
+    } else if (e.which == 1) {
+        if (e.target.id != "UI") return
+        clearCanva(ui)
+        var res = rayMarch(cam.pos, pixelCoordToDir(e.clientX, e.clientY))
+        if (res.objTouch) {
+            objMoving = res.objTouch
+            document.getElementById("object_properties").style.visibility = "visible"
+            document.getElementById("object_properties_x").value = objMoving.pos.x
+            document.getElementById("object_properties_y").value = objMoving.pos.y
+            document.getElementById("object_properties_z").value = objMoving.pos.z
+            var pixel = worldCoordToPixelCoord(res.objTouch.pos)
+            ui.beginPath();
+            canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y);
+            canvas_arrow(ui, pixel.x, pixel.y, pixel.x, pixel.y + 50);
+            canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y + 50);
+            ui.stroke();
+        } else {
+            objMoving = undefined
+
+            document.getElementById("object_properties").style.visibility = "hidden"
+        }
+    } else if (e.which == 3) {
+        rotating = true
+        movingStart = [e.clientX, e.clientY]
+        document.body.style.cursor = "grab"
+    }
+    e.preventDefault()
+})
+window.addEventListener("contextmenu", e => e.preventDefault());
+window.addEventListener("mousemove", (e) => {
+    if (moving) {
+        var difx = movingStart[0] - e.clientX
+        var dify = movingStart[1] - e.clientY
+        cam.pos.add(createVector(difx, -dify))
+        resetRendering()
+        movingStart = [e.clientX, e.clientY]
+    } else if (rotating) {
+        var difx = movingStart[0] - e.clientX
+        var dify = movingStart[1] - e.clientY
+        cam.rot.add(createVector(dify, difx))
+        cam.dir = rotateVectorY(cam.dir, difx)
+        cam.dir = rotateVectorX(cam.dir, dify)
+        resetRendering()
+        movingStart = [e.clientX, e.clientY]
+    }
+    e.preventDefault()
+})
+window.addEventListener("mouseup", (e) => {
+    if (e.which == 2) {
+        moving = false
+        document.body.style.cursor = ""
+    } else if (e.which == 3) {
+        rotating = false
+        document.body.style.cursor = ""
+    }
+    e.preventDefault()
+});
+document.querySelectorAll('input').forEach(i => {
+    i.addEventListener('mouseup', (e) => {
+        e.stopPropagation();
+    })
+});

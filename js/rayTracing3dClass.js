@@ -1,13 +1,17 @@
 class Camera {
     constructor() {
-        this.pos = createVector(11.810494016852257, 35.917491249333054, -69.58120603956999);
+        this.pos = createVector(0, 10, -50);
         this.fov = 90;
-        this.dir = createVector(-34.89949670250097, -173.54239588891244, 984.2078347376881);
-        this.ax = 0;
-        this.ay = -2;
-        this.az = 0;
-        this.distFromScreen = 1000;
+        this.dir = createVector(0, 0, 1);
+        this.rot = createVector(0, -2, 0);
+        this.distFromScreen = 800;
         this.speed = 2
+    }
+    dirY() {
+        return rotateVectorX(this.dir, 90)
+    }
+    dirX() {
+        return rotateVectorY(this.dir, 90)
     }
 }
 
@@ -38,8 +42,8 @@ class Sphere {
             //return distancePoints(this.pos, createVector(point.x % 10, point.y % 10, point.z % 10)) - this.r
     }
     getColor(point) {
-        var n = getNormal(point)
         return this.color
+        var n = getNormal(point)
         return [n.x * 255, n.y * 255, n.z * 255]
     }
 }
@@ -47,7 +51,7 @@ class Sphere {
 
 class SmoothTwoSpheres {
     constructor(x1, y1, z1, x2, y2, z2, r1, r2, color1, color2, k, bounce = 0) {
-        this.pos1 = createVector(x1, y1, z1);
+        this.pos = createVector(x1, y1, z1);
         this.r1 = r1
         this.pos2 = createVector(x2, y2, z2);
         this.r2 = r2
@@ -57,7 +61,7 @@ class SmoothTwoSpheres {
         this.bounce = bounce
     }
     getDist(point) {
-        var dist1 = distancePoints(this.pos1, point) - this.r1
+        var dist1 = distancePoints(this.pos, point) - this.r1
         var dist2 = distancePoints(this.pos2, point) - this.r2
         var h = Math.max(this.k - Math.abs(dist1 - dist2), 0) / this.k;
         return Math.min(dist1, dist2) - h * h * h * this.k * 1 / 6;
@@ -129,12 +133,12 @@ class RoundedCube {
 
 class Plane {
     constructor(y, color, bounce = 0) {
-        this.y = y
         this.color = color
         this.bounce = bounce
+        this.pos = createVector(0, y, 0)
     }
     getDist(point) {
-        return point.y - this.y
+        return point.y - this.pos.y
     }
     getColor(point) { return this.color }
 }
