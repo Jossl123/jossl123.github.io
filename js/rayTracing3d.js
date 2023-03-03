@@ -258,14 +258,14 @@ function getLight(rayResult, dir, bounceNb) {
     //reflect
     bounceNb++
     var colorBounce
-    if (rayResult.objTouch.bounce > 0 && bounceNb <= bounceLimit) {
+    if (rayResult.objTouch.reflectivness > 0 && bounceNb <= bounceLimit) {
         var reflect = reflectedVector(normal, dir)
         colorBounce = castRay(rayResult.point.add(reflect.mult(touchDist * 1.1)), reflect, bounceNb)
     }
 
     //var objReflected = rayMarch(rayResult.point.add(reflect), reflect).objTouch
     if (colorBounce) {
-        finalColor = mixColor(finalColor, colorBounce, 1 - rayResult.objTouch.bounce)
+        finalColor = mixColor(finalColor, colorBounce, 1 - rayResult.objTouch.reflectivness)
     }
 
     return finalColor
@@ -433,7 +433,11 @@ window.addEventListener("wheel", (e) => {
 })
 
 function updatePos(e) {
-    objMoving.pos[e.target.name] = document.getElementById("object_properties_" + e.target.name).value
+    if (e.target.name == "x" || e.target.name == "y" || e.target.name == "z") {
+        objMoving.pos[e.target.name] = document.getElementById("object_properties_" + e.target.name).value
+    } else {
+        objMoving[e.target.name] = document.getElementById("object_properties_" + e.target.name).value
+    }
     resetRendering()
 }
 var moving = false
@@ -455,6 +459,7 @@ window.addEventListener("mousedown", (e) => {
             document.getElementById("object_properties_x").value = objMoving.pos.x
             document.getElementById("object_properties_y").value = objMoving.pos.y
             document.getElementById("object_properties_z").value = objMoving.pos.z
+            document.getElementById("object_properties_reflectivness").value = objMoving.reflectivness
             var pixel = worldCoordToPixelCoord(res.objTouch.pos)
             ui.beginPath();
             canvas_arrow(ui, pixel.x, pixel.y, pixel.x + 50, pixel.y);
@@ -463,7 +468,6 @@ window.addEventListener("mousedown", (e) => {
             ui.stroke();
         } else {
             objMoving = undefined
-
             document.getElementById("object_properties").style.visibility = "hidden"
         }
     } else if (e.which == 3) {

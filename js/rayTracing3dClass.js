@@ -30,11 +30,11 @@ class Light {
 }
 
 class Sphere {
-    constructor(pos, r, color, bounce = 0) {
+    constructor(pos, r, color, reflectivness = 0) {
         this.pos = pos
         this.r = r
         this.color = color
-        this.bounce = bounce
+        this.reflectivness = reflectivness
     }
     getDist(point) {
         return distancePoints(this.pos, point) - this.r //+ Math.sin(point.x) + Math.cos(point.y) + Math.tan(point.z)
@@ -50,7 +50,7 @@ class Sphere {
 
 
 class SmoothTwoSpheres {
-    constructor(x1, y1, z1, x2, y2, z2, r1, r2, color1, color2, k, bounce = 0) {
+    constructor(x1, y1, z1, x2, y2, z2, r1, r2, color1, color2, k, reflectivness = 0) {
         this.pos = createVector(x1, y1, z1);
         this.r1 = r1
         this.pos2 = createVector(x2, y2, z2);
@@ -58,7 +58,7 @@ class SmoothTwoSpheres {
         this.color = color1
         this.color2 = color2
         this.k = k
-        this.bounce = bounce
+        this.reflectivness = reflectivness
     }
     getDist(point) {
         var dist1 = distancePoints(this.pos, point) - this.r1
@@ -74,7 +74,7 @@ class MandleBulb {
         this.bailout = 2;
         this.power = 10
         this.color = [255, 255, 0]
-        this.bounce = 0
+        this.reflectivness = 0
     }
     getDist(point) {
         var z = point.copy().sub(createVector(0, 0, 100));
@@ -103,11 +103,11 @@ class MandleBulb {
 }
 
 class Cube {
-    constructor(pos, w, h, depth, color, bounce = 0) {
+    constructor(pos, w, h, depth, color, reflectivness = 0) {
         this.pos = pos
         this.size = createVector(w, h, depth)
         this.color = color
-        this.bounce = bounce
+        this.reflectivness = reflectivness
     }
     getDist(point) {
         var q = absVector(point.copy().sub(this.pos)).sub(this.size)
@@ -117,12 +117,12 @@ class Cube {
 }
 
 class RoundedCube {
-    constructor(pos, w, h, depth, r, color, bounce = 0) {
+    constructor(pos, w, h, depth, r, color, reflectivness = 0) {
         this.pos = pos
         this.size = createVector(w, h, depth)
         this.r = r
         this.color = color;
-        this.bounce = bounce
+        this.reflectivness = reflectivness
     }
     getDist(point) {
         var q = absVector(point.copy().sub(this.pos)).sub(this.size)
@@ -132,9 +132,9 @@ class RoundedCube {
 }
 
 class Plane {
-    constructor(y, color, bounce = 0) {
+    constructor(y, color, reflectivness = 0) {
         this.color = color
-        this.bounce = bounce
+        this.reflectivness = reflectivness
         this.pos = createVector(0, y, 0)
     }
     getDist(point) {
@@ -144,7 +144,7 @@ class Plane {
 }
 
 class Triangle {
-    constructor(x1, y1, z1, x2, y2, z2, x3, y3, z3, color, bounce = 0) {
+    constructor(x1, y1, z1, x2, y2, z2, x3, y3, z3, color, reflectivness = 0) {
         this.a = createVector(x1, y1, z1)
         this.b = createVector(x1, y1, z1)
         this.c = createVector(x1, y1, z1)
@@ -153,7 +153,7 @@ class Triangle {
         this.ac = a.copy().sub(c);
         this.nor = this.ba.cross(this.ac)
         this.color = color
-        this.bounce = bounce
+        this.reflectivness = reflectivness
     }
     getDist(point) {
         var pa = point.copy().sub(this.a)
