@@ -95,6 +95,8 @@ function setup() {
     lights = [new Light(createVector(500, 500, 0), 1500, createVector(251, 251, 251))]
         //frameRate(100)
         //fullRender()
+        //gpu.setGlobalVariable("cam", new Camera())
+
 }
 
 function fullRender() {
@@ -120,6 +122,7 @@ var count = 0
 var prevItt = 0
 var s = rez
 var alt = true
+
 
 function draw() {
     if (count < rez ** 2) {

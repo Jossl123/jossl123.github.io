@@ -10,8 +10,10 @@
 </head>
 
 <body style="margin: 0%;">
+    <script src="./js/vector.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script>
-    <canvas id="rendering"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gpu.js/1.0.2/gpu.min.js" integrity="sha512-cr2nuynSuSV6MGtWlympE0qd1g1TKBuEhv9lcfbW8HrE9UbPPc8zMwcje1fb9w2kzxqRnsizh6c+YbE6Ab7wpg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--<canvas id="rendering"></canvas>-->
     <canvas id="UI" class="absolute top-0 left-0"></canvas>
     <div id="setupPanel" class="top-0 left-0 absolute h-20 w-10 p-8">
         <p id="pourcent">0%</p>
@@ -24,7 +26,7 @@
     </div>
     <script src="./js/rayTracing3dClass.js"></script>
     <script src="./js/rayTracing3dSceneView.js"></script>
-    <script src="./js/rayTracing3d.js"></script>
+    <script src="./js/rayTracingGPU.js"></script>
 </body>
 
 </html>
