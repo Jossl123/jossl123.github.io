@@ -3,7 +3,7 @@ var h = window.innerHeight;
 
 class World {
     constructor() {
-        this.offset = [0, 0]
+        this.offset = [-0.07323942208462333, 0.05159958720330238]
         this.scale = 1 / h
         this.speed = 10
     }
