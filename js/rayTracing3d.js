@@ -95,8 +95,6 @@ function setup() {
     lights = [new Light(createVector(500, 500, 0), 1500, createVector(251, 251, 251))]
         //frameRate(100)
         //fullRender()
-        //gpu.setGlobalVariable("cam", new Camera())
-
 }
 
 function fullRender() {
