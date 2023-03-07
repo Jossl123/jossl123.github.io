@@ -4,17 +4,18 @@ var h = window.innerHeight;
 class World {
     constructor() {
         this.offset = [0, 0]
-        this.scale = 1 / 250
+        this.scale = 1 / h
+        this.speed = 10
     }
     getParams() {
-        return [this.offset, this.scale]
+        return [this.scale, this.offset[0], this.offset[1]]
     }
 }
 var world = new World()
 
 var kernel = function(world) {
     function getColorR(a) {
-        return Math.cos(a * Math.tan(a))
+        return Math.cos(a)
     }
 
     function getColorG(a) {
@@ -34,8 +35,8 @@ var kernel = function(world) {
         var zi = 2 * zx * zy
         return zi + constants
     }
-    var znx = (this.thread.x - this.constants.width * 0.5) * world[1]
-    var zny = (this.thread.y - this.constants.height * 0.5) * world[1]
+    var znx = (this.thread.x - this.constants.width * 0.5) * world[0] + world[1]
+    var zny = (this.thread.y - this.constants.height * 0.5) * world[0] + world[2]
     var itteration = 0
     while ((znx * znx + zny * zny) < this.constants.threshold && itteration < this.constants.maxItteration) {
         var pastx = znx
@@ -56,7 +57,7 @@ const render = gpu.createKernel(kernel)
         width: w,
         height: h,
         maxItteration: 200,
-        c: 0.38,
+        c: 0.36,
         threshold: 10
     })
     .setGraphical(true);
@@ -74,19 +75,27 @@ function draw() {
 document.addEventListener("keydown", (e) => {
     if (e.keyCode == 37) {
         //fleche gauche
-        world.offset[0] -= world.scale
+        world.offset[0] -= world.scale * world.speed
     }
     if (e.keyCode == 39) {
         //fleche droite
-        world.offset[0] += world.scale
+        world.offset[0] += world.scale * world.speed
     }
     if (e.keyCode == 40) {
         //fleche bas
-        world.offset[1] -= world.scale
+        world.offset[1] -= world.scale * world.speed
     }
     if (e.keyCode == 38) {
         //fleche haut
-        world.offset[1] += world.scale
+        world.offset[1] += world.scale * world.speed
+    }
+    if (e.keyCode == 65) {
+        //a
+        world.scale *= 0.9
+    }
+    if (e.keyCode == 81) {
+        //q
+        world.scale *= 1.1
     }
 })
 
