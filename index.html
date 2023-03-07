@@ -301,7 +301,8 @@
                 "title": "Twotris",
                 "description": "A website to play tetris in multiplayer mode",
                 "method": "Nodejs : websocket and express js",
-                "skills": "javascript skills and websockets"
+                "skills": "javascript skills and websockets",
+                "link": "https://twotris.onrender.com"
             },
             "rayCasting": {
                 "title": "Ray casting",
@@ -371,6 +372,8 @@
             if (isRetex()) return
             id = e.target.id
             var link = doesFileExist(`./${id}.html`) ? `href="./${id}.html" target="_blank"` : `href="#"`
+            if (data[id].link) link = `href="${data[id].link}"`
+
             var div = `<div class="retex" id="visibleRetex">
                 <button onclick="hideRetex()"><img src="./img/closeIcon.png"></button>
                 <div>
