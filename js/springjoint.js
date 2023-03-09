@@ -106,9 +106,9 @@ class Point {
             //recalculate velocities
         var opponentsVelocity = closestLine[0].velocity.copy().add(closestLine[1].velocity).div(2)
         var normal = castedPoint.copy()
-        this.velocity.mult(-1)
-        closestLine[0].velocity.mult(-1)
-        closestLine[1].velocity.mult(-1)
+        this.velocity.mult(-0.8)
+        closestLine[0].velocity.mult(-0.8)
+        closestLine[1].velocity.mult(-0.8)
 
         //TODO : make it relative to masses and t value
         var dir = castedPoint.sub(this.pos)
