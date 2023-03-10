@@ -4,14 +4,14 @@ var gravity
 function setup() {
     createCanvas(windowWidth, windowHeight)
     gravity = createVector(0, 0.5)
-    var square = squareShape(200, 10, 100, 100)
-        //var square2 = squareShape(250, 50, 80, 100)
+    var square = squareShape(120, 10, 100, 100)
+        //var square2 = squareShape(300, 50, 80, 100)
     var square3 = squareShape(100, 400, 300, 500, false)
     scene.push(square)
         //scene.push(square2)
     scene.push(square3)
     fill(0)
-    frameRate(30)
+        //frameRate(10)
 }
 
 function squareShape(x, y, w, h, gravityActivated = true) {
@@ -26,8 +26,12 @@ function squareShape(x, y, w, h, gravityActivated = true) {
 function updateScene() {
     scene.forEach(object => {
         for (let i = 0; i < object.length; i++) {
-            var point = object[i];
-            point.update()
+            object[i].calculateNewVelo();
+        }
+    });
+    scene.forEach(object => {
+        for (let i = 0; i < object.length; i++) {
+            object[i].update();
         }
     });
 }
@@ -64,16 +68,18 @@ class Point {
         this.id = Point.count
         Point.count++;
         this.pos = pos;
+        this.newPos = pos.copy()
         this.velocity = createVector(0, 0);
         this.m = m;
         this.gravityActivated = gravityActivated
     }
-    update() {
+    calculateNewVelo() {
         if (this.gravityActivated) this.velocity.add(gravity);
-
         this.checkCollisionsWithScene()
-
-        this.pos.add(this.velocity);
+    }
+    update() {
+        this.newPos.add(this.velocity);
+        this.pos = this.newPos.copy()
     }
     checkCollisionsWithScene() {
         for (var i = 0; i < scene.length; i++) {
@@ -102,21 +108,24 @@ class Point {
             }
         }
         var t = pointToSegmentProjection(this.pos, closestLine[0].pos, closestLine[1].pos)
-        var castedPoint = closestLine[0].pos.copy().add(closestLine[1].pos.copy().sub(closestLine[0].pos).mult(t))
-            //recalculate velocities
+        var castedPoint = closestLine[0].pos.copy().add(closestLine[1].pos.copy().sub(closestLine[0].pos).mult(t));
+
+        //recalculate velocities
+        //TODO : recalculate realistic velocities
         var opponentsVelocity = closestLine[0].velocity.copy().add(closestLine[1].velocity).div(2)
         var normal = castedPoint.copy()
         this.velocity.mult(-0.8)
         closestLine[0].velocity.mult(-0.8)
         closestLine[1].velocity.mult(-0.8)
 
-        //TODO : make it relative to masses and t value
+        //move out of object
+        //TODO : make it relative to masses
         var dir = castedPoint.sub(this.pos)
         dir.div(2)
-        this.pos.add(dir)
-        dir.mult(-1)
-        closestLine[0].pos.add(dir)
-        closestLine[1].pos.add(dir)
+        this.newPos.add(dir.copy().mult(2 * (t - t ** 2)))
+
+        closestLine[0].newPos.add(dir.copy().mult(-(1 - t)))
+        closestLine[1].newPos.add(dir.copy().mult(-t))
     }
     draw() {
         fill(0)
