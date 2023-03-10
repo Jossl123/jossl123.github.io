@@ -110,22 +110,24 @@ class Point {
         var t = pointToSegmentProjection(this.pos, closestLine[0].pos, closestLine[1].pos)
         var castedPoint = closestLine[0].pos.copy().add(closestLine[1].pos.copy().sub(closestLine[0].pos).mult(t));
 
-        //recalculate velocities
-        //TODO : recalculate realistic velocities
-        var opponentsVelocity = closestLine[0].velocity.copy().add(closestLine[1].velocity).div(2)
-        var normal = castedPoint.copy()
-        this.velocity.mult(-0.8)
-        closestLine[0].velocity.mult(-0.8)
-        closestLine[1].velocity.mult(-0.8)
-
-        //move out of object
+        //move point and line so that the point is not inside object anymore
         //TODO : make it relative to masses
         var dir = castedPoint.sub(this.pos)
         dir.div(2)
-        this.newPos.add(dir.copy().mult(2 * (t - t ** 2)))
+        this.newPos.add(dir.copy().mult(1.01 * (2 * (t - t ** 2)))) //1.01 is used to make sure that the point doesn't collide anymore
 
         closestLine[0].newPos.add(dir.copy().mult(-(1 - t)))
         closestLine[1].newPos.add(dir.copy().mult(-t))
+
+        //recalculate velocities
+        //TODO : recalculate realistic velocities
+
+
+        var opponentsVelocity = closestLine[0].velocity.copy().add(closestLine[1].velocity).div(2)
+        var bouncingLine = closestLine[0].newPos.copy().sub(closestLine[1].newPos)
+        this.velocity.mult(-0.5)
+        closestLine[0].velocity.mult(-0.5)
+        closestLine[1].velocity.mult(-0.5)
     }
     draw() {
         fill(0)
