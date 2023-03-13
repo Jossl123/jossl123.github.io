@@ -4,7 +4,7 @@ var gravity
 function setup() {
     createCanvas(windowWidth, windowHeight)
     gravity = createVector(0, 0.5)
-    var square = squareShape(120, 10, 100, 100)
+    var square = squareShape(150, 10, 100, 100)
         //var square2 = squareShape(300, 50, 80, 100)
     var square3 = squareShape(100, 400, 300, 500, false)
     scene.push(square)
@@ -121,13 +121,17 @@ class Point {
 
         //recalculate velocities
         //TODO : recalculate realistic velocities
+        var normal = dir.normalize();
 
+        var dn2 = normal.dot(this.velocity) * 2;
+        
+        this.velocity = this.velocity.sub(normal.copy().mult(dn2))
 
-        var opponentsVelocity = closestLine[0].velocity.copy().add(closestLine[1].velocity).div(2)
-        var bouncingLine = closestLine[0].newPos.copy().sub(closestLine[1].newPos)
-        this.velocity.mult(-0.5)
-        closestLine[0].velocity.mult(-0.5)
-        closestLine[1].velocity.mult(-0.5)
+        //var opponentsVelocity = closestLine[0].velocity.copy().add(closestLine[1].velocity).div(2)
+        //var bouncingLine = closestLine[0].newPos.copy().sub(closestLine[1].newPos)
+        //this.velocity.mult(-0.5)
+        //closestLine[0].velocity.mult(-0.5)
+        //closestLine[1].velocity.mult(-0.5)
     }
     draw() {
         fill(0)
