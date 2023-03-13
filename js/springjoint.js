@@ -120,13 +120,14 @@ class Point {
         closestLine[1].newPos.add(dir.copy().mult(-t))
 
         //recalculate velocities
-        //TODO : recalculate realistic velocities
+        //TODO : recalculate realistic velocities of points of line
         var normal = dir.normalize();
 
         var dn2 = normal.dot(this.velocity) * 2;
         
         this.velocity = this.velocity.sub(normal.copy().mult(dn2))
-
+        //closestLine[0].velocity = closestLine[0].velocity.sub(normal.copy().mult(dn2))
+        //closestLine[1].velocity = closestLine[1].velocity.sub(normal.copy().mult(dn2))
         //var opponentsVelocity = closestLine[0].velocity.copy().add(closestLine[1].velocity).div(2)
         //var bouncingLine = closestLine[0].newPos.copy().sub(closestLine[1].newPos)
         //this.velocity.mult(-0.5)
