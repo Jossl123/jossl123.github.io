@@ -6,15 +6,15 @@ function setup() {
     gravity = createVector(0, 0.5)
     var square = squareShape(120, 10, 100, 100)
     var square2 = squareShape(100, 120, 100, 100)   
-    var square3 = squareShapeWall(0, 900, 1500, 1400)
+    var square3 = squareShapeWall(0, window.innerHeight-10, window.innerWidth, 100)
     scene.push(square)
     scene.push(square2)
     scene.push(square3)
-    for (let i = 0; i < 20; i++) {
-        scene.push(squareShape(Math.random()*1000, Math.random()*4000-4000, Math.random()*100+10, Math.random()*100+10))
+    for (let i = 0; i < 15; i++) {
+        scene.push(squareShape(Math.random()*window.innerWidth, Math.random()*4000-4000, Math.random()*100+10, Math.random()*100+10))
     }
-    for (let i = 0; i < 20; i++) {
-        scene.push(circleShape(Math.random()*1000, Math.random()*4000-4000, Math.random()*100+10, Math.random()*10+10))
+    for (let i = 0; i < 15; i++) {
+        scene.push(circleShape(Math.random()*window.innerWidth, Math.random()*4000-4000, Math.random()*100+10, Math.random()*10+10))
     }
     scene
     fill(0)
