@@ -6,10 +6,16 @@ function setup() {
     gravity = createVector(0, 0.5)
     var square = squareShape(120, 10, 100, 100)
     var square2 = squareShape(300, 50, 80, 100)
-    var square3 = squareShape(100, 400, 300, 500, false)
+    var square3 = squareShape(0, 700, 1000, 1000, false)
     scene.push(square)
     scene.push(square2)
     scene.push(square3)
+    for (let i = 0; i < 0; i++) {
+        scene.push(squareShape(Math.random()*1000, Math.random()*400, Math.random()*100+10, Math.random()*100+10))
+    }
+    for (let i = 0; i < 1; i++) {
+        scene.push(circleShape(Math.random()*1000, Math.random()*400, Math.random()*100+10, Math.random()*10+10))
+    }
     fill(0)
     //frameRate(10)
 }
@@ -22,12 +28,27 @@ function squareShape(x, y, w, h, gravityActivated = true) {
         new Point(createVector(x, y + h), gravityActivated)
     ])
 }
+function circleShape(x, y, r, s, gravityActivated = true) {
+    var dir = createVector(1, 0)
+    var res = []
+    var angle = Math.PI * 2 / s
+    for (let i = 0; i < s-1; i++) {
+        newX = dir.x * cos(i*angle) - dir.y * sin(i*angle)
+        newY = dir.x * sin(i*angle) + dir.y * cos(i*angle)
+        var pos = createVector(newX, newY)
+        pos.mult(r)
+        pos.add(createVector(x, y))
+        res.push(new Point(pos, gravityActivated))
+    }
+    return new SoftBody(res)
+}
 
 function updateScene() {
     scene.forEach(object => {
         for (let i = 0; i < object.points.length; i++) {
             object.points[i].calculateNewVelo();
         }
+        object.update()
     });
     scene.forEach(object => {
         for (let i = 0; i < object.points.length; i++) {
@@ -86,7 +107,7 @@ class Point {
         for (var i = 0; i < scene.length; i++) {
             var object = scene[i];
             if (pointInObj(object.points, this)) continue
-            var objBox = getObjectBox(object.points);
+            var objBox = object.getObjectBox();
             var outsidePoint = createVector(objBox.minx - 10, this.pos.y)
             var touch = 0
             //TODO : check first if point is in objbox
@@ -138,10 +159,63 @@ class Point {
     }
 }
 
+class Spring{
+    constructor(source, dest){
+        this.source = source
+        this.destination = dest
+        this.restLength = this.length()
+        this.stiffness = 0.1
+        this.damping = 0.1  
+    }
+    length(){
+        return dist(this.destination.pos.x, this.destination.pos.y, this.source.pos.x, this.source.pos.y)
+    }
+    update(){
+        var fs = (this.length() - this.restLength) * this.stiffness 
+        var dir = this.destination.pos.copy().sub(this.source.pos).normalize()
+        var vel = this.destination.velocity.copy().sub(this.source.velocity)
+        var fd = vel.dot(dir) * this.damping
+
+        var finalForce = fs + fd
+
+        this.source.velocity.add(dir.copy().mult(finalForce))
+        this.destination.velocity.add(dir.copy().mult(-finalForce))
+    }
+}
+
 class SoftBody{
     constructor(points = []){
         this.points = points
         this.springs = []
+        this.generatelinkToEveryOne()
+    }
+    generatelinkToEveryOne(){
+        for (let i = 0; i < this.points.length; i++) {
+            for (let j = i+1; j < this.points.length; j++) {
+                this.springs.push(new Spring(this.points[i], this.points[j]))
+            }
+        }
+        console.log(this.springs.length)
+    }
+    getObjectBox() {
+        var res = { minx: 0, miny: 0, maxx: 0, maxy: 0 }
+        if (this.points.length == 0) return res
+        res = { minx: this.points[0].pos.x, miny: this.points[0].pos.y, maxx: this.points[0].pos.x, maxy: this.points[0].pos.y }
+        for (let i = 0; i < this.points.length; i++) {
+            var point = this.points[i];
+            res = {
+                minx: Math.min(point.pos.x, res.minx),
+                miny: Math.min(point.pos.y, res.miny),
+                maxx: Math.max(point.pos.x, res.maxx),
+                maxy: Math.max(point.pos.y, res.maxy)
+            }
+        }
+        return res
+    }
+    update(){
+        this.springs.forEach(spring => {
+            spring.update()            
+        });
     }
 }
 
@@ -156,22 +230,6 @@ function lineIntersects(v1, v2, v3, v4) {
         return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
     }
 };
-
-function getObjectBox(object) {
-    var res = { minx: 0, miny: 0, maxx: 0, maxy: 0 }
-    if (object.length == 0) return res
-    res = { minx: object[0].pos.x, miny: object[0].pos.y, maxx: object[0].pos.x, maxy: object[0].pos.y }
-    for (let i = 0; i < object.length; i++) {
-        var point = object[i];
-        res = {
-            minx: Math.min(point.pos.x, res.minx),
-            miny: Math.min(point.pos.y, res.miny),
-            maxx: Math.max(point.pos.x, res.maxx),
-            maxy: Math.max(point.pos.y, res.maxy)
-        }
-    }
-    return res
-}
 
 
 function sqr(x) { return x * x }
