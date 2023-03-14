@@ -1,37 +1,37 @@
 var scene = []
 var gravity
-
+const airResistance = 0.98
 function setup() {
     createCanvas(windowWidth, windowHeight)
     gravity = createVector(0, 0.5)
-    var square = squareShape(150, 10, 100, 100)
-        //var square2 = squareShape(300, 50, 80, 100)
+    var square = squareShape(120, 10, 100, 100)
+    var square2 = squareShape(300, 50, 80, 100)
     var square3 = squareShape(100, 400, 300, 500, false)
     scene.push(square)
-        //scene.push(square2)
+    scene.push(square2)
     scene.push(square3)
     fill(0)
-        //frameRate(10)
+    //frameRate(10)
 }
 
 function squareShape(x, y, w, h, gravityActivated = true) {
-    return [
+    return new SoftBody([
         new Point(createVector(x, y), gravityActivated),
         new Point(createVector(x + w, y), gravityActivated),
         new Point(createVector(x + w, y + h), gravityActivated),
         new Point(createVector(x, y + h), gravityActivated)
-    ]
+    ])
 }
 
 function updateScene() {
     scene.forEach(object => {
-        for (let i = 0; i < object.length; i++) {
-            object[i].calculateNewVelo();
+        for (let i = 0; i < object.points.length; i++) {
+            object.points[i].calculateNewVelo();
         }
     });
     scene.forEach(object => {
-        for (let i = 0; i < object.length; i++) {
-            object[i].update();
+        for (let i = 0; i < object.points.length; i++) {
+            object.points[i].update();
         }
     });
 }
@@ -41,8 +41,8 @@ function draw() {
     console.log("__________")
     updateScene()
     scene.forEach(object => {
-        for (let i = 0; i < object.length; i++) {
-            var points = getLine(object, i)
+        for (let i = 0; i < object.points.length; i++) {
+            var points = getLine(object.points, i)
             points[0].draw()
             line(points[0].pos.x, points[0].pos.y, points[1].pos.x, points[1].pos.y)
         }
@@ -78,18 +78,20 @@ class Point {
         this.checkCollisionsWithScene()
     }
     update() {
+        this.velocity.mult(airResistance)
         this.newPos.add(this.velocity);
         this.pos = this.newPos.copy()
     }
     checkCollisionsWithScene() {
         for (var i = 0; i < scene.length; i++) {
             var object = scene[i];
-            if (pointInObj(object, this)) continue
-            var objBox = getObjectBox(object);
+            if (pointInObj(object.points, this)) continue
+            var objBox = getObjectBox(object.points);
             var outsidePoint = createVector(objBox.minx - 10, this.pos.y)
             var touch = 0
-            for (let i = 0; i < object.length; i++) {
-                var points = getLine(object, i)
+            //TODO : check first if point is in objbox
+            for (let i = 0; i < object.points.length; i++) {
+                var points = getLine(object.points, i)
                 if (lineIntersects(points[0].pos, points[1].pos, this.pos, outsidePoint)) touch++
             }
             //the point is inside the object
@@ -97,10 +99,10 @@ class Point {
         };
     }
     collide(object) {
-        var minDist = dist2(object[0].pos, this.pos)
-        var closestLine = getLine(object, 0)
-        for (let i = 0; i < object.length; i++) {
-            var points = getLine(object, i)
+        var minDist = dist2(object.points[0].pos, this.pos)
+        var closestLine = getLine(object.points, 0)
+        for (let i = 0; i < object.points.length; i++) {
+            var points = getLine(object.points, i)
             var dist = distToSegment(this.pos, points[0].pos, points[1].pos)
             if (dist < minDist) {
                 minDist = dist
@@ -120,23 +122,26 @@ class Point {
         closestLine[1].newPos.add(dir.copy().mult(-t))
 
         //recalculate velocities
-        //TODO : recalculate realistic velocities of points of line
         var normal = dir.normalize();
 
         var dn2 = normal.dot(this.velocity) * 2;
         
-        this.velocity = this.velocity.sub(normal.copy().mult(dn2))
-        //closestLine[0].velocity = closestLine[0].velocity.sub(normal.copy().mult(dn2))
-        //closestLine[1].velocity = closestLine[1].velocity.sub(normal.copy().mult(dn2))
-        //var opponentsVelocity = closestLine[0].velocity.copy().add(closestLine[1].velocity).div(2)
-        //var bouncingLine = closestLine[0].newPos.copy().sub(closestLine[1].newPos)
-        //this.velocity.mult(-0.5)
-        //closestLine[0].velocity.mult(-0.5)
-        //closestLine[1].velocity.mult(-0.5)
+        this.velocity = this.velocity.sub(normal.copy().mult(dn2))  
+        dn2 = normal.dot(closestLine[0].velocity) * 2;
+        closestLine[0].velocity = closestLine[0].velocity.sub(normal.copy().mult(dn2))
+        dn2 = normal.dot(closestLine[1].velocity) * 2;
+        closestLine[1].velocity = closestLine[1].velocity.sub(normal.copy().mult(dn2))
     }
     draw() {
         fill(0)
         circle(this.pos.x, this.pos.y, this.m)
+    }
+}
+
+class SoftBody{
+    constructor(points = []){
+        this.points = points
+        this.springs = []
     }
 }
 
