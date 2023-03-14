@@ -10,11 +10,11 @@ function setup() {
     scene.push(square)
     scene.push(square2)
     scene.push(square3)
-    for (let i = 0; i < 0; i++) {
-        scene.push(squareShape(Math.random()*1000, Math.random()*400, Math.random()*100+10, Math.random()*100+10))
+    for (let i = 0; i < 10; i++) {
+        scene.push(squareShape(Math.random()*1000, Math.random()*2000-2000, Math.random()*100+10, Math.random()*100+10))
     }
-    for (let i = 0; i < 1; i++) {
-        scene.push(circleShape(Math.random()*1000, Math.random()*400, Math.random()*100+10, Math.random()*10+10))
+    for (let i = 0; i < 10; i++) {
+        scene.push(circleShape(Math.random()*1000, Math.random()*2000-2000, Math.random()*100+10, Math.random()*10+10))
     }
     fill(0)
     //frameRate(10)
@@ -22,11 +22,11 @@ function setup() {
 
 function squareShape(x, y, w, h, gravityActivated = true) {
     return new SoftBody([
-        new Point(createVector(x, y), gravityActivated),
-        new Point(createVector(x + w, y), gravityActivated),
-        new Point(createVector(x + w, y + h), gravityActivated),
-        new Point(createVector(x, y + h), gravityActivated)
-    ])
+        new Point(createVector(x, y)),
+        new Point(createVector(x + w, y)),
+        new Point(createVector(x + w, y + h)),
+        new Point(createVector(x, y + h))
+    ], gravityActivated)
 }
 function circleShape(x, y, r, s, gravityActivated = true) {
     var dir = createVector(1, 0)
@@ -38,46 +38,24 @@ function circleShape(x, y, r, s, gravityActivated = true) {
         var pos = createVector(newX, newY)
         pos.mult(r)
         pos.add(createVector(x, y))
-        res.push(new Point(pos, gravityActivated))
+        res.push(new Point(pos))
     }
-    return new SoftBody(res)
+    return new SoftBody(res, gravityActivated)
 }
 
 function updateScene() {
     scene.forEach(object => {
-        for (let i = 0; i < object.points.length; i++) {
-            object.points[i].calculateNewVelo();
-        }
         object.update()
-    });
-    scene.forEach(object => {
-        for (let i = 0; i < object.points.length; i++) {
-            object.points[i].update();
-        }
     });
 }
 
 function draw() {
     background(255)
-    console.log("__________")
     updateScene()
     scene.forEach(object => {
-        for (let i = 0; i < object.points.length; i++) {
-            var points = getLine(object.points, i)
-            points[0].draw()
-            line(points[0].pos.x, points[0].pos.y, points[1].pos.x, points[1].pos.y)
-        }
+        object.draw()
     });
 }
-
-function getLine(object, i) {
-    var point = object[i];
-    var nexti = i + 1
-    if (nexti >= object.length) nexti = 0;
-    var nextPoint = object[nexti];
-    return [point, nextPoint]
-}
-
 function pointInObj(object, point) {
     return object.some(function(el) {
         return el.id === point.id;
@@ -85,17 +63,15 @@ function pointInObj(object, point) {
 }
 class Point {
     static count = 0;
-    constructor(pos, gravityActivated = true, m = 10) {
+    constructor(pos, m = 10) {
         this.id = Point.count
         Point.count++;
         this.pos = pos;
         this.newPos = pos.copy()
         this.velocity = createVector(0, 0);
         this.m = m;
-        this.gravityActivated = gravityActivated
     }
     calculateNewVelo() {
-        if (this.gravityActivated) this.velocity.add(gravity);
         this.checkCollisionsWithScene()
     }
     update() {
@@ -106,24 +82,33 @@ class Point {
     checkCollisionsWithScene() {
         for (var i = 0; i < scene.length; i++) {
             var object = scene[i];
-            if (pointInObj(object.points, this)) continue
+            if (pointInObj(object.points, this)) this.selfCollision(object)
             var objBox = object.getObjectBox();
             var outsidePoint = createVector(objBox.minx - 10, this.pos.y)
             var touch = 0
             //TODO : check first if point is in objbox
             for (let i = 0; i < object.points.length; i++) {
-                var points = getLine(object.points, i)
+                var points = object.getLine(i)
                 if (lineIntersects(points[0].pos, points[1].pos, this.pos, outsidePoint)) touch++
             }
             //the point is inside the object
             if (touch % 2 == 1) this.collide(object)
         };
     }
+    selfCollision(object){
+        object.points.forEach(point => {
+            if (dist(point.pos.x, point.pos.y, this.pos.x, this.pos.y) < this.m + point.m){
+                var normal = this.pos.copy().sub(point.pos).normalize();
+                var dn2 = normal.dot(this.velocity) * 2;
+                this.velocity = this.velocity.sub(normal.copy().mult(dn2))  
+            }
+        })
+    }
     collide(object) {
         var minDist = dist2(object.points[0].pos, this.pos)
-        var closestLine = getLine(object.points, 0)
+        var closestLine =object.getLine(0)
         for (let i = 0; i < object.points.length; i++) {
-            var points = getLine(object.points, i)
+            var points = object.getLine(i)
             var dist = distToSegment(this.pos, points[0].pos, points[1].pos)
             if (dist < minDist) {
                 minDist = dist
@@ -183,19 +168,10 @@ class Spring{
     }
 }
 
-class SoftBody{
-    constructor(points = []){
+class Body{
+    constructor(points = [], gravityActivated = true){
         this.points = points
-        this.springs = []
-        this.generatelinkToEveryOne()
-    }
-    generatelinkToEveryOne(){
-        for (let i = 0; i < this.points.length; i++) {
-            for (let j = i+1; j < this.points.length; j++) {
-                this.springs.push(new Spring(this.points[i], this.points[j]))
-            }
-        }
-        console.log(this.springs.length)
+        this.gravityActivated = gravityActivated
     }
     getObjectBox() {
         var res = { minx: 0, miny: 0, maxx: 0, maxy: 0 }
@@ -212,10 +188,45 @@ class SoftBody{
         }
         return res
     }
+    getLine(i){
+        var point = this.points[i];
+        var nexti = i + 1
+        if (nexti >= this.points.length) nexti = 0;
+        var nextPoint = this.points[nexti];
+        return [point, nextPoint]
+    }
+}
+class SoftBody extends Body{
+    constructor(points = [], gravityActivated = true){
+        super(points, gravityActivated)
+        this.springs = []
+        this.generatelinkToEveryOne()
+    }
+    generatelinkToEveryOne(){
+        for (let i = 0; i < this.points.length; i++) {
+            for (let j = i+1; j < this.points.length; j++) {
+                this.springs.push(new Spring(this.points[i], this.points[j]))
+            }
+        }
+    }
     update(){
+        this.points.forEach(point =>{
+            if (this.gravityActivated) point.velocity.add(gravity);
+            point.calculateNewVelo()
+        })
         this.springs.forEach(spring => {
             spring.update()            
         });
+        this.points.forEach(point => {
+            point.update()
+        });
+    }
+    draw(){
+        for (let i = 0; i < this.points.length; i++) {
+            var points = this.getLine(i)
+            points[0].draw()
+            line(points[0].pos.x, points[0].pos.y, points[1].pos.x, points[1].pos.y)
+        }
     }
 }
 
