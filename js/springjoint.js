@@ -5,8 +5,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight)
     gravity = createVector(0, 0.5)
     var square = squareShape(120, 10, 100, 100)
-    var square2 = squareShape(300, 50, 80, 100)
-    var square3 = squareShape(0, 700, 1000, 1000, false)
+    var square2 = squareShape(100, 120, 100, 100)   
+    var square3 = squareShape(0, 500, 1200, 1200, false)
     scene.push(square)
     scene.push(square2)
     scene.push(square3)
@@ -17,7 +17,7 @@ function setup() {
         scene.push(circleShape(Math.random()*1000, Math.random()*2000-2000, Math.random()*100+10, Math.random()*10+10))
     }
     fill(0)
-    //frameRate(10)
+    //frameRate(3)
 }
 
 function squareShape(x, y, w, h, gravityActivated = true) {
@@ -122,7 +122,7 @@ class Point {
         //TODO : make it relative to masses
         var dir = castedPoint.sub(this.pos)
         dir.div(2)
-        this.newPos.add(dir.copy().mult(1.01 * (2 * (t - t ** 2)))) //1.01 is used to make sure that the point doesn't collide anymore
+        this.newPos.add(dir.copy().mult(1.001 * (2 * (t - t ** 2)))) //1.01 is used to make sure that the point doesn't collide anymore
 
         closestLine[0].newPos.add(dir.copy().mult(-(1 - t)))
         closestLine[1].newPos.add(dir.copy().mult(-t))
@@ -211,8 +211,8 @@ class SoftBody extends Body{
     }
     update(){
         this.points.forEach(point =>{
-            if (this.gravityActivated) point.velocity.add(gravity);
             point.calculateNewVelo()
+            if (this.gravityActivated) point.velocity.add(gravity);
         })
         this.springs.forEach(spring => {
             spring.update()            
