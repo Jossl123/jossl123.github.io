@@ -1,24 +1,23 @@
 var scene = []
 var gravity
-const airResistance = 9.81*10**-1   
+const airResistance = 0.99
 function setup() {
     createCanvas(windowWidth, windowHeight)
-    gravity = createVector(0, 0.5)
-    var square = squareShape(120, 10, 100, 100)
-    var square2 = squareShape(100, 120, 100, 100)   
+    gravity = createVector(0,0.0981   )
+    var square = squareShape(120, 500, 100, 100)
+    var square2 = squareShape(100, 620, 100, 100)   
     var square3 = squareShapeWall(0, window.innerHeight-10, window.innerWidth, 100)
     scene.push(square)
     scene.push(square2)
     scene.push(square3)
-    for (let i = 0; i < 15; i++) {
-        scene.push(squareShape(Math.random()*window.innerWidth, Math.random()*4000-4000, Math.random()*100+10, Math.random()*100+10))
+    for (let i = 0; i < 100; i++) {
+        scene.push(squareShape(Math.random()*window.innerWidth, -i*110 + 200, Math.random()*100+10, Math.random()*100+10))
     }
-    for (let i = 0; i < 15; i++) {
-        scene.push(circleShape(Math.random()*window.innerWidth, Math.random()*4000-4000, Math.random()*100+10, Math.random()*10+10))
-    }
-    scene
+    // for (let i = 0; i < 10; i++) {
+    //     scene.push(circleShape(Math.random()*window.innerWidth/3, -i*110 + 200, Math.random()*40+10,10))
+    // }
     fill(0)
-    //frameRate(3)
+    //frameRate(10)
 }
 function squareShapeWall(x, y, w, h) {
     return new Wall([
@@ -41,26 +40,25 @@ function circleShape(x, y, r, s, gravityActivated = true) {
     var dir = createVector(1, 0)
     var res = []
     var angle = Math.PI * 2 / s
-    for (let i = 0; i < s-1; i++) {
+    for (let i = 1; i < s+1; i++) {
         newX = dir.x * cos(i*angle) - dir.y * sin(i*angle)
         newY = dir.x * sin(i*angle) + dir.y * cos(i*angle)
         var pos = createVector(newX, newY)
-        pos.mult(r)
+        pos.normalize().mult(r)
         pos.add(createVector(x, y))
         res.push(new Point(pos))
     }
     return new SoftBody(res, gravityActivated)
 }
 
-function updateScene() {
+function draw() {
+    background(255)
+    scene.forEach(object => {
+        object.preupdate()
+    });
     scene.forEach(object => {
         object.update()
     });
-}
-
-function draw() {
-    background(255)
-    updateScene()
     scene.forEach(object => {
         object.draw()
     });
@@ -80,10 +78,16 @@ class Point {
         this.velocity = createVector(0, 0);
         this.m = m;
     }
-    calculateNewVelo() {
+    preupdate() {
+        /**
+         * precalculate next pos
+         */
         this.checkCollisionsWithScene()
     }
     update() {
+        /**
+         * change real pos
+         */
         this.velocity.mult(airResistance)
         this.newPos.add(this.velocity);
         this.pos = this.newPos.copy()
@@ -132,11 +136,11 @@ class Point {
         var dir = castedPoint.sub(this.pos)
         if (object.movable){
             dir.div(2)
-            this.newPos.add(dir.copy().mult(1.0000001 * (2 * (t - t ** 2)))) //1.01 is used to make sure that the point doesn't collide anymore
+            this.newPos.add(dir.copy().mult(1.0000000001 * (2 * (t - t ** 2)))) //1.01 is used to make sure that the point doesn't collide anymore
             closestLine[0].newPos.add(dir.copy().mult(-(1 - t)))
             closestLine[1].newPos.add(dir.copy().mult(-t))
         }else{
-            this.newPos.add(dir.copy().mult(1.0000001)) 
+            this.newPos.add(dir.copy().mult(1.0000000001)) 
         }
 
         //recalculate velocities
@@ -179,11 +183,15 @@ class Spring{
         this.destination.velocity.add(dir.copy().mult(-finalForce))
     }
 }
+function randomColor() {
+    return [parseInt(Math.random() * 250), parseInt(Math.random() * 250), parseInt(Math.random() * 250)]
+}
 
 class Body{
     constructor(points = [], gravityActivated = true){
         this.points = points
         this.gravityActivated = gravityActivated
+        this.color = randomColor()
         this.movable = true
     }
     getObjectBox() {
@@ -208,10 +216,10 @@ class Body{
         var nextPoint = this.points[nexti];
         return [point, nextPoint]
     }
-    updateVelocities(){
+    preupdate(){
         this.points.forEach(point =>{
-            point.calculateNewVelo()
             if (this.gravityActivated) point.velocity.add(gravity);
+            point.preupdate()
         })
     }
     update(){
@@ -219,12 +227,28 @@ class Body{
             point.update()
         });
     }
-    draw(){
+    debugDraw(){
         for (let i = 0; i < this.points.length; i++) {
             var points = this.getLine(i)
             if (this.movable)points[0].draw()
             line(points[0].pos.x, points[0].pos.y, points[1].pos.x, points[1].pos.y)
         }
+    }
+    coloredDraw(){
+        smooth();
+        strokeWeight(2);    
+        stroke(this.color[0]*0.8, this.color[1]*0.8, this.color[2]*0.8);
+        fill(this.color[0], this.color[1], this.color[2]);
+        
+        beginShape();
+        for (let i = 0; i < this.points.length; i++) {
+            var points = this.getLine(i)
+            vertex(points[0].pos.x, points[0].pos.y)
+        }
+        endShape(CLOSE);
+    }
+    draw(){
+        this.coloredDraw()
     }
 }
 class SoftBody extends Body{
@@ -240,12 +264,17 @@ class SoftBody extends Body{
             }
         }
     }
-    update(){
-        super.updateVelocities()
+    preupdate(){
+        super.preupdate()
         this.springs.forEach(spring => {
             spring.update()            
         });
+    }
+    update(){
         super.update()
+        this.springs.forEach(spring => {
+            spring.update()            
+        });
     }
 }
 class Wall extends Body{
@@ -254,6 +283,7 @@ class Wall extends Body{
         this.movable = false
     }
     update(){
+        return 
     }
 }
 
