@@ -1,6 +1,6 @@
 var scene = []
 var gravity
-const airResistance = 0.98
+const airResistance = 9.81*10**-1   
 function setup() {
     createCanvas(windowWidth, windowHeight)
     gravity = createVector(0, 0.5)
@@ -11,10 +11,10 @@ function setup() {
     scene.push(square2)
     scene.push(square3)
     for (let i = 0; i < 20; i++) {
-        scene.push(squareShape(Math.random()*1000, Math.random()*3000-3000, Math.random()*100+10, Math.random()*100+10))
+        scene.push(squareShape(Math.random()*1000, Math.random()*4000-4000, Math.random()*100+10, Math.random()*100+10))
     }
     for (let i = 0; i < 20; i++) {
-        scene.push(circleShape(Math.random()*1000, Math.random()*3000-3000, Math.random()*100+10, Math.random()*10+10))
+        scene.push(circleShape(Math.random()*1000, Math.random()*4000-4000, Math.random()*100+10, Math.random()*10+10))
     }
     scene
     fill(0)
@@ -132,11 +132,11 @@ class Point {
         var dir = castedPoint.sub(this.pos)
         if (object.movable){
             dir.div(2)
-            this.newPos.add(dir.copy().mult(1.001 * (2 * (t - t ** 2)))) //1.01 is used to make sure that the point doesn't collide anymore
+            this.newPos.add(dir.copy().mult(1.0000001 * (2 * (t - t ** 2)))) //1.01 is used to make sure that the point doesn't collide anymore
             closestLine[0].newPos.add(dir.copy().mult(-(1 - t)))
             closestLine[1].newPos.add(dir.copy().mult(-t))
         }else{
-            this.newPos.add(dir.copy().mult(1.001)) 
+            this.newPos.add(dir.copy().mult(1.0000001)) 
         }
 
         //recalculate velocities
@@ -222,7 +222,7 @@ class Body{
     draw(){
         for (let i = 0; i < this.points.length; i++) {
             var points = this.getLine(i)
-            points[0].draw()
+            if (this.movable)points[0].draw()
             line(points[0].pos.x, points[0].pos.y, points[1].pos.x, points[1].pos.y)
         }
     }
