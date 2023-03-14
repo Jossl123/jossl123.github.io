@@ -3,19 +3,20 @@ var gravity
 const airResistance = 0.99
 function setup() {
     createCanvas(windowWidth, windowHeight)
-    gravity = createVector(0,0.0981   )
+    gravity = createVector(0,0.0981)
     var square = squareShape(120, 500, 100, 100)
     var square2 = squareShape(100, 620, 100, 100)   
     var square3 = squareShapeWall(0, window.innerHeight-10, window.innerWidth, 100)
     scene.push(square)
     scene.push(square2)
     scene.push(square3)
-    for (let i = 0; i < 100; i++) {
+    //scene.push(bigSquareShape(400, 400, 100, 100, 4))
+    for (let i = 0; i < 40; i++) {
         scene.push(squareShape(Math.random()*window.innerWidth, -i*110 + 200, Math.random()*100+10, Math.random()*100+10))
     }
-    // for (let i = 0; i < 10; i++) {
-    //     scene.push(circleShape(Math.random()*window.innerWidth/3, -i*110 + 200, Math.random()*40+10,10))
-    // }
+    for (let i = 0; i < 40; i++) {
+        scene.push(circleShape(Math.random()*window.innerWidth/3, -i*110 + 200, Math.random()*40+10,12))
+    }
     fill(0)
     //frameRate(10)
 }
@@ -26,6 +27,22 @@ function squareShapeWall(x, y, w, h) {
         new Point(createVector(x + w, y + h)),
         new Point(createVector(x, y + h))
     ])
+}
+
+function bigSquareShape(x, y, w, h, r, gravityActivated = true){
+    var res = []
+    var lrPos = createVector(x, y)
+    var ratiox = w / r
+    var ratioy = h / r
+    for (let i = 0; i <= r; i++) {
+        var npos = createVector(ratiox * i, 0)
+        res.push(new Point(npos.add(lrPos)))
+    }
+    for (let i = r; i >= 0; i--) {
+        var npos = createVector(ratiox * i, r)
+        res.push(new Point(npos.add(lrPos)))
+    }
+    return new SoftBody(res, gravityActivated)
 }
 
 function squareShape(x, y, w, h, gravityActivated = true) {
@@ -70,7 +87,7 @@ function pointInObj(object, point) {
 }
 class Point {
     static count = 0;
-    constructor(pos, m = 10) {
+    constructor(pos, m = 4) {
         this.id = Point.count
         Point.count++;
         this.pos = pos;
