@@ -6,18 +6,27 @@ function setup() {
     gravity = createVector(0, 0.5)
     var square = squareShape(120, 10, 100, 100)
     var square2 = squareShape(100, 120, 100, 100)   
-    var square3 = squareShape(0, 500, 1200, 1200, false)
+    var square3 = squareShapeWall(0, 900, 1500, 1400)
     scene.push(square)
     scene.push(square2)
     scene.push(square3)
-    for (let i = 0; i < 10; i++) {
-        scene.push(squareShape(Math.random()*1000, Math.random()*2000-2000, Math.random()*100+10, Math.random()*100+10))
+    for (let i = 0; i < 20; i++) {
+        scene.push(squareShape(Math.random()*1000, Math.random()*3000-3000, Math.random()*100+10, Math.random()*100+10))
     }
-    for (let i = 0; i < 10; i++) {
-        scene.push(circleShape(Math.random()*1000, Math.random()*2000-2000, Math.random()*100+10, Math.random()*10+10))
+    for (let i = 0; i < 20; i++) {
+        scene.push(circleShape(Math.random()*1000, Math.random()*3000-3000, Math.random()*100+10, Math.random()*10+10))
     }
+    scene
     fill(0)
     //frameRate(3)
+}
+function squareShapeWall(x, y, w, h) {
+    return new Wall([
+        new Point(createVector(x, y)),
+        new Point(createVector(x + w, y)),
+        new Point(createVector(x + w, y + h)),
+        new Point(createVector(x, y + h))
+    ])
 }
 
 function squareShape(x, y, w, h, gravityActivated = true) {
@@ -121,11 +130,14 @@ class Point {
         //move point and line so that the point is not inside object anymore
         //TODO : make it relative to masses
         var dir = castedPoint.sub(this.pos)
-        dir.div(2)
-        this.newPos.add(dir.copy().mult(1.001 * (2 * (t - t ** 2)))) //1.01 is used to make sure that the point doesn't collide anymore
-
-        closestLine[0].newPos.add(dir.copy().mult(-(1 - t)))
-        closestLine[1].newPos.add(dir.copy().mult(-t))
+        if (object.movable){
+            dir.div(2)
+            this.newPos.add(dir.copy().mult(1.001 * (2 * (t - t ** 2)))) //1.01 is used to make sure that the point doesn't collide anymore
+            closestLine[0].newPos.add(dir.copy().mult(-(1 - t)))
+            closestLine[1].newPos.add(dir.copy().mult(-t))
+        }else{
+            this.newPos.add(dir.copy().mult(1.001)) 
+        }
 
         //recalculate velocities
         var normal = dir.normalize();
@@ -172,6 +184,7 @@ class Body{
     constructor(points = [], gravityActivated = true){
         this.points = points
         this.gravityActivated = gravityActivated
+        this.movable = true
     }
     getObjectBox() {
         var res = { minx: 0, miny: 0, maxx: 0, maxy: 0 }
@@ -195,6 +208,24 @@ class Body{
         var nextPoint = this.points[nexti];
         return [point, nextPoint]
     }
+    updateVelocities(){
+        this.points.forEach(point =>{
+            point.calculateNewVelo()
+            if (this.gravityActivated) point.velocity.add(gravity);
+        })
+    }
+    update(){
+        this.points.forEach(point => {
+            point.update()
+        });
+    }
+    draw(){
+        for (let i = 0; i < this.points.length; i++) {
+            var points = this.getLine(i)
+            points[0].draw()
+            line(points[0].pos.x, points[0].pos.y, points[1].pos.x, points[1].pos.y)
+        }
+    }
 }
 class SoftBody extends Body{
     constructor(points = [], gravityActivated = true){
@@ -210,23 +241,19 @@ class SoftBody extends Body{
         }
     }
     update(){
-        this.points.forEach(point =>{
-            point.calculateNewVelo()
-            if (this.gravityActivated) point.velocity.add(gravity);
-        })
+        super.updateVelocities()
         this.springs.forEach(spring => {
             spring.update()            
         });
-        this.points.forEach(point => {
-            point.update()
-        });
+        super.update()
     }
-    draw(){
-        for (let i = 0; i < this.points.length; i++) {
-            var points = this.getLine(i)
-            points[0].draw()
-            line(points[0].pos.x, points[0].pos.y, points[1].pos.x, points[1].pos.y)
-        }
+}
+class Wall extends Body{
+    constructor(points = []){
+        super(points, false)
+        this.movable = false
+    }
+    update(){
     }
 }
 
