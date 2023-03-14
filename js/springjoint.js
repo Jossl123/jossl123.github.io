@@ -167,9 +167,9 @@ class Point {
         
         this.velocity = this.velocity.sub(normal.copy().mult(dn2))  
         dn2 = normal.dot(closestLine[0].velocity) * 2;
-        closestLine[0].velocity = closestLine[0].velocity.sub(normal.copy().mult(dn2))
+        closestLine[0].velocity = closestLine[0].velocity.sub(normal.copy().mult(dn2 * t))
         dn2 = normal.dot(closestLine[1].velocity) * 2;
-        closestLine[1].velocity = closestLine[1].velocity.sub(normal.copy().mult(dn2))
+        closestLine[1].velocity = closestLine[1].velocity.sub(normal.copy().mult(dn2 * (1-t)))
     }
     draw() {
         fill(0)
