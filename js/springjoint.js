@@ -11,10 +11,10 @@ function setup() {
     scene.push(square2)
     scene.push(square3)
     ///scene.push(bigSquareShape(400, 400, 100, 100, 4))
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 15; i++) {
         scene.push(squareShape(Math.random()*window.innerWidth, -i*110 + 200, Math.random()*100+10, Math.random()*100+10))
     }
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 15; i++) {
         scene.push(circleShape(Math.random()*window.innerWidth/3, -i*110 + 200, Math.random()*20+30,20))
     }
     fill(0)
