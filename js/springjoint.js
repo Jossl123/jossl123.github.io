@@ -10,12 +10,12 @@ function setup() {
     scene.push(square)
     scene.push(square2)
     scene.push(square3)
-    //scene.push(bigSquareShape(400, 400, 100, 100, 4))
+    ///scene.push(bigSquareShape(400, 400, 100, 100, 4))
     for (let i = 0; i < 25; i++) {
         scene.push(squareShape(Math.random()*window.innerWidth, -i*110 + 200, Math.random()*100+10, Math.random()*100+10))
     }
     for (let i = 0; i < 25; i++) {
-        scene.push(circleShape(Math.random()*window.innerWidth/3, -i*110 + 200, Math.random()*40+10,12))
+        scene.push(circleShape(Math.random()*window.innerWidth/3, -i*110 + 200, Math.random()*20+30,20))
     }
     fill(0)
     //frameRate(10)
@@ -94,6 +94,7 @@ class Point {
         this.newPos = pos.copy()
         this.velocity = createVector(0, 0);
         this.m = m;
+        this.posFromObjCenter = createVector(0, 0)
     }
     preupdate() {
         /**
@@ -174,16 +175,24 @@ class Point {
     draw() {
         fill(0)
         circle(this.pos.x, this.pos.y, this.m)
+        this.drawVelo()
+    }
+    drawVelo(){
+        stroke(255, 0, 0)
+        line(this.pos.x, this.pos.y, this.pos.x + this.velocity.x * 10, this.pos.y + this.velocity.y*10)
+    }
+    angleFromObj(center){
+        return this.pos.copy().sub(center).angleBetween(this.posFromObjCenter)
     }
 }
 
 class Spring{
-    constructor(source, dest){
+    constructor(source, dest, stiffness = 0.1, damping = 0.1){
         this.source = source
         this.destination = dest
         this.restLength = this.length()
-        this.stiffness = 0.1
-        this.damping = 0.1  
+        this.stiffness = stiffness
+        this.damping = damping
     }
     length(){
         return dist(this.destination.pos.x, this.destination.pos.y, this.source.pos.x, this.source.pos.y)
@@ -210,6 +219,26 @@ class Body{
         this.gravityActivated = gravityActivated
         this.color = randomColor()
         this.movable = true
+        var pos = this.getPosition()
+        this.points.forEach(point => {
+            point.posFromObjCenter = point.pos.copy().sub(pos)
+        });
+    }
+    getPosition(){
+        var finalPoint = this.points[0].pos.copy()
+        for (let i = 1; i < this.points.length; i++) {
+            finalPoint.add(this.points[i].pos)
+        }
+        finalPoint.div(this.points.length)
+        return finalPoint
+    }
+    getAngle(){
+        var pos = this.getPosition()
+        var a = this.points[0].angleFromObj(pos)
+        for (let i = 1; i < this.points.length; i++) {
+            a+=this.points[i].angleFromObj(pos)
+        }
+        return -(a / this.points.length)
     }
     getObjectBox() {
         var res = { minx: 0, miny: 0, maxx: 0, maxy: 0 }
@@ -248,6 +277,7 @@ class Body{
         for (let i = 0; i < this.points.length; i++) {
             var points = this.getLine(i)
             if (this.movable)points[0].draw()
+            stroke(0)
             line(points[0].pos.x, points[0].pos.y, points[1].pos.x, points[1].pos.y)
         }
     }
@@ -271,14 +301,17 @@ class Body{
 class SoftBody extends Body{
     constructor(points = [], gravityActivated = true){
         super(points, gravityActivated)
+        this.plainBody = []
         this.springs = []
         this.generatelinkToEveryOne()
     }
     generatelinkToEveryOne(){
         for (let i = 0; i < this.points.length; i++) {
+            this.plainBody.push(new Point(this.points[i].pos));
             for (let j = i+1; j < this.points.length; j++) {
                 this.springs.push(new Spring(this.points[i], this.points[j]))
             }
+            this.springs.push(new Spring(this.points[i], this.plainBody[i], 0.5, 0.8))
         }
     }
     preupdate(){
@@ -287,12 +320,30 @@ class SoftBody extends Body{
             spring.update()            
         });
     }
+    updateRelativePoints(){
+        var pos = this.getPosition()
+        //circle(pos.x, pos.y, 5)
+        var a = this.getAngle()
+        for (let i = 0; i < this.plainBody.length; i++) {
+            var np = pos.copy().add(rotateVector(this.points[i].posFromObjCenter, a))
+            this.plainBody[i].pos = np.copy()
+            stroke(255, 0, 0)
+            //circle(np.x, np.y, 5)
+        }
+    }
     update(){
+        this.updateRelativePoints()
         super.update()
         this.springs.forEach(spring => {
             spring.update()            
         });
     }
+}
+
+function rotateVector(v, a){
+    newX = v.x * cos(a) - v.y * sin(a)
+    newY = v.x * sin(a) + v.y * cos(a)
+    return createVector(newX, newY)
 }
 class Wall extends Body{
     constructor(points = []){
@@ -312,7 +363,7 @@ function lineIntersects(v1, v2, v3, v4) {
     } else {
         lambda = ((v4.y - v3.y) * (v4.x - v1.x) + (v3.x - v4.x) * (v4.y - v1.y)) / det;
         gamma = ((v1.y - v2.y) * (v4.x - v1.x) + (v2.x - v1.x) * (v4.y - v1.y)) / det;
-        return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+        return (0 <= lambda && lambda <= 1) && (0 <= gamma && gamma <= 1);
     }
 };
 
