@@ -121,6 +121,7 @@ var prevItt = 0
 var s = rez
 var alt = true
 
+
 function draw() {
     if (count < rez ** 2) {
         document.getElementById("pourcent").innerHTML = `${Math.floor(count*100/rez**2)}%`
@@ -391,12 +392,13 @@ function randomColor() {
 function toCamCoord(point) {
     var res = point.copy()
     res.sub(cam.pos)
-    res = rotateVectorX(res, cam.rot.x)
-    res = rotateVectorY(res, cam.rot.y)
-    res = rotateVectorZ(res, cam.rot.z)
+    res = rotateVectorX(res, -cam.rot.x)
+    res = rotateVectorY(res, -cam.rot.y)
+    res = rotateVectorZ(res, -cam.rot.z)
     return res
 }
 
+//TODO
 function worldCoordToPixelCoord(point) {
     point = toCamCoord(point).setMag(cam.distFromScreen)
     var x = point.x + w / 2
