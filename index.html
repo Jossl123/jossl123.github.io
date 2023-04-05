@@ -30,6 +30,7 @@
             </div>
             <div id="canvas_container"></div>
         </div>
+        <p id="swipe">swipe --></p>
         <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
         </div>
     </main>
@@ -281,6 +282,30 @@
             gap: 0.3rem;
             justify-content: center;
         }
+
+        @keyframes changewidth {
+            from {
+                transform: translateX(10px);
+            }
+
+            to {
+                transform: translateX(-10px);
+            }
+        }
+
+        #swipe {
+            animation-duration: 0.7s;
+            animation-name: changewidth;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+        #swipe{
+            margin: 0.2rem;
+            margin-right: 1rem;
+            justify-content: flex-end;
+            display: flex;
+            align-items: flex-end;
+        }
     </style>
     <script src="./js/three.js"></script>
     <script>
@@ -429,8 +454,11 @@
                 var difx = -beginingx + event.clientX
                 const matrix = new DOMMatrixReadOnly(document.getElementById('retexs').style.transform)
                 const translateX = matrix.m41;
-                dm.style.transform = `translateX(${Math.min(0, Math.max(translateX+difx, -dm.offsetWidth + window.innerWidth))}px)`
-
+                let translation = Math.min(0, Math.max(translateX+difx, -dm.offsetWidth + window.innerWidth))
+                dm.style.transform = `translateX(${translation}px)`
+                console.log(translation, -dm.offsetWidth + window.innerWidth)
+                if (translateX+difx <= -dm.offsetWidth + window.innerWidth + 10)document.getElementById("swipe").style.visibility = "hidden"
+                else document.getElementById("swipe").style.visibility = "visible"
             }
             beginingx = event.clientX
             event.preventDefault()
