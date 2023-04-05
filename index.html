@@ -25,7 +25,7 @@
         <div id="firstView">
             <div id="presentation">
                 <h1>Hi, <br> I'm Josselin</h1>
-                <p>&emsp;I'm a full stack developper who like Nodejs and developping websites. I've always enjoyed playing with visual things and maths. </p>
+                <p>&emsp;I'm a full stack developer who like Nodejs and developping websites. I've always enjoyed playing with visual things and maths. </p>
                 <h4>Here are some of my projects :</h4>
             </div>
             <div id="canvas_container"></div>
@@ -326,13 +326,21 @@
                 "title": "Twotris",
                 "description": "A website to play tetris in multiplayer mode",
                 "method": "Nodejs : websocket and express js",
-                "skills": "javascript skills and websockets"
+                "skills": "javascript skills and websockets",
+                "link": "https://twotris.onrender.com"
             },
             "rayCasting": {
                 "title": "Ray casting",
                 "description": "A raycasting website representing the backrooms",
                 "method": "ray casting",
                 "skills": "javascript skills and math knowledge improvements"
+            },
+            "MLU": {
+                "title": "MLU",
+                "description": "A website to explore the Max Litterature Universe",
+                "method": "image mapping",
+                "skills": "javascript skills",
+                "link": "https://jossl123.github.io/MLU"
             },
             "transistoshare": {
                 "title": "Transistoshare",
@@ -345,6 +353,12 @@
                 "description": "Ray marching simulation",
                 "method": "ray marching",
                 "skills": "javascript skills and math knowledge improvements"
+            },
+            "mandlebrot2": {
+                "title": "Mandlebrot",
+                "description": "b",
+                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
+                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
             },
             "boids": {
                 "title": "Boids",
@@ -396,6 +410,8 @@
             if (isRetex()) return
             id = e.target.id
             var link = doesFileExist(`./${id}.html`) ? `href="./${id}.html" target="_blank"` : `href="#"`
+            if (data[id].link) link = `href="${data[id].link}"`
+
             var div = `<div class="retex" id="visibleRetex">
                 <button onclick="hideRetex()"><img src="./img/closeIcon.png"></button>
                 <div>
