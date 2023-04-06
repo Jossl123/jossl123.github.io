@@ -30,6 +30,7 @@
             </div>
             <div id="canvas_container"></div>
         </div>
+        <p id="swipe">swipe --></p>
         <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
         </div>
     </main>
@@ -281,14 +282,39 @@
             gap: 0.3rem;
             justify-content: center;
         }
+
+        @keyframes changewidth {
+            from {
+                transform: translateX(10px);
+            }
+
+            to {
+                transform: translateX(-10px);
+            }
+        }
+
+        #swipe {
+            animation-duration: 0.7s;
+            animation-name: changewidth;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+        #swipe{
+            margin: 0.2rem;
+            margin-right: 1rem;
+            justify-content: flex-end;
+            display: flex;
+            align-items: flex-end;
+        }
     </style>
     <script src="./js/three.js"></script>
     <script>
         var data = {
             "rayTracing3d": {
                 "title": "Ray Tracing 3d",
-                "description": "A 3d engine made from scratch (with p5 for the vector classes)",
-                "method": "ray tracing with ray marching, p5",
+                "description": "    This project is a 3d engine made from scratch (with p5 for the vector classe). <br><br>Raycasting rendering method consist of simulating the inverse of a light ray. In the real life the light comme from the light source to our eyes and in raycsating we launch the ray from the eye to the lights sources.<br><br> We 'launch' for every pixel in the screen ray (represented by a vector) in a 3d world (represented by some object and their properties like their color). We then found what color did the ray touch (go check out the raymarching project) and color the pixel like so ",
+                "method": "- ray tracing <br>\
+                - ray marching <br>",
                 "skills": "javascript skills and math knowledge improvements"
             },
             "planetGenerator": {
@@ -445,8 +471,11 @@
                 var difx = -beginingx + event.clientX
                 const matrix = new DOMMatrixReadOnly(document.getElementById('retexs').style.transform)
                 const translateX = matrix.m41;
-                dm.style.transform = `translateX(${Math.min(0, Math.max(translateX+difx, -dm.offsetWidth + window.innerWidth))}px)`
-
+                let translation = Math.min(0, Math.max(translateX+difx, -dm.offsetWidth + window.innerWidth))
+                dm.style.transform = `translateX(${translation}px)`
+                console.log(translation, -dm.offsetWidth + window.innerWidth)
+                if (translateX+difx <= -dm.offsetWidth + window.innerWidth + 10)document.getElementById("swipe").style.visibility = "hidden"
+                else document.getElementById("swipe").style.visibility = "visible"
             }
             beginingx = event.clientX
             event.preventDefault()
