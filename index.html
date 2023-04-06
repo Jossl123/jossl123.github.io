@@ -19,6 +19,8 @@
             <img class="logo" src="./img/githubLogo.png" alt=""></a>
         <a target="_blank" href="#">
             <img class="logo" src="./img/linkedinLogo.png" alt=""></a>
+        <a target="_blank" onclick="print_retex()">
+            <img class="logo" src="./img/linkedinLogo.png" alt=""></a>
     </header>
     <main>
         <canvas id="mouse_flow"></canvas>
@@ -136,6 +138,17 @@
             padding: 1rem;
             display: flex;
             gap: 0.7rem;
+            width: -webkit-fill-available;
+        }
+        
+        header>a:nth-child(4) {
+            margin-left: auto;
+            margin-right: 0;
+        }
+        
+        header>* {
+            background-color: none;
+            border: none;
         }
         
         .logo {
@@ -586,6 +599,49 @@
             canvas.height = window.innerHeight
         }
         window.scrollTo(0, 0);
+    </script>
+    <script>
+        function print_retex() {
+            var mywindow = window.open("", "PRINT",
+                "height=400,width=600");
+
+            let retexs = ""
+
+            let keys = Object.keys(data)
+            keys.forEach(id => {
+                const retex = data[id]
+                var link = doesFileExist(`./${id}.html`) ? `href="./${id}.html" target="_blank"` : `href="#"`
+                var div = `<div class="retex" id="visibleRetex">
+                    <img src="./img/closeIcon.png"></img>   
+                    <div>
+                        <div><a ${link}><img src="./img/pp/${id}.png" alt=""></a></div>
+                        <div>
+                            <h3>${retex.title}</h3>
+                            <p>${retex.description}</p>
+                        </div>
+                        <div>
+                            <h3>Method</h3>
+                            <p>${retex.method}</p>
+                        </div>
+                        <div>
+                            <h3>Skills</h3>
+                            <p>${retex.skills}</p>
+                        </div>
+                    </div>
+                </div>`
+                retexs += div
+            });
+
+            mywindow.document.write(retexs);
+
+            mywindow.document.close();
+            mywindow.focus();
+
+            mywindow.print();
+            mywindow.close();
+
+            return true;
+        }
     </script>
 </body>
 
