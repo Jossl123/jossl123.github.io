@@ -282,24 +282,24 @@
             gap: 0.3rem;
             justify-content: center;
         }
-
+        
         @keyframes changewidth {
             from {
                 transform: translateX(10px);
             }
-
             to {
                 transform: translateX(-10px);
             }
         }
-
+        
         #swipe {
             animation-duration: 0.7s;
             animation-name: changewidth;
             animation-iteration-count: infinite;
             animation-direction: alternate;
         }
-        #swipe{
+        
+        #swipe {
             margin: 0.2rem;
             margin-right: 1rem;
             justify-content: flex-end;
@@ -358,8 +358,8 @@
             "mandlebrot2": {
                 "title": "Mandlebrot",
                 "description": "b",
-                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
-                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+                "method": " ",
+                "skills": ""
             },
             "boids": {
                 "title": "Boids",
@@ -375,15 +375,15 @@
             },
             "beautifulArt": {
                 "title": "Beautiful Art",
-                "description": "blabrlablrbekrjfzerhoi u iur toiurt ozeiurt et",
-                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
-                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+                "description": "",
+                "method": " ",
+                "skills": ""
             },
             "quadTree": {
                 "title": "QuadTree",
                 "description": "b",
-                "method": "eifjp hf pzeiurgh zepiugh zeiguh giue ",
-                "skills": "zeoirfhe ofhzef ozehifz eofizehf foi"
+                "method": " ",
+                "skills": ""
             },
         }
         window.onload = function() {
@@ -471,10 +471,10 @@
                 var difx = -beginingx + event.clientX
                 const matrix = new DOMMatrixReadOnly(document.getElementById('retexs').style.transform)
                 const translateX = matrix.m41;
-                let translation = Math.min(0, Math.max(translateX+difx, -dm.offsetWidth + window.innerWidth))
+                let translation = Math.min(0, Math.max(translateX + difx, -dm.offsetWidth + window.innerWidth))
                 dm.style.transform = `translateX(${translation}px)`
                 console.log(translation, -dm.offsetWidth + window.innerWidth)
-                if (translateX+difx <= -dm.offsetWidth + window.innerWidth + 10)document.getElementById("swipe").style.visibility = "hidden"
+                if (translateX + difx <= -dm.offsetWidth + window.innerWidth + 10) document.getElementById("swipe").style.visibility = "hidden"
                 else document.getElementById("swipe").style.visibility = "visible"
             }
             beginingx = event.clientX
