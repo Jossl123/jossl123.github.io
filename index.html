@@ -409,6 +409,7 @@
                 document.getElementById("retexs").innerHTML += button
             })
             window.scrollTo(0, 0)
+            document.getElementsByTagName("main")[0].style.marginBottom = window.innerHeight - document.getElementById("firstView").offsetHeight + "px"
         }
         var canClose = true
 
