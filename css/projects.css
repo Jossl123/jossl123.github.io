@@ -1,0 +1,45 @@
+.retexCard{
+
+}
+.retexBut {
+    flex-shrink: 0;
+    border: none;
+    background-position: center center !important;
+    background-size: cover !important;
+    height: 18rem;
+    width: 32rem;
+}
+
+#retexs{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#searchTag{
+    display: flex;
+    border-radius: 1rem;
+    border: none;
+    padding: 1rem;
+    outline: none;
+    background-color: white;
+}
+#searchTagBar{
+    border-radius: 1rem;
+    border: none;
+    padding: 1rem;
+    outline: none;
+}
+.searchedTag{
+    color: black;
+    border: black;
+    padding: 1rem;
+    outline: none;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10em;
+}

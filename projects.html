@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="/css/projects.css">
     <title>Jossl123</title>
 </head>
 
@@ -20,104 +21,17 @@
             <img class="logo" src="./img/githubLogo.png" alt=""></a>
         <a target="_blank" href="https://linkedin.com/in/josselin-gautier-a51a16272">
             <img class="logo" src="./img/linkedinLogo.png" alt=""></a>
-        <a href="#">Projects</a>
-        <p>|</p>
         <a target="_blank" onclick="print_retex()">
             <img class="logo" src="./img/imageedit_14_3577201866.png" alt=""></a>
     </header>
     <main>
-        <canvas id="mouse_flow"></canvas>
-        <div id="firstView">
-            <div id="presentation">
-                <h1>Hi, <br> I'm Josselin</h1>
-                <p>&emsp;I'm a full stack developer who like Nodejs and developping websites. I've always enjoyed playing with visual things and maths. </p>
-                <h4>Here are some of my projects :</h4>
-            </div>
-            <div id="canvas_container"></div>
-        </div>
-        <p id="swipe">swipe --></p>
-        <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
-        </div>
+        <div id="searchTag">
+            <input id="searchTagBar" type="text" oninput="searchTag(event)"></div>
+        <div id="retexs"></div>
     </main>
-    <div id="second_part">
-        <div id="competitions">
-            <h1>Coding competitions</h1>
-            <div>
-                <img src="./img/algorea.png" alt="">
-                <img src="./img/castor.png" alt="">
-                <img src="./img/techChallenger.png" alt=""></div>
-            <p>3rd Place in Castor, semi-finals in Algorea, semi-finals on TechChallenger</p>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <div id="hobbies">
-            <h1>Hobbies</h1>
-            <div>
-                <img src="./img/kendama.jpeg" alt="">
-                <img src="./img/bayonneRubiks.png" alt="">
-                <img src="./img/parkour.jpg" alt="">
-                <img src="./img/piano.png" alt="">
-                <img src="./img/crailsheim.png" alt="">
-                <img src="./img/rsk.jpeg" alt="">
-                <img src="./img/yoyo.jpg" alt="">
-                <img src="./img/surf.webp" alt="">
-                <img src="./img/tir_jo.jpg" alt="">
-                <img src="./img/trot.jpg" alt="">
-                <img src="./img/skim_jo.jpeg" alt="">
-                <img src="./img/ingeLight.png" alt="">
-                <img src="./img/javascript.png" alt="">
-            </div>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-    </div>
-
     <footer></footer>
-    <script src="./js/three.js"></script>
-    <script src="./js/index.js"></script>
+    <script src="./js/retexs.js"></script>
+    <script src="./js/projects.js"></script>
 </body>
 
 </html>
