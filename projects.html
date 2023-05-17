@@ -4,116 +4,120 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jossl123 - Projects</title>
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <title>Jossl123</title>
 </head>
 
 <body>
-    <nav class="h-auto bg-c-0">
-        <div class="p-2 text-white text-left font-medium text-xl">
-            <a href="index.html" class="p-2">Home</a>
-            <div class="float-right">
-                <a href="contact.html" class="p-2 ">.contact()</a>
-                <a href="projects.html" class="p-2 ">.projects()</a>
+    <header id="header">
+        <a target="_blank" href="mailto:jossl1.gau@gmail.com">
+            <img class="logo" src="./img/email.png" alt=""></a>
+        <a target="_blank" href="https://github.com/Jossl123">
+            <img class="logo" src="./img/githubLogo.png" alt=""></a>
+        <a target="_blank" href="https://linkedin.com/in/josselin-gautier-a51a16272">
+            <img class="logo" src="./img/linkedinLogo.png" alt=""></a>
+        <a href="#">Projects</a>
+        <p>|</p>
+        <a target="_blank" onclick="print_retex()">
+            <img class="logo" src="./img/imageedit_14_3577201866.png" alt=""></a>
+    </header>
+    <main>
+        <canvas id="mouse_flow"></canvas>
+        <div id="firstView">
+            <div id="presentation">
+                <h1>Hi, <br> I'm Josselin</h1>
+                <p>&emsp;I'm a full stack developer who like Nodejs and developping websites. I've always enjoyed playing with visual things and maths. </p>
+                <h4>Here are some of my projects :</h4>
+            </div>
+            <div id="canvas_container"></div>
+        </div>
+        <p id="swipe">swipe --></p>
+        <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
+        </div>
+    </main>
+    <div id="second_part">
+        <div id="competitions">
+            <h1>Coding competitions</h1>
+            <div>
+                <img src="./img/algorea.png" alt="">
+                <img src="./img/castor.png" alt="">
+                <img src="./img/techChallenger.png" alt=""></div>
+            <p>3rd Place in Castor, semi-finals in Algorea, semi-finals on TechChallenger</p>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div id="hobbies">
+            <h1>Hobbies</h1>
+            <div>
+                <img src="./img/kendama.jpeg" alt="">
+                <img src="./img/bayonneRubiks.png" alt="">
+                <img src="./img/parkour.jpg" alt="">
+                <img src="./img/piano.png" alt="">
+                <img src="./img/crailsheim.png" alt="">
+                <img src="./img/rsk.jpeg" alt="">
+                <img src="./img/yoyo.jpg" alt="">
+                <img src="./img/surf.webp" alt="">
+                <img src="./img/tir_jo.jpg" alt="">
+                <img src="./img/trot.jpg" alt="">
+                <img src="./img/skim_jo.jpeg" alt="">
+                <img src="./img/ingeLight.png" alt="">
+                <img src="./img/javascript.png" alt="">
             </div>
         </div>
-    </nav>
-    <div class="w-full">
-        <div class="ml-auto p-2 grid grid-flow-row grid-cols-5">
-            <div class="projectDiv">
-                <a id="transistoshare" href="https://jossl123.github.io/Transistoshare/" class="project h-40 bg-gray-100"></a>
-                <div class="text-c-0 nameDiv invisible">
-                    <p class="name">Transistoshare</p>
-                </div>
-            </div>
-            <a id="quadTree" href="./quadTree.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">QuadTree</p>
-            </a>
-            <a id="raymarching" href="./rayMarching.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Ray Marching</p>
-            </a>
-            <a id="doublePendular" href="./doublePendular.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Double Pendule</p>
-            </a>
-            <a id="boids" href="./boids.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Boids</p>
-            </a>
-            <a id="triangleMesh" href="./triangleMesh.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Triangle Mesh</p>
-            </a>
-            <a id="marchingSquares" href="./marchingSquares.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Marching Squares</p>
-            </a>
-            <a id="planetGenerator" href="./planetGenerator.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Planet Generator</p>
-            </a>
-            <a id="collatzConjecture" href="./collatzConjecture.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Collatz Conjecture</p>
-            </a>
-            <a href="./learnPAO.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">PAO</p>
-            </a>
-            <a href="./hilbertCurve.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Hilbert Curve</p>
-            </a>
-            <a id="beautifulArt" href="./beautifulArt.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Beautiful Art</p>
-            </a>
-            <a href="./sandBox.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Sand Box</p>
-            </a>
-            <a id="lorrenzAttractor" href="./lorrenzAttractor.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Lorenz Attractor</p>
-            </a>
-            <a href="./antSimulation.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Ant Simulation</p>
-            </a>
-            <a href="./slimeMould.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Slime Mould</p>
-            </a>
-            <a href="./reactionDuffusion.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Reaction Diffusion</p>
-            </a>
-            <a id="fractal" href="./fractal.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Fractal</p>
-            </a>
-            <a id="mandlebrot" href="./mandlebrot.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Mandlebrot</p>
-            </a>
-            <a id="rayTracing3d" href="./rayTracing3d.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Ray Tracing 3d</p>
-            </a>
-            <a href="./puzzle.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Puzzle</p>
-            </a>
-            <a href="./enigmeSolitaire.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Enigme solitaire</p>
-            </a>
-            <a href="./flipper.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Flipper</p>
-            </a>
-            <a id="learnPI" href="./learnPI.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Learn PI</p>
-            </a>
-            <a href="./drawBeautiful.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Beautiful Drawings</p>
-            </a>
-            <a href="./minecraft.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Minecraft</p>
-            </a>
-            <a href="./3d.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">3d</p>
-            </a>
-            <a href="./ai.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">AI</p>
-            </a>
-            <a href="./wavefunctioncollapse.html" class="project h-40 bg-gray-100">
-                <p class="text-c-0 name invisible">Wave function collapse</p>
-            </a>
-        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </div>
+
+    <footer></footer>
+    <script src="./js/three.js"></script>
+    <script src="./js/index.js"></script>
 </body>
 
 </html>
