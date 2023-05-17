@@ -1,0 +1,144 @@
+#quadTree {
+    background-image: url("../img/pp/quadTree.PNG");
+}
+
+#boids {
+    background-image: url("../img/pp/boids.PNG");
+}
+
+#doublePendular {
+    background-image: url("../img/pp/doublePendule.PNG");
+}
+
+#planetGenerator {
+    background-image: url("../img/pp/planetGenerator.png");
+}
+
+#fractal {
+    background-image: url("../img/pp/fractal.png");
+}
+
+#transistoshare {
+    background-image: url("../img/pp/transistoshare.png");
+}
+
+#mandlebrot {
+    background-image: url("../img/pp/mandlebrot.png");
+}
+
+#raymarching {
+    background-image: url("../img/pp/raymarching.png");
+}
+
+#collatzConjecture {
+    background-image: url("../img/pp/collatzConjecture.png");
+}
+
+#lorrenzAttractor {
+    background-image: url("../img/pp/lorrenzAttractor.png");
+}
+
+#triangleMesh {
+    background-image: url("../img/pp/triangleMesh.png");
+}
+
+#marchingSquares {
+    background-image: url("../img/pp/marchingSquares.png");
+}
+
+#beautifulArt {
+    background-image: url("../img/pp/beautifulArt.png");
+}
+
+#learnPI {
+    background-image: url("../img/pp/learnPI.png");
+}
+
+#rayTracing3d {
+    background-image: url("../img/pp/rayTracing3d.png");
+}
+
+.project {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    vertical-align: middle;
+    transition: opacity 1s;
+    display: block;
+}
+
+.projectDiv {
+    position: relative;
+}
+
+.nameDiv {
+    position: absolute;
+    top: 25%;
+    text-align: center;
+    font-size: larger;
+    font-weight: 700;
+    opacity: 0;
+    transition: transform opacity 1s;
+}
+
+.name {
+    text-align: center;
+}
+
+.projectDiv:hover>.nameDiv {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.project:hover {
+    opacity: 0;
+}
+
+.bg-c-0 {
+    background-color: var(--c-0);
+}
+
+.bg-c-1 {
+    background-color: var(--c-1);
+}
+
+.bg-c-2 {
+    background-color: var(--c-2);
+}
+
+.bg-c-3 {
+    background-color: var(--c-3);
+}
+
+.text-c-0 {
+    color: var(--c-0);
+}
+
+.text-c-1 {
+    color: var(--c-1);
+}
+
+.text-c-2 {
+    color: var(--c-2);
+}
+
+.text-c-3 {
+    color: var(--c-3);
+}
+
+:root,
+ :root.light {
+    --c-0: #EC8C1A;
+    --c-1: #FFFDE8;
+    --c-2: #585567;
+    --c-3: #3C374A;
+}
+
+ :root.dark {
+    --c-0: #EC8C1A;
+    --c-1: #FFFDE8;
+    --c-2: #585567;
+    --c-3: #3C374A;
+}
