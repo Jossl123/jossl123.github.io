@@ -1,6 +1,4 @@
-.retexCard{
 
-}
 .retexBut {
     flex-shrink: 0;
     border: none;
@@ -8,6 +6,7 @@
     background-size: cover !important;
     height: 18rem;
     width: 32rem;
+    margin: 1rem;
 }
 
 #retexs{
@@ -42,4 +41,16 @@ main{
     flex-direction: column;
     align-items: center;
     padding-top: 10em;
+}
+
+.tag{
+    font-family: 'Raleway', sans-serif;
+    border-radius: 50vw;
+    background-color: rgb(20, 20, 40);
+    border: solid rgb(51, 51, 78) 0.3rem;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    font-size: x-large;
+    color: white;
+
 }

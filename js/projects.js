@@ -3,9 +3,18 @@ function drawProjects(){
     document.getElementById("retexs").innerHTML = ""
     Object.entries(data).forEach(retex => {
         if(!haveTag(retex[1].tags)) return 
-        var button = `<button id="${retex[0]}" onclick="showRetex(event)" class="retexBut" style="background: url('./img/pp/${retex[0]}.png');"></button>`
+        let tags = ""
+        retex[1].tags.forEach(tag => {
+            tags+=`<button class="tag" onclick="clickTag('${tag}')">${tag}</button>`
+        });
+        var button = `<div id="${retex[0]}" class="retexBut" style="background: url('./img/pp/${retex[0]}.png')">${tags}</div>`
         document.getElementById("retexs").innerHTML += button
     })
+}
+
+function clickTag(tag){
+    document.getElementById("searchTagBar").value += tag
+    searchTagBarChange()
 }
 
 function haveTag(tags){
@@ -27,14 +36,17 @@ function removeTag(tag){
     drawProjects()
 }
 
-function searchTag(e){
-    let searchVal = document.getElementById("searchTagBar").value
-    if (possibleTags.includes(searchVal)){
-        document.getElementById("searchTag").innerHTML = `
-        <div class="searchedTag"  id="tag_${searchVal}" >${searchVal}<button onclick="removeTag('${searchVal}')">x</button></div>` + document.getElementById("searchTag").innerHTML
-        researchTags.push(searchVal)
-    }
+function searchTagBarChange(){
+    let searchVals = document.getElementById("searchTagBar").value.split(" ")
+    searchVals.forEach(searchVal => {
+        if (researchTags.includes(searchVal))return 
+        if (possibleTags.includes(searchVal)){
+            document.getElementById("searchTag").innerHTML = `
+            <div class="searchedTag"  id="tag_${searchVal}" >${searchVal}<button onclick="removeTag('${searchVal}')">x</button></div>` + document.getElementById("searchTag").innerHTML
+            researchTags.push(searchVal)
+        }
+    });
+    document.getElementById("searchTagBar").value = ""
     drawProjects()
 }
-
 drawProjects()
