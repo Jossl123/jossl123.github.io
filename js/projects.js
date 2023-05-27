@@ -1,7 +1,11 @@
 let researchTags = []
+let retexsOrder = Object.entries(data)
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
 function drawProjects(){
     document.getElementById("retexs").innerHTML = ""
-    Object.entries(data).forEach(retex => {
+    retexsOrder.forEach(retex => {
         if(!haveTag(retex[1].tags)) return 
         let tags = ""
         retex[1].tags.forEach(tag => {

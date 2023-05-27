@@ -1,9 +1,12 @@
 
 
 window.onload = function() {
+    let retNb = Math.min(Object.entries(data).length, 15)
     Object.entries(data).forEach(retex => {
+        if (retNb <= 0)return
         var button = `<button id="${retex[0]}" onclick="showRetex(event)" class="retexBut" style="background: url('./img/pp/${retex[0]}.png');"></button>`
         document.getElementById("retexs").innerHTML += button
+        retNb--;
     })
     window.scrollTo(0, 0)
     document.getElementsByTagName("main")[0].style.marginBottom = window.innerHeight - document.getElementById("firstView").offsetHeight + "px"
@@ -90,7 +93,6 @@ function drop(event) {
         const translateX = matrix.m41;
         let translation = Math.min(0, Math.max(translateX + difx, -dm.offsetWidth + window.innerWidth))
         dm.style.transform = `translateX(${translation}px)`
-        console.log(translation, -dm.offsetWidth + window.innerWidth)
         if (translateX + difx <= -dm.offsetWidth + window.innerWidth + 10) document.getElementById("swipe").style.visibility = "hidden"
         else document.getElementById("swipe").style.visibility = "visible"
     }
