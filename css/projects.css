@@ -53,4 +53,16 @@ main{
     font-size: x-large;
     color: white;
 
+    display: flex;
+    align-items: center;
+}
+
+.tag img{
+    height: 1.5rem;
+    background-color: lightgray;
+    color: black;
+    border: solid gray 0.2rem;
+    border-radius: 50vw;
+    cursor: pointer;
+    margin-left: 0.5rem;
 }

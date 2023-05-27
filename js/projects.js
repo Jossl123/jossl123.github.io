@@ -39,14 +39,17 @@ function removeTag(tag){
 function searchTagBarChange(){
     let searchVals = document.getElementById("searchTagBar").value.split(" ")
     searchVals.forEach(searchVal => {
-        if (researchTags.includes(searchVal))return 
+        if (researchTags.includes(searchVal)){
+            document.getElementById("searchTagBar").value = ""
+            return 
+        }
         if (possibleTags.includes(searchVal)){
             document.getElementById("searchTag").innerHTML = `
-            <div class="searchedTag"  id="tag_${searchVal}" >${searchVal}<button onclick="removeTag('${searchVal}')">x</button></div>` + document.getElementById("searchTag").innerHTML
+            <div class="tag" id="tag_${searchVal}" >${searchVal}<img src="./img/close.svg" onclick="removeTag('${searchVal}')"></img></div>` + document.getElementById("searchTag").innerHTML
             researchTags.push(searchVal)
+            document.getElementById("searchTagBar").value = ""
         }
     });
-    document.getElementById("searchTagBar").value = ""
     drawProjects()
 }
 drawProjects()
