@@ -60,59 +60,6 @@ main {
     padding-right: 1rem;
 }
 
-.retex {
-    z-index: 6;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    background-color: rgb(24, 24, 24);
-    height: 80%;
-    width: 80%;
-    position: fixed;
-    flex-direction: column;
-    padding: 0.5rem;
-}
-
-.retex button {
-    border: none;
-    background-color: rgb(24, 24, 24);
-    width: fit-content;
-}
-
-.retex button img {
-    filter: invert(1);
-    cursor: pointer;
-}
-
-.retex>div {
-    display: grid;
-    padding-inline: 1rem;
-    flex-wrap: wrap;
-}
-
-@media (min-width: 800px) {
-    .retex>div {
-        grid-template-columns: repeat(2, 50%);
-    }
-}
-
-.retex>div>div {
-    display: flex;
-    padding: 0.5rem;
-    text-align: justify;
-    flex-direction: column;
-    flex-basis: calc(50%);
-}
-
-.retex>div>div img {
-    width: 100%;
-}
-
-.retex>div p {
-    font-size: larger;
-}
-
 #second_part {
     position: relative;
     z-index: 5;

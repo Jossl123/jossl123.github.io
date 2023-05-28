@@ -8,7 +8,7 @@ function drawProjects(){
         retex[1].tags.forEach(tag => {
             tags+=`<button class="tag" onclick="clickTag('${tag}')">${tag}</button>`
         });
-        var button = `<div id="${retex[0]}" class="retexBut" style="background: url('./img/pp/${retex[0]}.png')">${tags}</div>`
+        var button = `<div id="${retex[0]}" onclick="showRetex(event)" class="retexBut" style="background: url('./img/pp/${retex[0]}.png')">${tags}</div>`
         document.getElementById("retexs").innerHTML += button
     })
 }
@@ -29,6 +29,9 @@ function haveTag(tags){
     return res;
 }
 
+function hideRetex() {
+    document.getElementById("visibleRetex").parentNode.removeChild(document.getElementById("visibleRetex"))
+}
 function removeTag(tag){
     var i = researchTags.indexOf(tag)
     researchTags.splice(i, 1)

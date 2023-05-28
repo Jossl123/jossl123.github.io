@@ -1,12 +1,6 @@
 
-.retexBut {
-    flex-shrink: 0;
-    border: none;
-    background-position: center center !important;
-    background-size: cover !important;
-    height: 18rem;
-    width: 32rem;
-    margin: 1rem;
+.retexBut{
+    margin: 1rem !important;
 }
 
 #retexs{
@@ -24,6 +18,7 @@
     outline: none;
     background-color: rgb(61, 61, 61);
 }
+
 #searchTagBar{
     background-color: inherit;
     border: none;

@@ -16,6 +16,86 @@ body {
     margin: 0;
 }
 
+.retex {
+    z-index: 6;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    background-color: rgb(24, 24, 24);
+    height: 80%;
+    width: 80%;
+    position: fixed;
+    flex-direction: column;
+    padding: 0.5rem;
+}
+
+.retex button {
+    border: none;
+    background-color: rgb(24, 24, 24);
+    width: fit-content;
+}
+
+.retex button img {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+.retex>div {
+    display: grid;
+    padding-inline: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 800px) {
+    .retex>div {
+        grid-template-columns: repeat(2, 50%);
+    }
+}
+
+.retex>div>div {
+    display: flex;
+    padding: 0.5rem;
+    text-align: justify;
+    flex-direction: column;
+    flex-basis: calc(50%);
+}
+
+.retex>div>div img {
+    width: 100%;
+}
+
+.retex>div p {
+    font-size: larger;
+}
+.retex a{position: relative;}
+.retex a > p{
+    animation: blinker 3s linear infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* left: 50%; */
+    color: white;
+    position: absolute;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.retexBut {
+    flex-shrink: 0;
+    border: none;
+    background-position: center center !important;
+    background-size: cover !important;
+    height: 18rem;
+    width: 32rem;
+    transition: all .5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.retexBut:hover {
+    transform: scale(1.05);
+}
 .logo {
     height: 2rem;
 }
