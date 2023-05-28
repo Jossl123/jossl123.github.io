@@ -1,8 +1,5 @@
 let researchTags = []
-let retexsOrder = Object.entries(data)
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value)
+let retexsOrder = Object.entries(data).sort(() => Math.random() - 0.5);
 function drawProjects(){
     document.getElementById("retexs").innerHTML = ""
     retexsOrder.forEach(retex => {
@@ -17,7 +14,7 @@ function drawProjects(){
 }
 
 function clickTag(tag){
-    document.getElementById("searchTagBar").value += tag
+    addTag(tag)
     searchTagBarChange()
 }
 
@@ -39,21 +36,17 @@ function removeTag(tag){
     node.parentNode.removeChild(node);
     drawProjects()
 }
-
+function addTag(searchVal){
+    if (researchTags.includes(searchVal))return 
+    document.getElementById("searchTag").innerHTML = `
+    <div class="tag" id="tag_${searchVal}" >${searchVal}<img src="./img/close.svg" onclick="removeTag('${searchVal}')"></img></div>` + document.getElementById("searchTag").innerHTML
+    researchTags.push(searchVal)
+    document.getElementById("searchTagBar").value = ""
+}
 function searchTagBarChange(){
-    let searchVals = document.getElementById("searchTagBar").value.split(" ")
-    searchVals.forEach(searchVal => {
-        if (researchTags.includes(searchVal)){
-            document.getElementById("searchTagBar").value = ""
-            return 
-        }
-        if (possibleTags.includes(searchVal)){
-            document.getElementById("searchTag").innerHTML = `
-            <div class="tag" id="tag_${searchVal}" >${searchVal}<img src="./img/close.svg" onclick="removeTag('${searchVal}')"></img></div>` + document.getElementById("searchTag").innerHTML
-            researchTags.push(searchVal)
-            document.getElementById("searchTagBar").value = ""
-        }
-    });
+    let searchVal = document.getElementById("searchTagBar").value
+    if (researchTags.includes(searchVal))return 
+    if (possibleTags.includes(searchVal))addTag(searchVal)
     drawProjects()
 }
 drawProjects()
