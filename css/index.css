@@ -115,3 +115,11 @@ main {
     display: flex;
     align-items: flex-end;
 }
+
+.competition{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 1rem;
+    padding: 0.3rem;
+}
