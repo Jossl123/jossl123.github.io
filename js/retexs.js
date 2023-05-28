@@ -1,4 +1,4 @@
-let possibleTags = ["Javascript", "3d"]
+let possibleTags = ["Javascript", "3d", "Java", "SQL", "Python", "C#"]
 let data = {
     "rayTracing3d": {
         "title": "Ray Tracing 3d",
@@ -86,5 +86,40 @@ let data = {
         "method": "",
         "skills": "",
         "tags": ["Javascript"]
+    },
+    "odomo": {
+        "title": "Odomo",
+        "description": "",
+        "method": "",
+        "skills": "",
+        "tags": ["Java"]
+    },
+    "biosphere": {
+        "title": "Biosphere",
+        "description": "",
+        "method": "",
+        "skills": "",
+        "tags": ["Java"]
+    },
+    "rsk": {
+        "title": "Robot-Socker-Kit",
+        "description": "",
+        "method": "",
+        "skills": "",
+        "tags": ["Python"]
+    },
+    "hyperstellar": {
+        "title": "Hyperstellar",
+        "description": "game made in C#",
+        "method": "",
+        "skills": "",
+        "tags": ["C#"]
+    },
+    "gamejam": {
+        "title": "Game jam",
+        "description": "",
+        "method": "",
+        "skills": "time limit",
+        "tags": ["Python"]
     },
 }
