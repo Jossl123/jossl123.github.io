@@ -16,13 +16,13 @@ function doesFileExist(urlToFile) {
 function showRetex(e) {
     if (isRetex()) return
     id = e.target.id
-    var link = doesFileExist(`./${id}.html`) ? `href="./${id}.html" target="_blank"` : `href="#"`
+    var link = doesFileExist(`./${id}.html`) ? `href="./${id}.html" ` : `href="#"`
     if (data[id].link) link = `href="${data[id].link}"`
 
     var div = `<div class="retex" id="visibleRetex">
         <button onclick="hideRetex()"><img src="./img/closeIcon.png"></button>
         <div>
-            <div><a ${link}><img src="./img/pp/${id}.png" alt=""><p>Click to open</p></a></div>
+            <div><a ${link} target="_blank"><img src="./img/pp/${id}.png" alt=""><p>Click to open</p></a></div>
             <div>
                 <h3>${data[id].title}</h3>
                 <p>${data[id].description}</p>
@@ -74,7 +74,7 @@ function print_retex() {
         var div = `<div class="retex" id="visibleRetex">
             <img src="./img/closeIcon.png"></img>   
             <div>
-                <div><img src="./img/pp/${id}.png" alt=""></div>
+                <div><a ${link}><img src="./img/pp/${id}.png" alt=""></a></div>
                 <div>
                     <h3>${retex.title}</h3>
                     <p>${retex.description}</p>
@@ -99,6 +99,6 @@ function print_retex() {
 
     mywindow.print();
     mywindow.close();
-    
+
     return true;
 }
