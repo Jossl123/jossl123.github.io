@@ -51,7 +51,7 @@ main{
     margin: 0.5rem;
     font-size: x-large;
     color: white;
-
+    height: fit-content;
     display: flex;
     align-items: center;
 }
