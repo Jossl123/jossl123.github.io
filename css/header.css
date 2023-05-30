@@ -43,8 +43,14 @@ body {
 
 .retex>div {
     display: grid;
-    padding-inline: 1rem;
-    flex-wrap: wrap;
+
+    height: 100%;
+    grid-template-columns: 0.5fr 0.5fr;
+    grid-template-rows: 0.5fr 0.5fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        ". ."
+        ". .";
 }
 
 @media (min-width: 800px) {
