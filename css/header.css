@@ -59,6 +59,8 @@ body {
     text-align: justify;
     flex-direction: column;
     flex-basis: calc(50%);
+    overflow: hidden;
+    justify-content: center;
 }
 
 .retex>div>div img {
