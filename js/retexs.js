@@ -32,8 +32,8 @@ let data = {
     },
     "springjoint": {
         "title": "Spring joint",
-        "description": "spring joint",
-        "method": "physics",
+        "description": "This is a simulation of jelly shapes jumping around. I wanted to code some spring joint physic so there it is",
+        "method": "Spring joint physic",
         "skills": "- Javascript <br>- Math knowledges",
         "tags": ["Javascript", "Physics"]
     },
@@ -90,8 +90,8 @@ let data = {
     "beautifulArt": {
         "title": "Circle art",
         "description": "Just playing with visual things",
-        "method": "",
-        "skills": "",
+        "method": "Nothing particular",
+        "skills": "- Javascript",
         "tags": ["Javascript"]
     },
     // "triangleMesh": {
@@ -132,28 +132,28 @@ let data = {
     // },
 
     //sae
-    "sql":{
+    "sql": {
         "title": "SQL Database developpement",
         "description": "The goal of this project was to create a SQL database for a concert ticket seller website, from the conceptual data model to the concreate SQL script database generation and completion",
         "method": "The conceptual data model was made on Win Design and the script on Microsoft SQL Server",
         "skills": "- SQL<br>- Conceptual data model",
         "tags": ["SQL"]
     },
-    "delpeyrat":{
+    "delpeyrat": {
         "title": "Delpeyrat analysis",
         "description": "The goal of this project was to produce a report presenting an organization (here Delpeyrat), an analysis of its macro-environment (PESTEL) and then its microenvironment (PORTER extended competition model)",
         "method": "PORTER and PESTEL analysis technics",
         "skills": "- Manage group project<br>- Analys an organization",
         "tags": ["Management"]
     },
-    "postInstallation":{
+    "postInstallation": {
         "title": "VMWare post installation",
         "description": "The point of this project was to setup a post under Linux to code game in Go",
         "method": "VMWare machine",
         "skills": "- Custom bash Prompt<br>- Setup user post",
         "tags": ["Bash"]
     },
-    "bashBlog":{
+    "bashBlog": {
         "title": "Bash scripting",
         "description": "The goal of this project was to code a blog like command line script where you can edit post, see the previous blog posts, ...",
         "method": "Terminal commands and bash scripts",
