@@ -1,4 +1,4 @@
-let possibleTags = ["Javascript", "3d", "Java", "SQL", "Python", "C#", "AI", "Bash"]
+let possibleTags = ["Javascript", "3d", "Java", "SQL", "Python", "C#", "AI", "Bash", "Management"]
 let data = {
     "rayTracing3d": {
         "title": "Ray Tracing 3d",
@@ -116,38 +116,38 @@ let data = {
         "tags": ["Python", "AI"],
         "link": "https://robot-soccer-kit.com/"
     },
+    // "gamejam": {
+    //     "title": "Game jam",
+    //     "description": "",
+    //     "method": "",
+    //     "skills": "time limit",
+    //     "tags": ["Python"]
+    // },
     //sae
     "sql":{
         "title": "coudpouce",
-        "description": "Blog mad in bash",
+        "description": "",
         "method": "",
         "skills": "",
         "tags": ["SQL"]
     },
-    "hyperstellar": {
-        "title": "Hyperstellar",
-        "description": "Game made in C#",
-        "method": "",
-        "skills": "",
-        "tags": ["C#"]
-    },
     "delpeyrat":{
         "title": "Delpeyrat",
-        "description": "Game made in C#",
+        "description": "",
         "method": "",
         "skills": "",
-        "tags": ["C#"]
+        "tags": ["Management"]
     },
     "postInstallation":{
         "title": "exploitation system",
-        "description": "Game made in C#",
+        "description": "",
         "method": "",
         "skills": "",
         "tags": ["Bash"]
     },
     "bashBlog":{
         "title": "Bash scripting",
-        "description": "Game made in C#",
+        "description": "",
         "method": "",
         "skills": "",
         "tags": ["Bash"]
@@ -166,12 +166,12 @@ let data = {
         "skills": "AI developpement",
         "tags": ["Java", "AI"]
     },
-
-    // "gamejam": {
-    //     "title": "Game jam",
-    //     "description": "",
-    //     "method": "",
-    //     "skills": "time limit",
-    //     "tags": ["Python"]
-    // },
+    //sae2
+    "hyperstellar": {
+        "title": "Hyperstellar",
+        "description": "Game made in C#",
+        "method": "",
+        "skills": "",
+        "tags": ["C#"]
+    },
 }
