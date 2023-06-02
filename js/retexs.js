@@ -1,4 +1,4 @@
-let possibleTags = ["Javascript", "3d", "Java", "SQL", "Python", "C#", "IA"]
+let possibleTags = ["Javascript", "3d", "Java", "SQL", "Python", "C#", "AI", "Bash"]
 let data = {
     "rayTracing3d": {
         "title": "Ray Tracing 3d",
@@ -108,6 +108,50 @@ let data = {
         "skills": "Javascript skills and math knowledge improvements",
         "tags": ["Javascript"]
     },
+    "rsk": {
+        "title": "Robot-Socker-Kit",
+        "description": "",
+        "method": "",
+        "skills": "",
+        "tags": ["Python", "AI"],
+        "link": "https://robot-soccer-kit.com/"
+    },
+    //sae
+    "sql":{
+        "title": "coudpouce",
+        "description": "Blog mad in bash",
+        "method": "",
+        "skills": "",
+        "tags": ["SQL"]
+    },
+    "hyperstellar": {
+        "title": "Hyperstellar",
+        "description": "Game made in C#",
+        "method": "",
+        "skills": "",
+        "tags": ["C#"]
+    },
+    "delpeyrat":{
+        "title": "Delpeyrat",
+        "description": "Game made in C#",
+        "method": "",
+        "skills": "",
+        "tags": ["C#"]
+    },
+    "postInstallation":{
+        "title": "exploitation system",
+        "description": "Game made in C#",
+        "method": "",
+        "skills": "",
+        "tags": ["Bash"]
+    },
+    "bashBlog":{
+        "title": "Bash scripting",
+        "description": "Game made in C#",
+        "method": "",
+        "skills": "",
+        "tags": ["Bash"]
+    },
     "odomo": {
         "title": "Odomo",
         "description": "This is a simulation of a domotique central",
@@ -119,24 +163,10 @@ let data = {
         "title": "Biosphere",
         "description": "The objective of this project was to calculate the possible actions of a game given to us, consisting of planting plants, cutting them, fertilizers, etc., in order to have the most points. In the second part, we had to develop an AI. So I programmed the min max algorithm by optimizing it as much as possible.",
         "method": "Min-max algorithm",
-        "skills": "IA developpement",
-        "tags": ["Java", "IA"]
+        "skills": "AI developpement",
+        "tags": ["Java", "AI"]
     },
-    "rsk": {
-        "title": "Robot-Socker-Kit",
-        "description": "",
-        "method": "",
-        "skills": "",
-        "tags": ["Python", "IA"],
-        "link": "https://robot-soccer-kit.com/"
-    },
-    "hyperstellar": {
-        "title": "Hyperstellar",
-        "description": "Game made in C#",
-        "method": "",
-        "skills": "",
-        "tags": ["C#"]
-    },
+
     // "gamejam": {
     //     "title": "Game jam",
     //     "description": "",

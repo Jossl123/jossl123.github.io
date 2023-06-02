@@ -16,13 +16,13 @@ function doesFileExist(urlToFile) {
 function showRetex(e) {
     if (isRetex()) return
     id = e.target.id
-    var link = doesFileExist(`./${id}.html`) ? `href="./${id}.html" ` : `href="#"`
+    var link = doesFileExist(`./${id}.html`) ? `href="./${id}.html" ` : ``
     if (data[id].link) link = `href="${data[id].link}"`
 
     var div = `<div class="retex" id="visibleRetex">
         <button onclick="hideRetex()"><img src="./img/closeIcon.png"></button>
         <div>
-            <div><a ${link} target="_blank"><img src="./img/pp/${id}.png" alt=""><p>Click to open</p></a></div>
+            <div><a ${link} target="_blank"><img src="./img/pp/${id}.png" alt="">${link != ``? `<p>Click to open</p>` : ""}</a></div>
             <div>
                 <h3>${data[id].title}</h3>
                 <p>${data[id].description}</p>
