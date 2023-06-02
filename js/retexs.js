@@ -132,34 +132,6 @@ let data = {
     // },
 
     //sae
-    "sql":{
-        "title": "SQL Database developpement",
-        "description": "The goal of this project was to create a SQL database for a concert ticket seller website, from the conceptual data model to the concreate SQL script database generation and completion",
-        "method": "The conceptual data model was made on Win Design and the script on Microsoft SQL Server",
-        "skills": "- SQL<br>- Conceptual data model",
-        "tags": ["SQL"]
-    },
-    "delpeyrat":{
-        "title": "Delpeyrat",
-        "description": "",
-        "method": "",
-        "skills": "",
-        "tags": ["Management"]
-    },
-    "postInstallation":{
-        "title": "exploitation system",
-        "description": "",
-        "method": "",
-        "skills": "",
-        "tags": ["Bash"]
-    },
-    "bashBlog":{
-        "title": "Bash scripting",
-        "description": "",
-        "method": "",
-        "skills": "",
-        "tags": ["Bash"]
-    },
     "odomo": {
         "title": "Odomo",
         "description": "This is a simulation of a domotique central",
