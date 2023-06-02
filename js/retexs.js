@@ -141,45 +141,45 @@ let data = {
     },
     "delpeyrat":{
         "title": "Delpeyrat",
-        "description": "",
-        "method": "",
-        "skills": "",
+        "description": "The goal of this project was to produce a report presenting an organization (here Delpeyrat), an analysis of its macro-environment (PESTEL) and then its microenvironment (PORTER extended competition model)",
+        "method": "PORTER and PESTEL analysis technics",
+        "skills": "- Manage group project<br>- Analys an organization",
         "tags": ["Management"]
     },
     "postInstallation":{
-        "title": "exploitation system",
-        "description": "",
-        "method": "",
-        "skills": "",
+        "title": "VMWare post installation",
+        "description": "The point of this project was to setup a post under Linux to code game in Go",
+        "method": "VMWare machine",
+        "skills": "- Custom bash Prompt<br>- Setup user post",
         "tags": ["Bash"]
     },
     "bashBlog":{
         "title": "Bash scripting",
-        "description": "",
-        "method": "",
-        "skills": "",
+        "description": "The goal of this project was to code a blog like command line script where you can edit post, see the previous blog posts, ...",
+        "method": "Terminal commands and bash scripts",
+        "skills": "- Bash scripting",
         "tags": ["Bash"]
     },
     "odomo": {
         "title": "Odomo",
-        "description": "This is a simulation of a domotique central",
+        "description": "This is a simulation of a domotique central where you can see wheater, temperature and others things. I coded the display part",
         "method": "Matrice calculation and Tests",
-        "skills": "Testing project",
+        "skills": "- Java <br>- Testing project",
         "tags": ["Java"]
     },
     "biosphere": {
         "title": "Biosphere",
         "description": "The objective of this project was to calculate the possible actions of a game given to us, consisting of planting plants, cutting them, fertilizers, etc., in order to have the most points. In the second part, we had to develop an AI. So I programmed the min max algorithm by optimizing it as much as possible.",
         "method": "Min-max algorithm",
-        "skills": "AI developpement",
+        "skills": "- AI developpement<br>- Find winning strategies ",
         "tags": ["Java", "AI"]
     },
     //sae2
     "hyperstellar": {
         "title": "Hyperstellar",
-        "description": "Game made in C#",
-        "method": "",
-        "skills": "",
+        "description": "This is a game made with .NET in C# in Visual Studio, it is a board like game, where you can go to differents places to draw cards, victory points and other actions, it was really funny to make.",
+        "method": "UML diagram pre-work and C# coding",
+        "skills": "- C# developpement<br>- Code dynamic UI transitions<br>- Visual Studio",
         "tags": ["C#"]
     },
 }
