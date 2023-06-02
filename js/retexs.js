@@ -140,7 +140,7 @@ let data = {
         "tags": ["SQL"]
     },
     "delpeyrat":{
-        "title": "Delpeyrat",
+        "title": "Delpeyrat analysis",
         "description": "The goal of this project was to produce a report presenting an organization (here Delpeyrat), an analysis of its macro-environment (PESTEL) and then its microenvironment (PORTER extended competition model)",
         "method": "PORTER and PESTEL analysis technics",
         "skills": "- Manage group project<br>- Analys an organization",
