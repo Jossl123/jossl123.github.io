@@ -48,8 +48,14 @@ function addTag(searchVal){
 }
 function searchTagBarChange(){
     let searchVal = document.getElementById("searchTagBar").value
+    searchVal=searchVal.toLowerCase()
+    let lowTags = possibleTags.map(el => el.toLowerCase())
     if (researchTags.includes(searchVal))return 
-    if (possibleTags.includes(searchVal))addTag(searchVal)
+    let index = lowTags.indexOf(searchVal)
+    console.log(index)
+    if (index != -1){
+        addTag(possibleTags[index])
+    }
     drawProjects()
 }
 drawProjects()
