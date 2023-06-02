@@ -97,6 +97,12 @@ body {
   }
 }
 
+@media (max-aspect-ratio: 16/9) {
+    main {
+        padding-top:5% !important;
+    }
+  }
+  
 .retexBut {
     flex-shrink: 0;
     border: none;
