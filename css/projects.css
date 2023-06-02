@@ -1,16 +1,18 @@
-main{
-    padding-top: 5em !important;}
-.retexBut{
+main {
+    padding-top: 5em !important;
+}
+
+.retexBut {
     margin: 1rem !important;
 }
 
-#retexs{
+#retexs {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-#searchTag{
+#searchTag {
     display: flex;
     border-radius: 1rem;
     align-items: center;
@@ -20,7 +22,7 @@ main{
     background-color: rgb(61, 61, 61);
 }
 
-#searchTagBar{
+#searchTagBar {
     background-color: inherit;
     border: none;
     border-bottom: solid gray 0.1rem;
@@ -29,21 +31,22 @@ main{
     font-size: large;
     color: rgb(206, 206, 206);
 }
-.searchedTag{
+
+.searchedTag {
     color: black;
     border: black;
     padding: 1rem;
     outline: none;
 }
 
-main{
+main {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 10em;
 }
 
-.tag{
+.tag {
     font-family: 'Raleway', sans-serif;
     border-radius: 50vw;
     background-color: rgb(20, 20, 40);
@@ -55,9 +58,10 @@ main{
     height: fit-content;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
-.tag img{
+.tag img {
     height: 1.5rem;
     background-color: lightgray;
     color: black;
