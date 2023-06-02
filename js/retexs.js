@@ -132,8 +132,6 @@ let data = {
     // },
 
     //sae
-<<<<<<< HEAD
-=======
     "sql":{
         "title": "SQL Database developpement",
         "description": "The goal of this project was to create a SQL database for a concert ticket seller website, from the conceptual data model to the concreate SQL script database generation and completion",
@@ -162,7 +160,6 @@ let data = {
         "skills": "- Bash scripting",
         "tags": ["Bash"]
     },
->>>>>>> portfolio
     "odomo": {
         "title": "Odomo",
         "description": "This is a simulation of a domotique central where you can see wheater, temperature and others things. I coded the display part",
