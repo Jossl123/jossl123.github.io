@@ -2,7 +2,7 @@ let possibleTags = ["Javascript", "3d", "Java", "SQL", "Python", "C#", "AI", "Ba
 let data = {
     "rayTracing3d": {
         "title": "Ray Tracing 3d",
-        "description": "    This project is a 3d engine made from scratch (with p5 for the vector classes). <br><br>Raytracing rendering method consist of simulating the inverse of a light ray. In the real life the light comme from the light source to our eyes and in raycsating we launch the ray from the eye to the lights sources.<br><br> We 'launch', for every pixel in the screen, ray (represented by a vector) in a 3d world (represented by some object and their properties like their color). We then found what color did the ray touch (go check out the raymarching project) and color the pixel like so. <br><br> This is just a starting point but if you're insterested go checkout <a href='https://www.youtube.com/watch?v=Qz0KTGYJtUk'>Sebastian Lague videos</a> on the subject : ",
+        "description": "    This project is a 3d engine made from scratch (with p5 for the vector classes). <br><br>Raytracing rendering method consist of simulating the inverse of a light ray. In the real life the light comme from the light source to our eyes and in raycsating we launch the ray from the eye to the lights sources.<br><br> We 'launch', for every pixel in the screen, ray (represented by a vector) in a 3d world (represented by some object and their properties like their color). We then found what color did the ray touch (go check out the raymarching project) and color the pixel like so. <br><br> This is just a starting point but if you're insterested go checkout <a href='https://www.youtube.com/watch?v=Qz0KTGYJtUk' target='_blank'>Sebastian Lague videos</a> on the subject : ",
         "method": "- ray tracing <br>\
         - ray marching <br>",
         "skills": "- Javascript <br>- Math knowledges",
@@ -17,9 +17,9 @@ let data = {
     },
     "twotris": {
         "title": "Twotris",
-        "description": "A website to play tetris in multiplayer. Thank to <a href='https://github.com/busybox11'>busybox</a> for the front.",
+        "description": "A website to play tetris in multiplayer. Thank to <a href='https://busybox11.github.io/portfolio.html'target='_blank'>busybox</a> for the front.",
         "method": "Nodejs : websocket and express js",
-        "skills": "- javascript <br>- websockets",
+        "skills": "- Javascript <br>- websockets",
         "link": "https://twotris.onrender.com",
         "tags": ["Javascript"]
     },
@@ -40,28 +40,28 @@ let data = {
     "MLU": {
         "title": "MLU",
         "description": "A website to explore the Max Litterature Universe",
-        "method": "image mapping",
-        "skills": "javascript skills",
+        "method": "Image mapping",
+        "skills": "- Javascript",
         "link": "https://jossl123.github.io/MLU",
         "tags": ["Javascript"]
     },
     "transistoshare": {
         "title": "Transistoshare",
         "description": "A website to simulate some operand gates",
-        "method": "reverse polish notation",
+        "method": "Reverse polish notation",
         "skills": "- Javascript <br>- Math knowledges",
         "tags": ["Javascript"]
     },
     "rayMarching": {
         "title": "Raymarching",
-        "description": "Ray marching simulation",
-        "method": "ray marching",
+        "description": "This is an implementation of ray marching algorithm. This algorithm is used to get the distance to the closest object from a position to a precise direction",
+        "method": "Ray marching",
         "skills": "- Javascript <br>- Math knowledges",
         "tags": ["Javascript"]
     },
     "mandlebrot2": {
         "title": "Mandlebrot",
-        "description": "The mandlebrot fractal",
+        "description": "The mandlebrot fractal made when I was messing around with gpu.js",
         "method": "gpu.js",
         "skills": "- Javascript <br>- Math knowledges",
         "tags": ["Javascript"]
@@ -117,9 +117,9 @@ let data = {
     },
     "rsk": {
         "title": "Robot-Socker-Kit",
-        "description": "",
-        "method": "",
-        "skills": "",
+        "description": "This is a robot competition where you have to code AI for 2 football players in your team to play against other people. With <a href='https://nuno-moreira-ribeiro.github.io/portfolio/' target='_blank'>Nuno Moreira</a> we won the France tournament",
+        "method": "A lot of differents stragies to put the ball in the opponent goal",
+        "skills": "- AI developpement<br>- Math knowledges",
         "tags": ["Python", "AI"],
         "link": "https://robot-soccer-kit.com/"
     },
