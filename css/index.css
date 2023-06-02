@@ -59,7 +59,16 @@ main {
     position: absolute;
     padding-right: 1rem;
 }
-
+#second_part::before{
+    content: "↓ come here ↓";
+    animation-duration: 0.7s;
+    animation-name: changeheight;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    position: absolute;
+    top: -1rem;
+    color: white;
+}
 #second_part {
     position: relative;
     z-index: 5;
@@ -90,6 +99,15 @@ main {
     flex-wrap: wrap;
     gap: 0.3rem;
     justify-content: center;
+}
+
+@keyframes changeheight {
+    from {
+        transform: translateY(10px);
+    }
+    to {
+        transform: translateY(-10px);
+    }
 }
 
 @keyframes changewidth {

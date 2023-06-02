@@ -9,7 +9,7 @@ window.onload = function() {
         retNb--;
     })
     window.scrollTo(0, 0)
-    document.getElementsByTagName("main")[0].style.marginBottom = window.innerHeight - document.getElementById("firstView").offsetHeight + "px"
+    document.getElementsByTagName("main")[0].style.marginBottom = window.innerHeight - document.getElementsByTagName("main")[0].offsetHeight + "px"
 }
 var beginingx
 
@@ -148,6 +148,7 @@ document.addEventListener("mousemove", (e) => {
 window.onresize = function() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
+    document.getElementsByTagName("main")[0].style.marginBottom = window.innerHeight - document.getElementsByTagName("main")[0].offsetHeight + "px"
 }
 window.scrollTo(0, 0);
 

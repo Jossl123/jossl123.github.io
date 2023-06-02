@@ -1,4 +1,4 @@
-let possibleTags = ["Javascript", "3d", "Java", "SQL", "Python", "C#", "AI", "Bash", "Management", "Physic"]
+let possibleTags = ["Javascript", "3d", "Java", "SQL", "Python", "C#", "AI", "Bash", "Management", "Physics"]
 let data = {
     "rayTracing3d": {
         "title": "Ray Tracing 3d",
@@ -33,9 +33,9 @@ let data = {
     "springjoint": {
         "title": "Spring joint",
         "description": "spring joint",
-        "method": "physic",
+        "method": "physics",
         "skills": "- Javascript <br>- Math knowledges",
-        "tags": ["Javascript", "Physic"]
+        "tags": ["Javascript", "Physics"]
     },
     "MLU": {
         "title": "MLU",
@@ -111,7 +111,7 @@ let data = {
     "doublePendule": {
         "title": "Double pendular",
         "description": "A double pendular balancing back in force",
-        "method": "Double Pendular physic",
+        "method": "Double Pendular physics",
         "skills": "- Javascript <br>- Math knowledges",
         "tags": ["Javascript"]
     },
@@ -133,10 +133,10 @@ let data = {
 
     //sae
     "sql":{
-        "title": "coudpouce",
-        "description": "",
-        "method": "",
-        "skills": "",
+        "title": "SQL Database developpement",
+        "description": "The goal of this project was to create a SQL database for a concert ticket seller website, from the conceptual data model to the concreate SQL script database generation and completion",
+        "method": "The conceptual data model was made on Win Design and the script on Microsoft SQL Server",
+        "skills": "- SQL<br>- Conceptual data model",
         "tags": ["SQL"]
     },
     "delpeyrat":{
