@@ -86,7 +86,6 @@ function start3d(){
         sphere.rotation.z += 0.012;
         sphere.rotation.x += 0.008;
         renderer.render(scene, camera);
-        console.log("testZ")
     };
 
     render();
