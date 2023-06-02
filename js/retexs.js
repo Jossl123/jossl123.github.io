@@ -108,7 +108,7 @@ let data = {
         "skills": "- Javascript <br>- Math knowledges",
         "tags": ["Javascript"]
     },
-    "doublePendule": {
+    "doublePendular": {
         "title": "Double pendular",
         "description": "A double pendular balancing back in force",
         "method": "Double Pendular physics",
