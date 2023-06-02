@@ -76,7 +76,7 @@ let data = {
     "learnPI": {
         "title": "Learn PI",
         "description": "A website to check your PI knowledge",
-        "method": "javascript",
+        "method": "Javascript",
         "skills": "- Javascript <br>- PI knowledges",
         "tags": ["Javascript"]
     },
