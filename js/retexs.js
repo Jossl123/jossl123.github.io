@@ -182,4 +182,11 @@ let data = {
         "skills": "- C# developpement<br>- Code dynamic UI transitions<br>- Visual Studio",
         "tags": ["C#"]
     },
+    "fluid": {
+        "title": "Fluid field",
+        "description": "Fluid field representation",
+        "method": "Fluid field",
+        "skills": "Vector calculation",
+        "tags": ["Javascript"]
+    },
 }
