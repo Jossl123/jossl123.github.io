@@ -13,12 +13,14 @@ function draw() {
     clear()
     string.update()
     string.draw()
-    //circle(ball.pos.x, ball.pos.y, ball.s)
+    
+    circle(ball.pos.x, ball.pos.y, ball.s)
 }
 document.addEventListener("mousemove", (e) => {
     mousePos.x = e.clientX
     mousePos.y = e.clientY
 })
+
 class Ball {
     constructor(pos, v) {
         this.pos = pos;
@@ -66,7 +68,7 @@ class String{
             if (i != 0){
                 var prev_point = this.points[i-1]
                 point.pre_update()
-                point.next_pos = prev_point.pos.copy().add(point.pos.copy().sub(prev_point.pos).normalize().mult(10))
+                point.next_pos = prev_point.pos.copy().add(point.next_pos.copy().sub(prev_point.pos).normalize().mult(10))
             }else{
                 point.next_pos = mousePos
             }
