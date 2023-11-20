@@ -13,18 +13,63 @@
         <a href="" class="title"><span>./</span>Jossl1</a>
         <div class="links">
             <a href="">Projects</a>
-
-            <a target="_blank" href="mailto:jossl1.gau@gmail.com">
+            <p>|</p>
+            <div><a target="_blank" href="mailto:jossl1.gau@gmail.com">
                 <img class="logo" src="./img/email.png" alt=""></a>
             <a target="_blank" href="https://github.com/Jossl123">
                 <img class="logo" src="./img/githubLogo.png" alt=""></a>
             <a target="_blank" href="https://linkedin.com/in/josselin-gautier-a51a16272">
-                <img class="logo" src="./img/linkedinLogo.png" alt=""></a>
+                <img class="logo" src="./img/linkedinLogo.png" alt=""></a></div>
+            
         </div>
     </nav>
-
     <main>
-
+        <div id="canvas_container" style="z-index: -1; position: absolute;"></div>
+        <div id="projects">
+            <div id="line"></div>
+            <div id="firstView">
+                <div id="presentation">
+                    <h1>Hi, <br> I'm Josselin</h1>
+                    <p>&emsp;I'm a full stack developer who likes Nodejs and developping websites. I've always enjoyed playing with visual things and maths. </p>
+                    <h4>Here are some of my projects :</h4>
+                </div>
+            </div></div>
     </main>
+    <script src="./js/three.js"></script>
+    <script>
+        function start3d(){
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(50, 500 / 400, 0.1, 1000);
 
+            var renderer = new THREE.WebGLRenderer({
+                alpha: true
+            });
+            renderer.setSize(500, 400);
+            while (document.getElementById("canvas_container").firstChild) {
+                document.getElementById("canvas_container").removeChild(document.getElementById("canvas_container").firstChild);
+            }
+
+            document.getElementById("canvas_container").appendChild(renderer.domElement);
+            var geometry = new THREE.SphereGeometry(3, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
+            var material = new THREE.MeshNormalMaterial();
+            var sphere = new THREE.Mesh(geometry, material);
+            scene.add(sphere);
+
+
+            scene.fog = new THREE.Fog(0x2f3640, 5, 50);
+            camera.position.z = 10;
+            var t = 0
+            var render = function() {
+                requestAnimationFrame(render);
+                sphere.rotation.y += 0.01;
+                sphere.rotation.z += 0.012;
+                sphere.rotation.x += 0.008;
+                renderer.render(scene, camera);
+            };
+
+            render();
+        }
+        start3d()
+
+    </script>
 </html>

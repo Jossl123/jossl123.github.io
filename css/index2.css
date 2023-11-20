@@ -41,10 +41,10 @@ body {
 .links {
     display: flex;
     align-items: center;
+    gap: 1rem;
 }
 
 .links a {
-    margin-left: 10px;
     text-decoration: none;
     color: var(--white);
 }
@@ -67,4 +67,12 @@ body {
     position: sticky;
     left: 10%;
     transform: translateX(-50%);
+}
+
+#projects {
+    padding: 0 10rem;
+}
+
+#line{
+    height: max-content;
 }
