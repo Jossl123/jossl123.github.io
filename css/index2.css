@@ -58,21 +58,33 @@ body {
 
 .main {
     display: flex;
+    position: relative;
+}
+
+#canvas_container{
+    z-index: -1;
+    position: absolute;
+    right: 0;
 }
 
 #line {
-    width: 1px;
-    background-color: black;
-    height: 100%;
-    position: sticky;
-    left: 10%;
-    transform: translateX(-50%);
+    margin-top: 2rem;
+    width: 2px;
+    height: 10rem;
+    position: absolute;
+    background-color: var(--blue);
+    transform: translateX(-2rem);
+}
+
+#line:before{
+    position: absolute;
+    content: "";
+    width: 0.2rem;
+    height: 0.2rem;
+    border: solid var(--blue) 2px;
+    transform:  translateX(-35%) translateY(-100%)rotate(-45deg);
 }
 
 #projects {
     padding: 0 10rem;
-}
-
-#line{
-    height: max-content;
 }
