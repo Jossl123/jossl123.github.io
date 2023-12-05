@@ -56,8 +56,11 @@ body {
 
 /* Main */
 
-.main {
+main {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10rem 20rem;
     position: relative;
 }
 
@@ -68,23 +71,63 @@ body {
 }
 
 #line {
+    left: 1px;
     margin-top: 2rem;
-    width: 2px;
-    height: 10rem;
     position: absolute;
-    background-color: var(--blue);
     transform: translateX(-2rem);
 }
-
-#line:before{
+#line path{
+    stroke: var(--blue); 
+    stroke-width: 2;
+    fill: none;
+}
+#line-top{
+    margin-top: 2rem;
     position: absolute;
     content: "";
+    left: 0;
     width: 0.2rem;
     height: 0.2rem;
     border: solid var(--blue) 2px;
-    transform:  translateX(-35%) translateY(-100%)rotate(-45deg);
+    transform: translateX(-2rem) translateX(-35%) translateY(-100%)rotate(-45deg);
 }
 
 #projects {
-    padding: 0 10rem;
+    position: relative;
+    font-size: larger;
+}
+#projects-netflix{
+
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+#projects-netflix #preview{
+    display: flex;
+    flex-direction: column;
+}
+#projects-netflix #preview img{
+    flex-shrink: 0;
+    border: none;
+    background-position: center center !important;
+    background-size: cover !important;
+    height: 18rem;
+    width: 32rem;  
+    object-fit: cover;
+}
+
+#projects-netflix #content{
+    position: relative;
+}
+#projects-netflix #content img{
+    z-index: -1;
+    top: 0;
+    left: 0;
+    position: absolute;
+    flex-shrink: 0;
+    border: none;
+    background-position: center center !important;
+    background-size: cover !important;
+    object-fit: cover;
 }
