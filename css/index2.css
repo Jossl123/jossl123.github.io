@@ -7,7 +7,9 @@
     --blue: #00ADB5;
     --white: #EEEEEE;
 }
-
+html{
+    overflow-x: hidden;
+}
 body {
     background-color: var(--black);
     color: var(--white);
@@ -61,13 +63,16 @@ main {
     justify-content: center;
     align-items: center;
     padding: 10rem 20rem;
-    position: relative;
 }
 
-#canvas_container{
-    z-index: -1;
+#canvas{
     position: absolute;
-    right: 0;
+    z-index: -1;
+    width: 100vw; 
+    height: 100vh; 
+    display: block;
+    top: 0;
+    left: 50vw;
 }
 
 #line {
@@ -111,12 +116,15 @@ main {
     background-position: center center !important;
     background-size: cover !important;
     height: 18rem;
-    width: 32rem;  
+    width: 32rem;
+    padding: 0.2rem;
     object-fit: cover;
+    border-radius: 0.5rem;
 }
 
 #projects-netflix #content{
     position: relative;
+    width: 100%;
 }
 #projects-netflix #content img{
     z-index: -1;
@@ -127,5 +135,8 @@ main {
     border: none;
     background-position: center center !important;
     background-size: cover !important;
-    object-fit: cover;
+    object-fit: cover;    
+    -webkit-mask-image: linear-gradient(0deg, transparent 0%, black 30%, black 70%, transparent 100%);
+    mask-image: linear-gradient(0deg, transparent 0%, black 30%, black 70%, transparent 100%);
+    width: 100%;
 }
