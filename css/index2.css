@@ -97,11 +97,9 @@ main {
     font-size: larger;
 }
 #projects-netflix{
-
     overflow: hidden;
     display: flex;
     flex-direction: row;
-    position: relative;
 }
 #projects-netflix #preview{
     display: flex;

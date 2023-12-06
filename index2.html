@@ -41,15 +41,11 @@
     </main>
     <div id="projects-netflix">
         <div id="preview">
-            <img src="./img/pp/fractal.png" alt="">
-            <img src="./img/pp/twotris.png" alt="">
-            <img src="./img/pp/3dRenderer.png" alt="">
-            <img src="./img/pp/rsk.png" alt="">
         </div>
         <div id="content">
-            <h1>Ray tracing</h1>
-            <p>Teststosiejtoseitoaizoia ioau coiua roticuar oiuhgiohorituhoizurht oaiuht oiaru toi</p>
-            <img src="./img/pp/fractal.png" alt="">
+            <h1 id="contentTitle">Ray tracing</h1>
+            <p id="contentDescription">Teststosiejtoseitoaizoia ioau coiua roticuar oiuhgiohorituhoizurht oaiuht oiaru toi</p>
+            <img id="contentImage" src="./img/pp/fractal.png" alt="">
         </div>
     </div>
     <script src="./js/three.js"></script>
@@ -88,5 +84,57 @@
         }
         start3d()
 
+    </script>
+    <script>
+        window.onbeforeunload = function () {
+        window.scrollTo(0, 0);
+        }
+        async function getProjects(){
+            return fetch('proj.json')
+                .then(response => response.text())
+                .then(data => {return JSON.parse(data)});
+        }
+        var projects;
+        async function appendProjects(){
+            projects = await getProjects();
+            console.log(projects)
+            Object.entries(projects).forEach(([key, value]) => {
+                document.getElementById("preview").innerHTML += `<img id="${key}" src="./img/pp/${key}.png" alt="">`    
+            });
+        }
+        appendProjects()
+        window.addEventListener('scroll', function () {
+            var menu = document.getElementById("preview")
+            var content = document.getElementById('content');
+            var scrollPosition = window.scrollY;
+            if (scrollPosition > menu.offsetTop) {
+                var child = menu.querySelector('img:last-child');
+                if (scrollPosition >= child.offsetTop){
+                    content.style.position = 'relative';
+                    content.style.top = (child.offsetTop - menu.offsetTop +2).toString() + "px";
+                    content.style.left = '0';
+                }else{
+                    var children = menu.children;
+                    for (var i = 0; i < children.length; i++) {
+                        var child = children[i];
+                        var rect = child.getBoundingClientRect();
+                        if (rect.top <= 0 && rect.bottom >= 0) {
+                            document.getElementById("contentTitle").innerHTML = projects[child.id].title
+                            document.getElementById("contentDescription").innerHTML = projects[child.id].description
+                            document.getElementById("contentImage").src = "./img/pp/"+child.id+".png"
+                            break;
+                        }
+                    }
+                    content.style.position = 'fixed';
+                    content.style.top = '0';
+                    content.style.left = (menu.getBoundingClientRect().width + menu.offsetLeft).toString() + "px"
+                }
+            } else {
+                content.style.position = 'relative';
+                content.style.top = '0';
+                content.style.left = '0';
+            }
+            
+        });
     </script>
 </html>
