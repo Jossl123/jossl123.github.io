@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jossl123 - Rythm Game</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="h-full">
+    <button id="startButton">Start Audio</button>
+
+    <canvas id="visualizer" style="
+  display: block;
+  margin: auto;
+  background-color: #333;"></canvas>
+    <script id="canvas" src="./js/rythmGame.js"></script>
+    <style>
+        .spawned-div {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff0000;
+        }
+    </style>
+</body>
+
+</html>
