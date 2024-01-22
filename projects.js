@@ -1,5 +1,13 @@
+
+var projects;
 let researchTags = []
-let retexsOrder = Object.entries(data).sort(() => Math.random() - 0.5);
+let retexsOrder;
+window.onload = async function() {
+    projects = await getProjects()
+    retexsOrder = Object.entries(projects).sort(() => Math.random() - 0.5);
+    drawProjects()
+}
+
 function drawProjects(){
     document.getElementById("retexs").innerHTML = ""
     retexsOrder.forEach(retex => {
@@ -58,4 +66,3 @@ function searchTagBarChange(){
     }
     drawProjects()
 }
-drawProjects()

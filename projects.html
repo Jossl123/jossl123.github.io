@@ -5,36 +5,40 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/header.css">
-    <link rel="stylesheet" href="./css/projects.css">
+    <link rel="stylesheet" href="./css/index2.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Jossl123</title>
 </head>
 
-<body>
-    <header id="header">
-        <a target="_blank" href="mailto:jossl1.gau@gmail.com">
-            <img class="logo" src="./img/email.png" alt=""></a>
-        <a target="_blank" href="https://github.com/Jossl123">
-            <img class="logo" src="./img/githubLogo.png" alt=""></a>
-        <a target="_blank" href="https://linkedin.com/in/josselin-gautier-a51a16272">
-            <img class="logo" src="./img/linkedinLogo.png" alt=""></a>
-        <a href="./index.html">Home</a>
-        <p>|</p>
-        <a target="_blank" onclick="print_retex()">
-            <img class="logo" src="./img/imageedit_14_3577201866.png" alt=""></a>
-    </header>
-    <main>
-        <div id="searchTag">
-            <input id="searchTagBar" type="text" oninput="searchTagBarChange()" placeholder="search tag"></div>
-        <div id="retexs"></div>
+<body class="bg-[--black] text-white  overflow-x-hidden">
+    <nav class="flex justify-between text-xl p-5 items-center sticky top-0">
+        <a href="./index.html" class="text-2xl no-underline font-bold">
+            <span class="text-[--gray]">~/</span>Jossl1</a>
+        <div class="flex items-center gap-2">
+            <a class="" href="#">Projects</a>
+            <p>|</p>
+            <div class="flex gap-2">
+                <a target="_blank" href="mailto:jossl1.gau@gmail.com">
+                    <img class="h-10" src="./img/email.png" alt=""></a>
+                <a target="_blank" href="https://github.com/Jossl123">
+                    <img class="h-10" src="./img/githubLogo.png" alt=""></a>
+                <a target="_blank" href="https://linkedin.com/in/josselin-gautier-a51a16272">
+                    <img class="h-10" src="./img/linkedinLogo.png" alt=""></a>
+            </div>
+
+        </div>
+    </nav>
+    <main class="2xl:px-68 xl:px-64 md:px-32 sm:px:10 px-4 py-24 text-xl">
+        <div id="searchTag" class="flex outline-none rounded items-center border-0 p-4 bg-[--gray] w-fit">
+            <input class="bg-inherit outline-none border-b-2 border-[--white] h-fit" id="searchTagBar" type="text" oninput="searchTagBarChange()" placeholder="search tag">
+        </div>
+        <div id="retexs" class="grid grid-cols-3 gap-4">
+
+        </div>
     </main>
     <footer></footer>
-    <script src="./js/retexs.js"></script>
     <script src="./utils.js"></script>
-    <script src="./js/projects.js"></script>
+    <script src="./projects.js"></script>
 </body>
 
 </html>

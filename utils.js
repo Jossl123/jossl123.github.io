@@ -1,4 +1,13 @@
-function toDisplayableRetex(name, title, description, tags, date="12 mai"){
+window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+}
+async function getProjects() {
+    return fetch('proj.json')
+        .then(response => response.text())
+        .then(data => { return JSON.parse(data) });
+}
+
+function toDisplayableRetex(name, title, description, tags=[], date="12 mai"){
     return `
     <div class="rounded-lg bg-[--dark-gray] flex flex-col scale-100 hover:scale-105 transition-all shadow-xl">
         <div class="absolute p-1 flex gap-2 flex-wrap">${tags}</div>
