@@ -16,7 +16,7 @@ function drawProjects(){
         retex[1].tags.forEach(tag => {
             tags+=`<button class="tag" onclick="clickTag('${tag}')">${tag}</button>`
         });
-        document.getElementById("retexs").innerHTML += toDisplayableRetex(retex[0], retex[1].title,retex[1].description, tags)
+        document.getElementById("retexs").innerHTML += toDisplayableRetex(retex[0], retex[1].title,retex[1].description, tags, retex[1].date)
     })
 }
 
