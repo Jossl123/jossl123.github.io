@@ -1,4 +1,3 @@
-let possibleTags = ["Javascript", "3d", "Java", "SQL", "Python", "C#", "AI", "Bash", "Management", "Physics"]
 let data = {
     "rayTracing3d": {
         "title": "Ray Tracing 3d",

@@ -37,9 +37,6 @@ function haveTag(tags){
     return res;
 }
 
-function hideRetex() {
-    document.getElementById("visibleRetex").parentNode.removeChild(document.getElementById("visibleRetex"))
-}
 function removeTag(tag){
     var i = researchTags.indexOf(tag)
     researchTags.splice(i, 1)

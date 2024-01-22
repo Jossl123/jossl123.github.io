@@ -28,6 +28,17 @@
 
         </div>
     </nav>
+    <div class="fixed w-full h-full backdrop-blur z-20 top-0 left-0 flex justify-center hidden items-center sm:p-32"
+        id="retex_detailed_zone">
+        <div class="bg-[--gray] rounded p-4" id="retex_detailed">
+            <button onclick="hideRetex()"><img class="invert" src="./img/closeIcon.png"></button>
+            <p id="retex_detailed_title"></p>
+            <p id="retex_detailed_desc"></p>
+            <p id="retex_detailed_method"></p>
+            <p id="retex_detailed_skills"></p>
+            <p id="retex_detailed_date"></p>
+        </div>
+    </div>
     <main class="2xl:px-68 xl:px-64 md:px-32 sm:px:10 px-4 py-24 text-xl">
         <div id="searchTag" class="flex outline-none rounded items-center border-0 p-4 bg-[--gray] w-fit">
             <input class="bg-inherit outline-none border-b-2 border-[--white] h-fit" id="searchTagBar" type="text" oninput="searchTagBarChange()" placeholder="search tag">

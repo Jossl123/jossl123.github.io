@@ -9,11 +9,6 @@ window.onload = async function() {
     window.scrollTo(0, 0)
     document.getElementsByTagName("main")[0].style.marginBottom = window.innerHeight - document.getElementsByTagName("main")[0].offsetHeight + "px"
 }
-function hideRetex() {
-    document.getElementById("visibleRetex").parentNode.removeChild(document.getElementById("visibleRetex"))
-    start3d()
-}
-
 
 //3D bulb
 noise.seed(Math.random());
