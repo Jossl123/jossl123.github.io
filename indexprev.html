@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <title>Jossl123</title>
+</head>
+
+<body>
+    <header id="header">
+        <a target="_blank" href="mailto:jossl1.gau@gmail.com">
+            <img class="logo" src="./img/email.png" alt=""></a>
+        <a target="_blank" href="https://github.com/Jossl123">
+            <img class="logo" src="./img/githubLogo.png" alt=""></a>
+        <a target="_blank" href="https://linkedin.com/in/josselin-gautier-a51a16272">
+            <img class="logo" src="./img/linkedinLogo.png" alt=""></a>
+        <a href="./projects.html">Projects</a>
+        <p>|</p>
+        <a target="_blank" onclick="print_retex()">
+            <img class="logo" src="./img/imageedit_14_3577201866.png" alt=""></a>
+    </header>
+    <main>
+        <canvas id="mouse_flow"></canvas>
+        <div id="firstView">
+            <div id="presentation">
+                <h1>Hi, <br> I'm Josselin</h1>
+                <p>&emsp;I'm a full stack developer who likes Nodejs and developping websites. I've always enjoyed playing with visual things and maths. </p>
+                <h4>Here are some of my projects :</h4>
+            </div>
+            <div id="canvas_container"></div>
+        </div>
+        <p id="swipe">swipe --></p>
+        <div id="retexs" draggable="true" ondrag="drop(event)" ondragstart="element_drag_ghost(event)">
+        </div>
+    </main>
+    <div id="second_part">
+        <div id="competitions">
+            <h1>Coding competitions</h1>
+            <div>
+                <div class="competition">
+                    <p>France champion in robot soccer kit</p><img src="./img/rsk.jpeg" alt=""></div>
+                <div class="competition">
+                    <img src="./img/ssl.jpg" alt=""><p>NAMeC team member</p></div>
+                <div class="competition">
+                    <p>3rd Place in Castor</p><img src="./img/castor.png" alt=""></div>
+                <div class="competition">
+                    <img src="./img/algorea.png" alt=""><p>Semi-finalist in Algorea</p></div>
+                <div class="competition">
+                    <p>Semi-finalist on TechChallenger</p><img src="./img/techChallenger.png" alt=""></div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div id="hobbies">
+            <h1>Hobbies</h1>
+            <div>
+                <img src="./img/kendama.jpeg" alt="">
+                <img src="./img/bayonneRubiks.png" alt="">
+                <img src="./img/parkour.jpg" alt="">
+                <img src="./img/piano.png" alt="">
+                <img src="./img/crailsheim.png" alt="">
+                <img src="./img/rsk.jpeg" alt="">
+                <img src="./img/yoyo.jpg" alt="">
+                <img src="./img/surf.webp" alt="">
+                <img src="./img/tir_jo.jpg" alt="">
+                <img src="./img/trot.jpg" alt="">
+                <img src="./img/skim_jo.jpeg" alt="">
+                <img src="./img/ingeLight.png" alt="">
+                <img src="./img/javascript.png" alt="">
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <footer></footer>
+    <script src="./js/retexs.js"></script>
+    <script src="./js/three.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>

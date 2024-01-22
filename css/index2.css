@@ -2,141 +2,45 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 :root {
-    --black: #222831;
-    --gray: #393E46;
-    --blue: #00ADB5;
-    --white: #EEEEEE;
+    --black: #04121a;
+    --dark-gray: #092635;
+    --gray: #1B4242;
+    --blue: #5C8374;
+    --white: #9EC8B9;
 }
 html{
-    overflow-x: hidden;
-}
-body {
-    background-color: var(--black);
-    color: var(--white);
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif !important;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
-
-
-/* Title */
-
-.title {
-    color: var(--white);
-    text-decoration: none;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.title span {
-    color: var(--blue);
-}
-
-
-/* Page links */
-
-.links {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.links a {
-    text-decoration: none;
-    color: var(--white);
-}
-
-.links .logo {
-    height: 2rem;
-}
-
-
-/* Main */
-
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10rem 20rem;
-}
-
-#canvas{
-    position: absolute;
-    z-index: -1;
-    width: 100vw; 
-    height: 100vh; 
-    display: block;
-    top: 0;
-    left: 50vw;
-}
-
-#line {
-    left: 1px;
-    margin-top: 2rem;
-    position: absolute;
-    transform: translateX(-2rem);
-}
-#line path{
-    stroke: var(--blue); 
-    stroke-width: 2;
-    fill: none;
-}
-#line-top{
-    margin-top: 2rem;
-    position: absolute;
-    content: "";
-    left: 0;
-    width: 0.2rem;
-    height: 0.2rem;
-    border: solid var(--blue) 2px;
-    transform: translateX(-2rem) translateX(-35%) translateY(-100%)rotate(-45deg);
-}
-
-#projects {
-    position: relative;
-    font-size: larger;
-}
-#projects-netflix{
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-}
-#projects-netflix #preview{
-    display: flex;
-    flex-direction: column;
-}
-#projects-netflix #preview img{
+.retexBut {
     flex-shrink: 0;
     border: none;
     background-position: center center !important;
     background-size: cover !important;
     height: 18rem;
     width: 32rem;
-    padding: 0.2rem;
-    object-fit: cover;
-    border-radius: 0.5rem;
 }
 
-#projects-netflix #content{
-    position: relative;
-    width: 100%;
+.tag {
+    font-family: 'Raleway', sans-serif;
+    border-radius: 50vw;
+    background-color: rgb(20, 20, 40);
+    border: solid rgb(51, 51, 78) 0.3rem;
+    padding: 0.5rem;
+    font-size: x-large;
+    color: white;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
-#projects-netflix #content img{
-    z-index: -1;
-    top: 0;
-    left: 0;
-    position: absolute;
-    flex-shrink: 0;
-    border: none;
-    background-position: center center !important;
-    background-size: cover !important;
-    object-fit: cover;    
-    -webkit-mask-image: linear-gradient(0deg, transparent 0%, black 30%, black 70%, transparent 100%);
-    mask-image: linear-gradient(0deg, transparent 0%, black 30%, black 70%, transparent 100%);
-    width: 100%;
+
+.tag img {
+    height: 1.5rem;
+    background-color: lightgray;
+    color: black;
+    border: solid gray 0.2rem;
+    border-radius: 50vw;
+    cursor: pointer;
+    margin-left: 0.5rem;
 }

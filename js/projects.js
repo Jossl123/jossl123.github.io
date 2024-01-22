@@ -8,10 +8,10 @@ function drawProjects(){
         retex[1].tags.forEach(tag => {
             tags+=`<button class="tag" onclick="clickTag('${tag}')">${tag}</button>`
         });
-        var button = `<div id="${retex[0]}" onclick="showRetex(event)" class="retexBut" style="background: url('./img/pp/${retex[0]}.png')">${tags}</div>`
-        document.getElementById("retexs").innerHTML += button
+        document.getElementById("retexs").innerHTML += toDisplayableRetex(retex[0], retex[1].title,retex[1].description, tags)
     })
 }
+
 
 function clickTag(tag){
     addTag(tag)
