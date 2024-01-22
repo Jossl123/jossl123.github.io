@@ -17,7 +17,11 @@ var detailedRetexShowed = false;
 function showDetailedRetex(retexName){
     detailedRetexShowed = true
     var retex = projects[retexName]
+    var link = doesFileExist(`./projects/${retexName}.html`) ? `./projects/${retexName}.html ` : ``
     document.getElementById("retex_detailed_title").innerHTML=retex.title
+    document.getElementById("retex_detailed_img").src=`./img/pp/${retexName}.png`
+    if (retex.link)document.getElementById("retex_detailed_link").href=retex.link
+    else document.getElementById("retex_detailed_link").href=link
     document.getElementById("retex_detailed_desc").innerHTML=retex.description
     document.getElementById("retex_detailed_date").innerHTML=retex.date
     document.getElementById("retex_detailed_method").innerHTML=retex.method
@@ -46,4 +50,20 @@ function toDisplayableRetex(name, title, description, tags=[], date="12 mai"){
             <p class="mt-auto mb-0 text-[--gray] font-bold">${date}</p>
         </div>
     </div>`
+}
+
+
+
+
+
+function doesFileExist(urlToFile) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('HEAD', urlToFile, false);
+    xhr.send();
+
+    if (xhr.status == "404") {
+        return false;
+    } else {
+        return true;
+    }
 }

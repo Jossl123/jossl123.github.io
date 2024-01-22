@@ -12,6 +12,11 @@ html{
     font-family: 'Montserrat', sans-serif !important;
 }
 
+#retex_detailed_desc a{
+    color: var(--blue);
+    text-decoration: underline;
+}
+
 .retexBut {
     flex-shrink: 0;
     border: none;

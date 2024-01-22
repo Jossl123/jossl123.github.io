@@ -17,7 +17,7 @@
     },
     "twotris": {
         "title": "Twotris",
-        "description": "A website to play tetris in multiplayer. Thank to <a href='https://busybox11.github.io/portfolio.html'target='_blank'>busybox</a> for the front.",
+        "description": "A website to play tetris in multiplayer. Thanks to <a href='https://busybox11.github.io/portfolio.html'target='_blank'>busybox</a> for the front.",
         "method": "Nodejs : websocket and express js",
         "skills": "- Javascript <br>- websockets",
         "link": "https://twotris.onrender.com",
