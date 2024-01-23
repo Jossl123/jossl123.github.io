@@ -91,6 +91,12 @@ function animate() {
 
 window.addEventListener("scroll", (e) => {
     scrollx = window.pageYOffset || document.documentElement.scrollTop
+    let compDiv = document.getElementById("competitions");
+    let canvas = document.getElementById("canvas");
+    let ratio = 3
+    let top = Math.min(100*ratio,Math.max(0,-compDiv.getBoundingClientRect().top))/ratio
+    let transX = (100-top) - 50
+    canvas.style.transform = `translateX(${transX}%)`;
 })
 
 requestAnimationFrame(animate);

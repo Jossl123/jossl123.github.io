@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <canvas class="fixed -z-10 w-screen h-screen top-0  -right-1/2" id="canvas"></canvas>
+    <canvas class="fixed -z-10 w-screen h-screen top-0 transition-all ease-linear translate-x-1/2" id="canvas"></canvas>
     <main class="2xl:px-68 xl:px-64 md:px-32 sm:px:10 px-4 py-24 text-xl">
         <div class="relative py-10 px-5">
             <div class="text-2xl">
@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="py-4 flex justify-between">
-            <p>Here are some of my projects :</p>
+            <p  class="text-xl font-bold">Here are some of my projects :</p>
             <a href="./projects.html">See more</a>
         </div>
         <section class="flex gap-4 flex-col mb-12">
@@ -87,8 +87,7 @@
                 <div id="retex_4"></div>
             </div>
         </section>
-        <div id="hobbies"></div>
-        <div class="p-4">
+        <div class="p-4 mb-10" id="competitions">
             <h1 class="text-2xl font-bold mb-4">Coding Competitions</h1>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="flex flex-col p-4 rounded-md ">
@@ -105,7 +104,7 @@
                     <div class="flex flex-col gap-2 p-4">
                         <p class="font-bold">France champion in <a target="_blank" class="underline text-[--blue]"
                                 href="https://robot-soccer-kit.github.io/">robot soccer kit</a></p>
-                        <p class="">2v2 football matches with bots</p>
+                        <p class="">2v2 football matches with robots</p>
                     </div>
                 </div>
                 <div class="flex p-4 rounded-md ">
@@ -128,8 +127,8 @@
                     </div>
                 </div>
                 <div class="flex p-4 rounded-md ">
-                    <a target="_blank" class="rounded h-20 w-52 object-cover"
-                        href="https://castor-informatique.fr/"><img class="rounded" src="./img/castor.png" alt=""></a>
+                    <a target="_blank" class="rounded w-52 object-cover" href="https://castor-informatique.fr/"><img
+                            class="rounded" src="./img/castor.png" alt=""></a>
                     <div class="flex flex-col gap-2 p-4">
                         <p class="font-bold">3rd Place in <a target="_blank" class="underline text-[--blue]"
                                 href="https://castor-informatique.fr/">Castor</a></p>
@@ -138,7 +137,18 @@
                 </div>
             </div>
         </div>
+        <section>
+            <h1 class="text-2xl font-bold mb-4">I also enjoy </h1>
+            <div class="flex gap-4">
+                <a target="_blank" href="https://www.youtube.com/@jossl123">
+                    <img class="h-96 rounded" src="./img/kendama.jpg" alt="">
+                </a>
+                <img class="h-96 rounded" src="./img/piano.jpg" alt="">
+                <img class="h-96 rounded" src="./img/tir.jpg" alt="">
+                <img class="h-96 rounded" src="./img/javascript.png" alt="">
+            </div>
 
+        </section>
     </main>
     <script src="./projects/js/three.js"></script>
     <script src="./noise.js"></script>
