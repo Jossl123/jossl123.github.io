@@ -32,6 +32,14 @@
         "tags": ["Javascript", "3d"],
         "date":"2022"
     },
+    "serizz": {
+        "title": "Serizz",
+        "description": "A website to follow your favorites series",
+        "method": "- symfony <br>- SQL",
+        "skills": "- team work <br>- git management",
+        "tags": ["Javascript"],
+        "date":"2024"
+    },
     "springjoint": {
         "title": "Spring joint",
         "description": "This is a simulation of jelly shapes jumping around. I wanted to code some spring joint physic so there it is",
