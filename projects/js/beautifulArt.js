@@ -1,8 +1,8 @@
-var pointsNb = 100
-var points = []
-var circleRadius
-var center
-var rotateAngle = Math.PI * 2 / pointsNb
+let pointsNb = 100
+let points = []
+let circleRadius
+let center
+let rotateAngle = Math.PI * 2 / pointsNb
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
@@ -14,9 +14,9 @@ function setup() {
     center = createVector(windowWidth / 2, windowHeight / 2)
     for (let i = 0; i <= pointsNb; i++) {
         for (let j = 0; j < 10; j++) {
-            var angle = rotateAngle * i
-            var vector = createVector(circleRadius, 0).rotate(angle)
-            var finalPos = createVector(center.x, center.y).add(vector)
+            let angle = rotateAngle * i
+            let vector = createVector(circleRadius, 0).rotate(angle)
+            let finalPos = createVector(center.x, center.y).add(vector)
             points.push(new Point(finalPos, angle + j * Math.PI / 20, 200))
         }
     }

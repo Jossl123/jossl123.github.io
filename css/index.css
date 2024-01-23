@@ -1,47 +1,20 @@
+/* Header container */
 
-
-#mouse_flow {
-    z-index: -1;
-    top: 0;
-    left: 0;
-    position: absolute;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+:root {
+    --black: #08202e;
+    --dark-gray: #0a2938;
+    --gray: #1e4d4d;
+    --blue: #5C8374;
+    --white: #9EC8B9;
+}
+html{
+    font-family: 'Montserrat', sans-serif !important;
 }
 
-main {
-    height: 100%;
-    z-index: 2;
-    position: sticky;
-    top: 0;
-    padding-top: 10%;
-    margin-bottom: 50rem;
-}
-
-#firstView {
-    padding-inline: 20%;
-    font-size: x-large;
-    gap: 1rem;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-}
-
-@media (max-width: 1490px) {
-    #firstView {
-        padding-inline: 10% !important;
-    }
-}
-
-@media (max-width: 1200px) {
-    #firstView {
-        display: flex;
-        flex-direction: column;
-    }
-    #canvas_container {
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: -1;
-    }
+#retex_detailed_desc a{
+    color: var(--blue);
+    text-decoration: underline;
 }
 
 .retexBut {
@@ -53,91 +26,26 @@ main {
     width: 32rem;
 }
 
-#retexs {
-    display: flex;
-    gap: 1rem;
-    position: absolute;
-    padding-right: 1rem;
-}
-#second_part::before{
-    content: "↓ come here ↓";
-    animation-duration: 0.7s;
-    animation-name: changeheight;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    position: absolute;
-    top: -1rem;
+.tag {
+    font-family: 'Raleway', sans-serif;
+    border-radius: 50vw;
+    background-color: rgb(20, 20, 40);
+    border: solid rgb(51, 51, 78) 0.3rem;
+    padding: 0.5rem;
+    font-size: x-large;
     color: white;
-}
-#second_part {
-    position: relative;
-    z-index: 5;
-    background-color: antiquewhite;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--gray);
-}
-
-#second_part>div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: nowrap;
-}
-
-#second_part #competitions img {
-    height: 5rem;
-}
-
-#second_part #hobbies img {
-    height: 15rem;
-}
-
-#second_part #hobbies>div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-    justify-content: center;
-}
-
-@keyframes changeheight {
-    from {
-        transform: translateY(10px);
-    }
-    to {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes changewidth {
-    from {
-        transform: translateX(10px);
-    }
-    to {
-        transform: translateX(-10px);
-    }
-}
-
-#swipe {
-    animation-duration: 0.7s;
-    animation-name: changewidth;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-}
-
-#swipe {
-    margin: 0.2rem;
-    margin-right: 1rem;
-    justify-content: flex-end;
-    display: flex;
-    align-items: flex-end;
-}
-
-.competition{
+    height: fit-content;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    margin: 1rem;
-    padding: 0.3rem;
+    cursor: pointer;
+}
+
+.tag img {
+    height: 1.5rem;
+    background-color: lightgray;
+    color: black;
+    border: solid gray 0.2rem;
+    border-radius: 50vw;
+    cursor: pointer;
+    margin-left: 0.5rem;
 }
