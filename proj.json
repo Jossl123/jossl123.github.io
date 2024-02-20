@@ -63,6 +63,7 @@
         "description": "A website to simulate some operand gates",
         "method": "Reverse polish notation",
         "skills": "- Javascript <br>- Math knowledges",
+        "link": "https://jossl123.github.io/Transistoshare",
         "tags": ["Javascript"],
         "date":"2021"
     },
