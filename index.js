@@ -1,3 +1,5 @@
+import {nasa_pic_of_the_day} from "./nasa_api.js"
+
 let projects;
 window.onload = async function() {
     projects = await getProjects()
@@ -8,6 +10,7 @@ window.onload = async function() {
     })
     window.scrollTo(0, 0)
     document.getElementsByTagName("main")[0].style.marginBottom = window.innerHeight - document.getElementsByTagName("main")[0].offsetHeight + "px"
+    
 }
 
 //3D bulb
@@ -22,7 +25,7 @@ renderer.setClearColor(0x000000, 0);
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 5;
-
+showNasaPicOfDay()
 let update = function() {
     let time = performance.now() * 0.003;
     for (let i = 0; i < vertices.length; i += 3) {
@@ -101,3 +104,11 @@ window.addEventListener("resize", (e) => {
 })
 requestAnimationFrame(animate);
 
+async function showNasaPicOfDay(){
+    console.log("test")
+    let pic_of_the_day = await nasa_pic_of_the_day()
+    console.log(pic_of_the_day)
+    if (!pic_of_the_day.success){return}
+    document.getElementById("nasa_pic_of_the_day").src = pic_of_the_day.url
+    document.getElementById("nasa_pic_of_the_day").style.display = "block"
+}
