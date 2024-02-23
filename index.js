@@ -70,20 +70,17 @@ for (let i = 0; i < vertices.length; i = i + 3) {
 }
 
 function resizeCanvasToDisplaySize() {
-    const canvas = renderer.domElement;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-
-    if (canvas.width !== width || canvas.height !== height) {
-        renderer.setSize(width, height, false);
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-    }
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    document.getElementById("canvas").style.width = width + "px";
+    document.getElementById("canvas").style.height = height + "px";
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
 }
 function animate() {
     sphere.rotation.x = scrollx * 0.005;
     update()
-    resizeCanvasToDisplaySize();
     /* render scene and camera */
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
@@ -99,5 +96,8 @@ window.addEventListener("scroll", (e) => {
     canvas.style.transform = `translateX(${transX}%)`;
 })
 
+window.addEventListener("resize", (e) => {
+    resizeCanvasToDisplaySize();
+})
 requestAnimationFrame(animate);
 
