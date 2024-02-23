@@ -3,7 +3,7 @@ window.onload = async function() {
     projects = await getProjects()
     let i = 0;
     Object.entries(projects).slice(0,5).forEach(retex => {
-        document.getElementById(`retex_${i}`).innerHTML += toDisplayableRetex(retex[0], retex[1].title,retex[1].description, [], retex[1].date);
+        document.getElementById(`retex_${i}`).innerHTML = toDisplayableRetex(retex[0], retex[1].title,retex[1].description, [], retex[1].date);
         i++;
     })
     window.scrollTo(0, 0)

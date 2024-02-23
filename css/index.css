@@ -49,3 +49,32 @@ html{
     cursor: pointer;
     margin-left: 0.5rem;
 }
+
+
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}
+
+.shining {
+    background: linear-gradient(110deg, #182e3b 8%, #2e4755 18%, #182e3b 33%);
+    background-size: 200% 100%;
+    animation: 1s shine linear infinite;
+}
+
+.shining-gray {
+    background: linear-gradient(110deg, var(--black) 8%, var(--dark-gray) 18%, var(--black) 33%);
+    background-size: 200% 100%;
+    animation: 1s shine linear infinite;
+}
+
+.shining-gray2 {
+    background: linear-gradient(110deg, var(--black) 8%, var(--dark-gray) 24%, var(--black) 40%);
+    background-size: 200% 100%;
+    animation: 1s shine linear infinite;
+}
+
+.shining-gray:nth-of-type(1) {
+    animation-delay: 0.1s;
+}
